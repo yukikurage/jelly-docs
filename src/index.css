@@ -1,0 +1,67 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+.markdown h1 {
+  @apply text-3xl;
+  @apply font-bold;
+  @apply my-5;
+}
+
+.markdown h2 {
+  @apply text-2xl;
+  @apply font-medium;
+  @apply my-4;
+  @apply ml-1;
+}
+
+.markdown h3 {
+  @apply text-xl;
+  @apply font-medium;
+  @apply my-3;
+  @apply ml-2;
+}
+
+.markdown h4 {
+  @apply text-xl;
+  @apply font-medium;
+  @apply my-3;
+  @apply ml-3;
+}
+
+.markdown h5 {
+  @apply text-lg;
+  @apply font-medium;
+  @apply my-3;
+  @apply ml-4;
+}
+
+.markdown p {
+  @apply text-base;
+  @apply my-2;
+  @apply ml-5;
+}
+
+.markdown pre {
+  @apply bg-gray-100;
+  @apply text-black;
+  @apply py-3;
+  @apply px-5;
+  @apply rounded;
+  @apply ml-6;
+  @apply my-3;
+}
+
+.markdown code {
+  @apply font-SourceCodePro !important;
+}
+
+.markdown a {
+  @apply text-blue-500;
+  @apply hover:text-blue-700;
+}
+
+.markdown ul {
+  @apply list-disc;
+  @apply ml-8;
+  @apply my-2;
+}
