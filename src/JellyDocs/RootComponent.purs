@@ -36,6 +36,7 @@ rootComponent pageComponent = do
     el_ "head" do
       el_ "title" do
         text $ pure "Jelly Docs"
+      el "link" [ "rel" := "stylesheet", "href" := "/index.css" ] mempty
 
       el "meta" [ "name" := "viewport", "content" := "width=device-width,initial-scale=1.0" ] mempty
 
@@ -44,7 +45,6 @@ rootComponent pageComponent = do
       el "link" [ "href" := "https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;900&family=Source+Code+Pro&display=swap", "rel" := "stylesheet" ] mempty
 
       mainScript
-      el "link" [ "rel" := "stylesheet", "href" := "/index.css" ] mempty
     el "body" [ "class" := "text-slate-800" ] do
       el "div" [ "class" := "fixed left-0 top-0 flex flex-row h-screen w-screen font-Montserrat" ] do
         sidebarComponent
