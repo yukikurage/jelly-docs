@@ -40,9 +40,25 @@ rootComponent pageComponent = do
 
       el "meta" [ "name" := "viewport", "content" := "width=device-width,initial-scale=1.0" ] mempty
 
-      el "link" [ "rel" := "preconnect", "href" := "https://fonts.googleapis.com" ] mempty
-      el "link" [ "rel" := "preconnect", "href" := "https://fonts.gstatic.com", "crossorigin" := "" ] mempty
-      el "link" [ "href" := "https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;900&family=Source+Code+Pro&display=swap", "rel" := "stylesheet" ] mempty
+      el "link"
+        [ "rel" := "preconnect"
+        , "href" := "https://fonts.gstatic.com"
+        , "crossorigin" := true
+        ]
+        mempty
+      el "link"
+        [ "rel" := "preload"
+        , "as" := "style"
+        , "href" := "https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;900&family=Source+Code+Pro&display=swap"
+        ]
+        mempty
+      el "link"
+        [ "rel" := "stylesheet"
+        , "href" := "https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;900&family=Source+Code+Pro&display=swap"
+        , "media" := "print"
+        , "onload" := "this.media='all'"
+        ]
+        mempty
 
       mainScript
     el "body" [ "class" := "text-slate-800" ] do
