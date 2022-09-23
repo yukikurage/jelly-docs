@@ -8,6 +8,7 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
+        Lato: ['Lato', 'sans-serif'],
         Montserrat: ['Montserrat', 'sans-serif'],
         SourceCodePro: ['Source Code Pro', 'monospace'],
       }

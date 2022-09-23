@@ -10,6 +10,7 @@ import JellyDocs.Context (Context)
 import JellyDocs.Page (Page(..), pageToUrl, urlToPage)
 import JellyDocs.Pages.Document (documentPage)
 import JellyDocs.Pages.NotFound (notFoundPage)
+import JellyDocs.Pages.Top (topPage)
 import JellyDocs.RootComponent (rootComponent)
 
 main :: Effect Unit
@@ -22,6 +23,7 @@ clientConfig =
   , pageToUrl
   , urlToPage
   , pageComponent: case _ of
+      PageTop -> topPage
       PageDocument _ -> documentPage
       PageNotFound -> notFoundPage
   }

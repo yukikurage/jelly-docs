@@ -3,7 +3,7 @@ module JellyDocs.Documents where
 import Prelude
 
 import Data.Array (concatMap, find)
-import Data.Maybe (Maybe(..))
+import Data.Maybe (Maybe)
 
 data Documents = Documents (Array String) String String (Array Documents)
 
@@ -11,9 +11,10 @@ derive instance Eq Documents
 
 rootDocuments :: Array Documents
 rootDocuments =
-  [ overview
-  , installation
-  , tutorials
+  [ docInstallation
+  , docMainUsages
+  , docAdvancedUsages
+  , docStaticSiteGenerator
   ]
 
 allDocuments :: Array Documents
@@ -23,24 +24,40 @@ allDocuments = go rootDocuments
   go [] = []
   go docs = docs <> go (concatMap (\(Documents _ _ _ children) -> children) docs)
 
-overview :: Documents
-overview = Documents [] "Overview" "overview" []
+docInstallation :: Documents
+docInstallation = Documents [] "Installation" "installation" []
 
-installation :: Documents
-installation = Documents [] "Installation" "installation" []
+docMainUsages :: Documents
+docMainUsages = Documents [] "Main Usages" "main-usages" [ docHelloWorld, docStaticHtml ]
 
-tutorials :: Documents
-tutorials = Documents [] "Tutorials" "tutorials" [ staticHtml ]
+docAdvancedUsages :: Documents
+docAdvancedUsages = Documents [] "Advanced Guides" "advanced-guides" [ docContext, docSpaRouting ]
 
-staticHtml :: Documents
-staticHtml = Documents [ "tutorials" ] "Static HTML" "static-html" []
+docStaticSiteGenerator :: Documents
+docStaticSiteGenerator = Documents [] "Static Site Generator" "static-site-generator" [ docGenerateStaticApp, docHydration ]
+
+docHelloWorld :: Documents
+docHelloWorld = Documents [ "main-usages" ] "Hello World" "hello-world" []
+
+docStaticHtml :: Documents
+docStaticHtml = Documents [ "main-usages" ] "Static HTML" "static-html" []
+
+docContext :: Documents
+docContext = Documents [ "advanced-guides" ] "Context" "context" []
+
+docSpaRouting :: Documents
+docSpaRouting = Documents [ "advanced-guides" ] "SPA Routing" "spa-routing" []
+
+docGenerateStaticApp :: Documents
+docGenerateStaticApp = Documents [ "static-site-generator" ] "Generate Static App" "generate-static-app" []
+
+docHydration :: Documents
+docHydration = Documents [ "static-site-generator" ] "Hydration" "hydration" []
 
 documentToPath :: Documents -> Array String
-documentToPath doc | doc == overview = []
-documentToPath (Documents parent _ id _) = parent <> [ id ]
+documentToPath (Documents parent _ id _) = [ "docs" ] <> parent <> [ id ]
 
 pathToDocument :: Array String -> Maybe Documents
-pathToDocument [] = Just overview
 pathToDocument path = find (\doc -> documentToPath doc == path) allDocuments
 
 documentToDocsPath :: Documents -> Array String

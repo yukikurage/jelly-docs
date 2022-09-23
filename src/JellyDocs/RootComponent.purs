@@ -21,8 +21,9 @@ rootComponent pageComponent = hooks do
     titleSig = do
       page <- pageSig
       case page of
-        PageDocument (Documents _ title _ _) -> pure $ "Jelly Docs | " <> title
-        PageNotFound -> pure "Jelly Docs | Not Found"
+        PageTop -> pure "Jelly"
+        PageDocument (Documents _ title _ _) -> pure $ title <> " - Jelly"
+        PageNotFound -> pure "Not Found - Jelly"
 
   pure do
     docTypeHTML
@@ -43,12 +44,12 @@ rootComponent pageComponent = hooks do
         el "link"
           [ "rel" := "preload"
           , "as" := "style"
-          , "href" := "https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;900&family=Source+Code+Pro&display=swap"
+          , "href" := "https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&family=Montserrat:wght@700&family=Source+Code+Pro&display=swap"
           ]
           mempty
         el "link"
           [ "rel" := "stylesheet"
-          , "href" := "https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;900&family=Source+Code+Pro&display=swap"
+          , "href" := "https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&family=Montserrat:wght@700&family=Source+Code+Pro&display=swap"
           , "media" := "print"
           , "onload" := "this.media='all'"
           ]
@@ -66,7 +67,7 @@ rootComponent pageComponent = hooks do
 
         el "meta" [ "name" := "description", "content" := "Documentation for PureScript Jelly, a framework for building reactive web applications." ] mempty
       el "body" [ "class" := "text-slate-800" ] do
-        el "div" [ "class" := "fixed left-0 top-0 flex flex-row h-screen w-screen font-Montserrat" ] do
+        el "div" [ "class" := "fixed left-0 top-0 flex flex-row h-screen w-screen font-Lato" ] do
           el "div" [ "class" := "flex-shrink-0" ] do
             sidebarComponent
           el "div" [ "class" := "flex-1 overflow-auto" ] do
