@@ -33,7 +33,7 @@ renderSidebarSectionItem doc@(Documents _ title _ children) = hooks do
           (PageDocument doc)
           [ "class" :=@ do
               isActive <- isActiveSig
-              pure $ "p-2 rounded-sm transition-colors block" <> if isActive then " bg-slate-500 text-white" else " hover:bg-slate-200"
+              pure $ "py-2 px-4 rounded-sm transition-colors block" <> if isActive then " bg-slate-500 text-white" else " hover:bg-slate-200"
           ]
           do
             text $ pure title
@@ -45,7 +45,7 @@ renderSidebarSectionItem doc@(Documents _ title _ children) = hooks do
           renderSidebarSection children
 
 sidebarComponent :: Component Context
-sidebarComponent = el "div" [ "class" := "py-10 px-14 w-80 h-full bg-slate-50" ] do
+sidebarComponent = el "div" [ "class" := "py-10 px-10 w-80 h-full bg-slate-50" ] do
   el "div" [ "class" := "w-full h-16" ] do
     el "h1" [ "class" := "text-2xl font-bold p-2" ] do
       link_ (PageDocument overview) do

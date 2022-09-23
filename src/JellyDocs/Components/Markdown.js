@@ -19,6 +19,7 @@ hljs.registerLanguage("markdown", markdown);
 hljs.registerLanguage("bash", bash);
 
 marked.setOptions({
+  breaks: true,
   langPrefix: "",
   highlight: (code, lang) => {
     return hljs.highlightAuto(code, [lang]).value;

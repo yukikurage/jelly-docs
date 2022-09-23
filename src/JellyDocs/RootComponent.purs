@@ -70,4 +70,4 @@ rootComponent pageComponent = hooks do
           el "div" [ "class" := "flex-shrink-0" ] do
             sidebarComponent
           el "div" [ "class" := "flex-1 overflow-auto" ] do
-            el "div" [ "class" := " min-w-max" ] pageComponent
+            el "div" [ "class" := "min-w-fit" ] pageComponent

@@ -1,6 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
 .markdown h1 {
   @apply text-3xl;
   @apply font-bold;
@@ -42,6 +43,7 @@
 }
 
 .markdown pre {
+  @apply overflow-x-auto;
   @apply bg-slate-50;
   @apply text-black;
   @apply py-3;
@@ -59,8 +61,8 @@
 }
 
 .markdown a {
-  @apply text-blue-500;
-  @apply hover:text-blue-700;
+  @apply text-blue-600;
+  @apply hover:text-blue-800;
 }
 
 .markdown ul {
