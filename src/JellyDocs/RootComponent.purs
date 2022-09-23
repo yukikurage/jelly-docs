@@ -2,8 +2,6 @@ module JellyDocs.RootComponent where
 
 import Prelude
 
-import Data.Array (last)
-import Data.Maybe (Maybe(..))
 import Jelly.Core.Components (docTypeHTML, el, el_, text)
 import Jelly.Core.Data.Component (Component)
 import Jelly.Core.Data.Hooks (hooks)
@@ -12,6 +10,7 @@ import Jelly.Router.Data.Router (useRouter)
 import Jelly.SSG.Components (mainScript)
 import JellyDocs.Components.Sidebar (sidebarComponent)
 import JellyDocs.Context (Context)
+import JellyDocs.Documents (Documents(..))
 import JellyDocs.Page (Page(..))
 
 rootComponent :: Component Context -> Component Context
@@ -22,9 +21,8 @@ rootComponent pageComponent = hooks do
     titleSig = do
       page <- pageSig
       case page of
-        PageDocument arr | Just title <- last arr -> pure $ "Jelly Docs | " <> title
-        PageNotFound -> pure "Jelly Docs | Not Found"
-        _ -> pure "Jelly Docs"
+        PageDocument (Documents _ title _ _) -> pure $ "Jelly Docs | " <> title
+        PageNotFound _ -> pure "Jelly Docs | Not Found"
 
   pure do
     docTypeHTML
@@ -56,10 +54,20 @@ rootComponent pageComponent = hooks do
           ]
           mempty
 
+        el "link"
+          [ "rel" := "stylesheet"
+          , "href" := "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/atom-one-light.min.css"
+          , "media" := "print"
+          , "onload" := "this.media='all'"
+          ]
+          mempty
+
         mainScript
 
         el "meta" [ "name" := "description", "content" := "Documentation for PureScript Jelly, a framework for building reactive web applications." ] mempty
       el "body" [ "class" := "text-slate-800" ] do
         el "div" [ "class" := "fixed left-0 top-0 flex flex-row h-screen w-screen font-Montserrat" ] do
-          sidebarComponent
-          pageComponent
+          el "div" [ "class" := "flex-shrink-0" ] do
+            sidebarComponent
+          el "div" [ "class" := "flex-1 overflow-auto" ] do
+            el "div" [ "class" := " min-w-max" ] pageComponent

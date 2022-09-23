@@ -2,13 +2,12 @@ module JellyDocs.Page where
 
 import Prelude
 
-import Jelly.Router.Data.Url (Url)
 import Data.Map as Map
+import Data.Maybe (Maybe(..))
+import Jelly.Router.Data.Url (Url)
+import JellyDocs.Documents (Documents, documentToPath, overview, pathToDocument)
 
--- | File Path (e.g. ["overview"], ["tutorials", "static-html"])
-type DocumentId = Array String
-
-data Page = PageNotFound | PageDocument DocumentId
+data Page = PageNotFound (Array String) | PageDocument Documents
 
 derive instance Eq Page
 
@@ -16,9 +15,8 @@ pageToUrl :: Page -> Url
 pageToUrl page =
   let
     path = case page of
-      PageDocument [ "overview" ] -> []
-      PageDocument docId -> docId
-      PageNotFound -> [ "404" ]
+      PageDocument docId -> documentToPath docId
+      PageNotFound pt -> pt
   in
     { path: path
     , query: Map.empty
@@ -28,6 +26,6 @@ pageToUrl page =
 urlToPage :: Url -> Page
 urlToPage url =
   case url.path of
-    [ "404" ] -> PageNotFound
-    [] -> PageDocument [ "overview" ]
-    path -> PageDocument path
+    [] -> PageDocument $ overview
+    path | Just doc <- pathToDocument path -> PageDocument doc
+    path -> PageNotFound path

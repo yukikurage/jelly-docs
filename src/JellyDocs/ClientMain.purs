@@ -23,5 +23,5 @@ clientConfig =
   , urlToPage
   , pageComponent: case _ of
       PageDocument _ -> documentPage
-      PageNotFound -> notFoundPage
+      PageNotFound _ -> notFoundPage
   }

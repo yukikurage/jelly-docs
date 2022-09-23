@@ -8,7 +8,7 @@ import Jelly.SSG.Data.GeneratorConfig (GeneratorConfig)
 import Jelly.SSG.Generator (generate)
 import JellyDocs.ClientMain (clientConfig)
 import JellyDocs.Context (Context)
-import JellyDocs.Documents (documentIds)
+import JellyDocs.Documents (allDocuments)
 import JellyDocs.Page (Page(..))
 import JellyDocs.StaticData.Document (documentStaticData)
 import JellyDocs.StaticData.NotFound (notFoundStaticData)
@@ -21,8 +21,8 @@ generatorConfig :: GeneratorConfig Context Page
 generatorConfig = union clientConfig
   { pageStaticData: case _ of
       PageDocument documentId -> documentStaticData documentId
-      PageNotFound -> notFoundStaticData
-  , getPages: pure $ map PageDocument documentIds <> [ PageNotFound ]
+      PageNotFound _ -> notFoundStaticData
+  , getPages: pure $ map PageDocument allDocuments <> [ PageNotFound [ "404" ] ]
   , clientMain: "JellyDocs.ClientMain"
   , output: [ "public" ]
   }

@@ -42,17 +42,20 @@
 }
 
 .markdown pre {
-  @apply bg-gray-100;
+  @apply bg-slate-50;
   @apply text-black;
   @apply py-3;
   @apply px-5;
-  @apply rounded;
+  @apply rounded-sm;
   @apply ml-6;
   @apply my-3;
 }
 
-.markdown code {
+.markdown :not(pre) code {
   @apply font-SourceCodePro !important;
+  @apply bg-slate-50;
+  @apply px-2;
+  @apply rounded-sm;
 }
 
 .markdown a {

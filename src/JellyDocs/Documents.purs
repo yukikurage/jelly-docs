@@ -2,28 +2,41 @@ module JellyDocs.Documents where
 
 import Prelude
 
-import Data.Array (concatMap, (:))
-import Data.String (joinWith)
+import Data.Array (concatMap, find)
+import Data.Maybe (Maybe)
 
-data Documents = Documents String (Array Documents)
+data Documents = Documents (Array String) String String (Array Documents)
 
-documents :: Array Documents
-documents =
-  [ Documents "overview" []
-  , Documents "installation" []
-  , Documents "tutorials" [ Documents "static-html" [] ]
+derive instance Eq Documents
+
+rootDocuments :: Array Documents
+rootDocuments =
+  [ overview
+  , installation
+  , tutorials
   ]
 
-documentIds :: Array (Array String)
-documentIds = concatMap go documents
+allDocuments :: Array Documents
+allDocuments = go rootDocuments
   where
-  go (Documents id children) =
-    let
-      chs = concatMap (map (id : _) <<< go) $ children
-      root = [ [ id ] ]
-    in
-      root <> chs
+  go :: Array Documents -> Array Documents
+  go [] = []
+  go docs = docs <> go (concatMap (\(Documents _ _ _ children) -> children) docs)
 
-documentIdToPath :: Array String -> String
-documentIdToPath id =
-  "docs/" <> joinWith "/" id <> ".md"
+overview :: Documents
+overview = Documents [] "Overview" "overview" []
+
+installation :: Documents
+installation = Documents [] "Installation" "installation" []
+
+tutorials :: Documents
+tutorials = Documents [] "Tutorials" "tutorials" [ staticHtml ]
+
+staticHtml :: Documents
+staticHtml = Documents [ "tutorials" ] "Static HTML" "static-html" []
+
+documentToPath :: Documents -> Array String
+documentToPath (Documents parent _ id _) = parent <> [ id ]
+
+pathToDocument :: Array String -> Maybe Documents
+pathToDocument path = find (\doc -> documentToPath doc == path) allDocuments
