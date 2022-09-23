@@ -23,6 +23,7 @@ rootComponent pageComponent = hooks do
       page <- pageSig
       case page of
         PageDocument arr | Just title <- last arr -> pure $ "Jelly Docs | " <> title
+        PageNotFound -> pure "Jelly Docs | Not Found"
         _ -> pure "Jelly Docs"
 
   pure do

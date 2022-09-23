@@ -16,9 +16,9 @@ pageToUrl :: Page -> Url
 pageToUrl page =
   let
     path = case page of
-      PageNotFound -> [ "404" ]
       PageDocument [ "overview" ] -> []
       PageDocument docId -> docId
+      PageNotFound -> [ "404" ]
   in
     { path: path
     , query: Map.empty

@@ -11,6 +11,7 @@ import JellyDocs.Context (Context)
 import JellyDocs.Documents (documentIds)
 import JellyDocs.Page (Page(..))
 import JellyDocs.StaticData.Document (documentStaticData)
+import JellyDocs.StaticData.NotFound (notFoundStaticData)
 import Record (union)
 
 main :: Effect Unit
@@ -20,7 +21,7 @@ generatorConfig :: GeneratorConfig Context Page
 generatorConfig = union clientConfig
   { pageStaticData: case _ of
       PageDocument documentId -> documentStaticData documentId
-      PageNotFound -> pure ""
+      PageNotFound -> notFoundStaticData
   , getPages: pure $ map PageDocument documentIds <> [ PageNotFound ]
   , clientMain: "JellyDocs.ClientMain"
   , output: [ "public" ]
