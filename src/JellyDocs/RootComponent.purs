@@ -22,7 +22,7 @@ rootComponent pageComponent = hooks do
       page <- pageSig
       case page of
         PageDocument (Documents _ title _ _) -> pure $ "Jelly Docs | " <> title
-        PageNotFound _ -> pure "Jelly Docs | Not Found"
+        PageNotFound -> pure "Jelly Docs | Not Found"
 
   pure do
     docTypeHTML

@@ -21,8 +21,8 @@ generatorConfig :: GeneratorConfig Context Page
 generatorConfig = union clientConfig
   { pageStaticData: case _ of
       PageDocument documentId -> documentStaticData documentId
-      PageNotFound _ -> notFoundStaticData
-  , getPages: pure $ map PageDocument allDocuments <> [ PageNotFound [ "404" ] ]
+      PageNotFound -> notFoundStaticData
+  , getPages: pure $ map PageDocument allDocuments <> [ PageNotFound ]
   , clientMain: "JellyDocs.ClientMain"
   , output: [ "public" ]
   }
