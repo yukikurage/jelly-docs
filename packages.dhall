@@ -130,7 +130,7 @@ in  upstream
         , "record"
         , "refs"
         , "safely"
-        , "st"
+        , "simple-json"
         , "strings"
         , "tailrec"
         , "transformers"
