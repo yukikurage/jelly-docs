@@ -17,6 +17,7 @@ to generate this file without the comments in this block.
   , "console"
   , "effect"
   , "jelly"
+  , "maybe"
   , "node-buffer"
   , "node-fs-aff"
   , "ordered-collections"

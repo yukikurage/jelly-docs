@@ -9,4 +9,5 @@
 /.psa*
 /.spago
 /.vscode
-/public
+/public/*
+!/public/robots.txt
