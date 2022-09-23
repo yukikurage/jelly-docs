@@ -63,8 +63,6 @@ rootComponent pageComponent = hooks do
           ]
           mempty
 
-        mainScript
-
         el "meta" [ "name" := "description", "content" := "Documentation for PureScript Jelly, a framework for building reactive web applications." ] mempty
       el "body" [ "class" := "text-slate-800" ] do
         el "div" [ "class" := "fixed left-0 top-0 flex flex-row h-screen w-screen font-Lato" ] do
@@ -72,3 +70,4 @@ rootComponent pageComponent = hooks do
             sidebarComponent
           el "div" [ "class" := "flex-1 overflow-auto" ] do
             el "div" [ "class" := "min-w-fit" ] pageComponent
+        mainScript
