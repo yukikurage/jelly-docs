@@ -15,6 +15,7 @@ pageToUrl :: Page -> Url
 pageToUrl page =
   let
     path = case page of
+      PageDocument doc | doc == overview -> []
       PageDocument docId -> documentToPath docId
       PageNotFound pt -> pt
   in
