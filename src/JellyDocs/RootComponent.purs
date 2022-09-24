@@ -43,26 +43,18 @@ rootComponent = hooks do
         el "meta" [ "name" := "viewport", "content" := "width=device-width,initial-scale=1.0" ] mempty
 
         el "link"
-          [ "rel" := "preconnect"
-          , "href" := "https://fonts.gstatic.com"
-          , "crossorigin" := true
-          ]
-          mempty
-        el "link"
           [ "rel" := "stylesheet"
           , "href" := "https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&family=Montserrat:wght@700&family=Source+Code+Pro&display=swap"
+          , "media" := "print"
+          , "onload" := "this.media='all'"
           ]
           mempty
 
         el "link"
-          [ "rel" := "preconnect"
-          , "href" := "https://cdnjs.cloudflare.com"
-          , "crossorigin" := true
-          ]
-          mempty
-        el "link"
           [ "rel" := "stylesheet"
           , "href" := "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/atom-one-light.min.css"
+          , "media" := "print"
+          , "onload" := "this.media='all'"
           ]
           mempty
 
