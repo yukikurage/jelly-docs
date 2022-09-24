@@ -1,4 +1,4 @@
-module JellyDocs.StaticData.NotFound where
+module JellyDocs.Api.NotFound where
 
 import Prelude
 
@@ -7,7 +7,7 @@ import Effect.Class.Console (log)
 import Node.Encoding (Encoding(..))
 import Node.FS.Aff (readTextFile)
 
-notFoundStaticData :: Aff String
-notFoundStaticData = do
+getNotFoundMD :: Aff String
+getNotFoundMD = do
   log "docs/not-found.md"
   readTextFile UTF8 $ "docs/not-found.md"

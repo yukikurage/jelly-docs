@@ -2,31 +2,38 @@ module JellyDocs.RootComponent where
 
 import Prelude
 
-import Jelly.Core.Components (docTypeHTML, el, el_, text)
-import Jelly.Core.Data.Component (Component)
+import Data.Array (fold)
+import Data.Maybe (Maybe(..))
+import Data.Tuple (snd)
+import Foreign.Object (lookup, toUnfoldable)
+import Jelly.Core.Data.Component (Component, doctypeHtml, el, el_, signalC, text)
 import Jelly.Core.Data.Hooks (hooks)
 import Jelly.Core.Data.Prop ((:=))
+import Jelly.Core.Hooks.UseContext (useContext)
 import Jelly.Router.Data.Router (useRouter)
-import Jelly.SSG.Components (mainScript)
 import JellyDocs.Components.Sidebar (sidebarComponent)
 import JellyDocs.Context (Context)
-import JellyDocs.Documents (Documents(..))
-import JellyDocs.Page (Page(..))
+import JellyDocs.Data.Page (Page(..), urlToPage)
+import JellyDocs.Pages.Doc (docPage)
+import JellyDocs.Pages.NotFound (notFoundPage)
+import JellyDocs.Pages.Top (topPage)
 
-rootComponent :: Component Context -> Component Context
-rootComponent pageComponent = hooks do
-  { pageSig } <- useRouter
+rootComponent :: Component Context
+rootComponent = hooks do
+  { currentUrlSig } <- useRouter
+  { docs } <- useContext
 
   let
+    docsFlatten = fold $ map snd $ toUnfoldable docs
     titleSig = do
-      page <- pageSig
-      case page of
+      currentUrl <- currentUrlSig
+      case urlToPage currentUrl of
         PageTop -> pure "Jelly"
-        PageDocument (Documents _ title _ _) -> pure $ title <> " - Jelly"
-        PageNotFound -> pure "Not Found - Jelly"
+        PageDoc docId | Just { title } <- lookup docId docsFlatten -> pure $ title <> " - Jelly"
+        _ -> pure "Not Found - Jelly"
 
   pure do
-    docTypeHTML
+    doctypeHtml
     el "html" [ "lang" := "en" ] do
       el_ "head" do
         el_ "title" do
@@ -69,5 +76,12 @@ rootComponent pageComponent = hooks do
           el "div" [ "class" := "flex-shrink-0" ] do
             sidebarComponent
           el "div" [ "class" := "flex-1 overflow-auto" ] do
-            el "div" [ "class" := "min-w-fit" ] pageComponent
-        mainScript
+            el "div" [ "class" := "min-w-fit" ] $ signalC do
+              currentUrl <- currentUrlSig
+              pure case urlToPage currentUrl of
+                PageTop -> topPage
+                PageDoc docId -> docPage $ pure docId
+                PageNotFound -> notFoundPage
+        el "script"
+          [ "src" := "/index.js", "defer" := true ]
+          mempty

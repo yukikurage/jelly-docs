@@ -16,13 +16,16 @@ to generate this file without the comments in this block.
   , "arrays"
   , "console"
   , "effect"
+  , "foldable-traversable"
+  , "foreign-object"
   , "jelly"
   , "maybe"
   , "node-buffer"
   , "node-fs-aff"
-  , "ordered-collections"
+  , "parallel"
   , "prelude"
-  , "record"
+  , "tuples"
+  , "web-html"
   ]
 , packages = ./packages.dhall
 , sources = [ "src/**/*.purs", "test/**/*.purs" ]

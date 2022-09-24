@@ -1,12 +1,15 @@
 module JellyDocs.Pages.NotFound where
 
 import Prelude
-
-import Jelly.Core.Components (el)
-import Jelly.Core.Data.Component (Component)
+import Jelly.Core.Data.Component (Component, el)
+import Jelly.Core.Data.Hooks (hooks)
 import Jelly.Core.Data.Prop ((:=))
+import Jelly.Core.Hooks.UseContext (useContext)
 import JellyDocs.Components.Markdown (markdownComponent)
 import JellyDocs.Context (Context)
 
-notFoundPage :: String -> Component Context
-notFoundPage doc = el "div" [ "class" := "p-10" ] $ markdownComponent (pure doc)
+notFoundPage :: Component Context
+notFoundPage = hooks do
+  { notFoundMD } <- useContext
+
+  pure $ el "div" [ "class" := "p-10" ] $ markdownComponent $ pure notFoundMD

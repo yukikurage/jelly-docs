@@ -1,6 +1,14 @@
 module JellyDocs.Context where
 
-import Jelly.SSG.Data.Context (SsgContext)
-import JellyDocs.Page (Page)
+import Foreign.Object (Object)
+import Jelly.Router.Data.Router (RouterContext)
+import JellyDocs.Data.Doc (Doc)
 
-type Context = SsgContext Page ()
+type C r =
+  ( docs :: Object (Object Doc)
+  , notFoundMD :: String
+  , topMD :: String
+  | r
+  )
+
+type Context = RouterContext (C ())

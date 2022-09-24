@@ -2,28 +2,36 @@ module JellyDocs.ClientMain where
 
 import Prelude
 
+import Data.Maybe (fromMaybe)
 import Effect (Effect)
-import Effect.Aff (launchAff_)
-import Jelly.SSG.ClientMain (clientMain)
-import Jelly.SSG.Data.ClientConfig (ClientConfig)
-import JellyDocs.Context (Context)
-import JellyDocs.Page (Page(..), pageToUrl, urlToPage)
-import JellyDocs.Pages.Document (documentPage)
-import JellyDocs.Pages.NotFound (notFoundPage)
-import JellyDocs.Pages.Top (topPage)
+import Effect.Aff (joinFiber, launchAff_)
+import Effect.Class (liftEffect)
+import Jelly.Core.Aff (awaitDocument)
+import Jelly.Core.Mount (hydrate)
+import Jelly.Generator.Data.StaticData (newStaticData)
+import Jelly.Router.Data.Router (newRouter, provideRouterContext)
 import JellyDocs.RootComponent (rootComponent)
+import Web.HTML.HTMLDocument as HTMLDocument
 
 main :: Effect Unit
-main = launchAff_ $ clientMain clientConfig
+main = launchAff_ do
+  -- Await Document
+  d <- awaitDocument
 
-clientConfig :: ClientConfig Context Page
-clientConfig =
-  { basePath: []
-  , rootComponent
-  , pageToUrl
-  , urlToPage
-  , pageComponent: case _ of
-      PageTop -> topPage
-      PageDocument _ -> documentPage
-      PageNotFound -> notFoundPage
-  }
+  -- Make Router
+  router <- newRouter (\url -> pure url)
+
+  -- Fetch static Data
+  docsFiber <- liftEffect $ newStaticData $ [ "data", "docs.json" ]
+  notFoundMDFiber <- liftEffect $ newStaticData $ [ "data", "not-found.json" ]
+  topMDFiber <- liftEffect $ newStaticData $ [ "data", "top.json" ]
+
+  docs <- fromMaybe mempty <$> joinFiber docsFiber
+  notFoundMD <- fromMaybe "" <$> joinFiber notFoundMDFiber
+  topMD <- fromMaybe "" <$> joinFiber topMDFiber
+
+  let
+    context = provideRouterContext router { docs, notFoundMD, topMD }
+
+  -- Run App
+  void $ liftEffect $ hydrate context rootComponent $ HTMLDocument.toNode d
