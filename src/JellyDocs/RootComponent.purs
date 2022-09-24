@@ -41,7 +41,18 @@ rootComponent = hooks do
         el "link" [ "rel" := "stylesheet", "href" := "/index.css" ] mempty
 
         el "meta" [ "name" := "viewport", "content" := "width=device-width,initial-scale=1.0" ] mempty
-
+        el "link"
+          [ "rel" := "preconnect"
+          , "href" := "https://fonts.gstatic.com"
+          , "crossorigin" := true
+          ]
+          mempty
+        el "link"
+          [ "rel" := "preload"
+          , "as" := "style"
+          , "href" := "https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&family=Montserrat:wght@700&family=Source+Code+Pro&display=swap"
+          ]
+          mempty
         el "link"
           [ "rel" := "stylesheet"
           , "href" := "https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&family=Montserrat:wght@700&family=Source+Code+Pro&display=swap"
@@ -53,12 +64,14 @@ rootComponent = hooks do
         el "link"
           [ "rel" := "stylesheet"
           , "href" := "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/atom-one-light.min.css"
-          , "media" := "print"
-          , "onload" := "this.media='all'"
           ]
           mempty
 
         el "meta" [ "name" := "description", "content" := "Documentation for PureScript Jelly, a framework for building reactive web applications." ] mempty
+        el "script"
+          [ "src" := "/index.js", "defer" := true ]
+          mempty
+
       el "body" [ "class" := "text-slate-800" ] do
         el "div" [ "class" := "fixed left-0 top-0 flex flex-row h-screen w-screen font-Lato" ] do
           el "div" [ "class" := "flex-shrink-0" ] do
@@ -70,6 +83,3 @@ rootComponent = hooks do
                 PageTop -> topPage
                 PageDoc docId -> docPage $ pure docId
                 PageNotFound -> notFoundPage
-        el "script"
-          [ "src" := "/index.js", "defer" := true ]
-          mempty
