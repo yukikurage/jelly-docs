@@ -23,9 +23,10 @@ renderSidebarSection section = hooks do
     sectionDocs = values $ fromMaybe mempty $ lookup section docs
 
   pure do
-    el "li" [ "class" := "my-1 py-2 px-4" ] mempty
+    el "li" [ "class" := "my-1 py-2 px-4 font-bold text-sm" ] do
+      text $ pure section
     el_ "li" do
-      el "ul" [ "class" := "ml-4" ] do
+      el "ul" [ "class" := "" ] do
         for_ sectionDocs renderSidebarSectionItem
 
 renderSidebarSectionItem :: Doc -> Component Context
@@ -39,7 +40,7 @@ renderSidebarSectionItem { title, id } = hooks do
     link (pageToUrl (PageDoc id))
       [ "class" :=@ do
           isActive <- isActiveSig
-          pure $ "py-2 px-4 rounded-sm transition-colors block" <> if isActive then " bg-slate-500 text-white font-bold" else " hover:bg-slate-200"
+          pure $ "py-2 px-8 rounded-sm transition-colors block" <> if isActive then " bg-slate-500 text-white font-bold" else " hover:bg-slate-200"
       ]
       do
         text $ pure title
