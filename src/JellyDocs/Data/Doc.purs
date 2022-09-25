@@ -6,3 +6,9 @@ type Doc =
   , content :: String
   , section :: String
   }
+
+type DocListItem =
+  { id :: String
+  , title :: String
+  , section :: String
+  }

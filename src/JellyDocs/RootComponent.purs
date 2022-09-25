@@ -2,14 +2,17 @@ module JellyDocs.RootComponent where
 
 import Prelude
 
-import Data.Array (fold)
 import Data.Maybe (Maybe(..))
-import Data.Tuple (snd)
-import Foreign.Object (lookup, toUnfoldable)
+import Data.Tuple.Nested ((/\))
+import Effect.Aff (launchAff_)
+import Foreign.Object (lookup)
 import Jelly.Core.Data.Component (Component, doctypeHtml, el, el_, signalC, text)
 import Jelly.Core.Data.Hooks (hooks)
 import Jelly.Core.Data.Prop ((:=))
+import Jelly.Core.Data.Signal (signal, writeAtom)
 import Jelly.Core.Hooks.UseContext (useContext)
+import Jelly.Core.Hooks.UseSignal (useSignal)
+import Jelly.Generator.Data.StaticData (loadStaticData)
 import Jelly.Router.Data.Router (useRouter)
 import JellyDocs.Components.Sidebar (sidebarComponent)
 import JellyDocs.Context (Context)
@@ -23,13 +26,34 @@ rootComponent = hooks do
   { currentUrlSig } <- useRouter
   { docs } <- useContext
 
+  docSig /\ docAtom <- signal Nothing
+
   let
-    docsFlatten = fold $ map snd $ toUnfoldable docs
+    docIdSig = do
+      currentUrl <- currentUrlSig
+      pure case urlToPage currentUrl of
+        PageDoc docId -> Just docId
+        _ -> Nothing
+
+  useSignal docIdSig \docIdMaybe -> do
+    let
+      docMaybeFiber = (\docId -> lookup docId docs) =<< docIdMaybe
+    case docMaybeFiber of
+      Just fiber -> launchAff_ do
+        docMaybe <- loadStaticData fiber
+        case docMaybe of
+          Just doc -> writeAtom docAtom $ Just doc
+          Nothing -> pure unit
+      Nothing -> pure unit
+    mempty
+
+  let
     titleSig = do
       currentUrl <- currentUrlSig
+      docMaybe <- docSig
       case urlToPage currentUrl of
         PageTop -> pure "Jelly"
-        PageDoc docId | Just { title } <- lookup docId docsFlatten -> pure $ title <> " - Jelly"
+        PageDoc _ | Just { title } <- docMaybe -> pure $ title <> " - Jelly"
         _ -> pure "Not Found - Jelly"
 
   pure do
