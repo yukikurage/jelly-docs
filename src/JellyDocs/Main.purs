@@ -30,7 +30,7 @@ main = launchAff_ do
           PageDoc docId -> writeJSON <$> getDoc docId
           PageNotFound -> getNotFoundMD
           PageTop -> getTopMD
-      , getGlobalData: pure $ writeJSON sections
+      , globalData: writeJSON sections
       , component: rootComponent
       }
 
