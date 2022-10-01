@@ -17,15 +17,12 @@ to generate this file without the comments in this block.
   , "console"
   , "effect"
   , "foldable-traversable"
-  , "foreign-object"
   , "jelly"
   , "maybe"
   , "node-buffer"
   , "node-fs-aff"
-  , "parallel"
   , "prelude"
   , "simple-json"
-  , "tuples"
   , "web-html"
   ]
 , packages = ./packages.dhall
