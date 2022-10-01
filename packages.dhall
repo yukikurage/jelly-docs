@@ -142,5 +142,5 @@ in  upstream
     , repo =
         "https://github.com/yukikurage/purescript-jelly.git"
     , version =
-        "feature/stream-signal"
+        "v0.5.0"
     }
