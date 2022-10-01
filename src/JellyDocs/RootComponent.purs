@@ -2,58 +2,36 @@ module JellyDocs.RootComponent where
 
 import Prelude
 
+import Data.Array (concatMap, find)
 import Data.Maybe (Maybe(..))
-import Data.Tuple.Nested ((/\))
-import Effect.Aff (launchAff_)
-import Foreign.Object (lookup)
 import Jelly.Core.Data.Component (Component, doctypeHtml, el, el_, signalC, text)
 import Jelly.Core.Data.Hooks (hooks)
 import Jelly.Core.Data.Prop ((:=))
-import Jelly.Core.Data.Signal (signal, writeAtom)
-import Jelly.Core.Hooks.UseContext (useContext)
-import Jelly.Core.Hooks.UseSignal (useSignal)
-import Jelly.Generator.Data.StaticData (loadStaticData)
+import Jelly.Generator.Data.StaticData (useStaticData)
 import Jelly.Router.Data.Router (useRouter)
 import JellyDocs.Components.Sidebar (sidebarComponent)
 import JellyDocs.Context (Context)
 import JellyDocs.Data.Page (Page(..), urlToPage)
+import JellyDocs.Data.Section (Section)
 import JellyDocs.Pages.Doc (docPage)
 import JellyDocs.Pages.NotFound (notFoundPage)
 import JellyDocs.Pages.Top (topPage)
+import Simple.JSON (readJSON_)
 
 rootComponent :: Component Context
 rootComponent = hooks do
   { currentUrlSig } <- useRouter
-  { docs } <- useContext
-
-  docSig /\ docAtom <- signal Nothing
+  { globalData } <- useStaticData
 
   let
-    docIdSig = do
-      currentUrl <- currentUrlSig
-      pure case urlToPage currentUrl of
-        PageDoc docId -> Just docId
-        _ -> Nothing
-
-  useSignal docIdSig \docIdMaybe -> do
-    let
-      docMaybeFiber = (\docId -> lookup docId docs) =<< docIdMaybe
-    case docMaybeFiber of
-      Just fiber -> launchAff_ do
-        docMaybe <- loadStaticData fiber
-        case docMaybe of
-          Just doc -> writeAtom docAtom $ Just doc
-          Nothing -> pure unit
-      Nothing -> pure unit
-    mempty
-
-  let
+    sectionsMaybe = readJSON_ globalData :: Maybe (Array Section)
+    docItms = concatMap (_.docs) <$> sectionsMaybe
     titleSig = do
       currentUrl <- currentUrlSig
-      docMaybe <- docSig
       case urlToPage currentUrl of
         PageTop -> pure "Jelly"
-        PageDoc _ | Just { title } <- docMaybe -> pure $ title <> " - Jelly"
+        PageDoc docId
+          | Just { title } <- find (\{ id } -> docId == id) =<< docItms -> pure $ title <> " - Jelly"
         _ -> pure "Not Found - Jelly"
 
   pure do

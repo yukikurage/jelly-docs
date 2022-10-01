@@ -2,53 +2,36 @@ module JellyDocs.Main where
 
 import Prelude
 
-import Control.Parallel (parTraverse, parTraverse_)
-import Data.Tuple.Nested ((/\))
+import Data.Array (concatMap)
 import Effect (Effect)
 import Effect.Aff (launchAff_)
-import Foreign.Object (fromFoldable)
-import Jelly.Generator.HTML (generateHTML)
-import Jelly.Generator.Script (generateScript)
-import Jelly.Generator.StaticData (generateStaticData)
-import Jelly.Router.Data.Router (mockRouter, provideRouterContext)
-import JellyDocs.Api.Doc (docsWithoutContent, getDoc, getDocs, getSections)
+import Jelly.Generator.Generate (generate)
+import JellyDocs.Api.Doc (getDoc, getSections)
 import JellyDocs.Api.NotFound (getNotFoundMD)
 import JellyDocs.Api.Top (getTopMD)
-import JellyDocs.Data.Page (Page(..), pageToUrl)
+import JellyDocs.Data.Page (Page(..), pageToUrl, urlToPage)
 import JellyDocs.RootComponent (rootComponent)
-
-outDir :: Array String
-outDir = [ "public" ]
+import Simple.JSON (writeJSON)
 
 main :: Effect Unit
 main = launchAff_ do
+  sections <- getSections
   let
-    genPages = [ PageTop, PageNotFound ] <> map (\{ id } -> PageDoc id) docsWithoutContent
-  -- Generate Static Data
-  docItms <- generateStaticData (outDir <> [ "data", "docs.json" ]) getDocs
-  sections <- generateStaticData (outDir <> [ "data", "sections.json" ]) getSections
-  notFoundMD <- generateStaticData (outDir <> [ "data", "not-found.json" ]) getNotFoundMD
-  topMD <- generateStaticData (outDir <> [ "data", "top.json" ]) getTopMD
-
-  docs <- parTraverse (\{ id } -> generateStaticData (outDir <> [ "data", "docs", id <> ".json" ]) (getDoc id)) docItms
-
-  -- Generate Script
-  generateScript (outDir <> [ "index.js" ]) "JellyDocs.ClientMain"
+    docs = concatMap (_.docs) sections
+    docPaths = map (\{ id } -> (pageToUrl $ PageDoc id).path) docs
+    paths = docPaths <> map ((_.path) <<< pageToUrl) [ PageTop, PageNotFound ]
 
   let
-    docFibs = fromFoldable $ map (\doc -> doc.id /\ pure (pure doc)) docs
-    sectionFibs = fromFoldable $ map (\sectionItm -> sectionItm.id /\ pure (pure sectionItm)) sections
-    notFoundFib = pure $ pure notFoundMD
-    topFib = pure $ pure topMD
+    config =
+      { output: [ "public" ]
+      , clientMain: "JellyDocs.ClientMain"
+      , paths
+      , getStaticData: \path -> case urlToPage { path, hash: mempty, query: mempty } of
+          PageDoc docId -> writeJSON <$> getDoc docId
+          PageNotFound -> getNotFoundMD
+          PageTop -> getTopMD
+      , getGlobalData: pure $ writeJSON sections
+      , component: rootComponent
+      }
 
-  -- Generate HTML
-  let
-    genHtml page = do
-      router <- mockRouter (pageToUrl page) (\url -> pure url)
-      let
-        context = provideRouterContext router { docs: docFibs, sections: sectionFibs, notFoundMD: notFoundFib, topMD: topFib }
-      generateHTML (outDir <> (pageToUrl page).path <> [ "index.html" ]) context rootComponent
-
-  parTraverse_ genHtml genPages
-
-  pure unit
+  generate {} config

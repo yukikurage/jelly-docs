@@ -24,6 +24,7 @@ to generate this file without the comments in this block.
   , "node-fs-aff"
   , "parallel"
   , "prelude"
+  , "simple-json"
   , "tuples"
   , "web-html"
   ]
