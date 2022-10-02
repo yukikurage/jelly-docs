@@ -140,5 +140,5 @@ in  upstream
       , "web-uievents"
       ]
     , repo = "https://github.com/yukikurage/purescript-jelly.git"
-    , version = "v0.5.0"
+    , version = "development"
     }

@@ -22,7 +22,7 @@ getDoc docId = do
 
     getDocContent :: DocListItem -> Aff Doc
     getDocContent { id, title, section } = do
-      content <- readTextFile UTF8 $ (makeRelativeFilePath [ "docs", section, id <> ".md" ])
+      content <- readTextFile UTF8 $ (makeRelativeFilePath [ "docs", "en", section, id <> ".md" ])
       pure { id, title, section, content }
   case doc of
     Just d -> getDocContent d

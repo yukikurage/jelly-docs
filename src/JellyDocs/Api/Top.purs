@@ -10,4 +10,4 @@ import Node.FS.Aff (readTextFile)
 getTopMD :: Aff String
 getTopMD = do
   log "docs/overview.md"
-  readTextFile UTF8 $ "docs/overview.md"
+  readTextFile UTF8 $ "docs/en/overview.md"

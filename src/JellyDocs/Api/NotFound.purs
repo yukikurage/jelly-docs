@@ -10,4 +10,4 @@ import Node.FS.Aff (readTextFile)
 getNotFoundMD :: Aff String
 getNotFoundMD = do
   log "docs/not-found.md"
-  readTextFile UTF8 $ "docs/not-found.md"
+  readTextFile UTF8 $ "docs/en/not-found.md"

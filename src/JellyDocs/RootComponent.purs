@@ -4,7 +4,7 @@ import Prelude
 
 import Data.Array (concatMap, find)
 import Data.Maybe (Maybe(..))
-import Jelly.Core.Data.Component (Component, doctypeHtml, el, el_, signalC, text)
+import Jelly.Core.Data.Component (Component, doctypeHtml, el, el_, signalC, text, voidEl)
 import Jelly.Core.Data.Hooks (hooks)
 import Jelly.Core.Data.Prop ((:=))
 import Jelly.Generator.Data.StaticData (useStaticData)
@@ -40,36 +40,32 @@ rootComponent = hooks do
       el_ "head" do
         el_ "title" do
           text titleSig
-        el "link" [ "rel" := "stylesheet", "href" := "/index.css" ] mempty
+        voidEl "link" [ "rel" := "stylesheet", "href" := "/index.css" ]
 
-        el "meta" [ "name" := "viewport", "content" := "width=device-width,initial-scale=1.0" ] mempty
-        el "link"
+        voidEl "meta" [ "name" := "viewport", "content" := "width=device-width,initial-scale=1.0" ]
+        voidEl "link"
           [ "rel" := "preconnect"
           , "href" := "https://fonts.gstatic.com"
           , "crossorigin" := true
           ]
-          mempty
-        el "link"
+        voidEl "link"
           [ "rel" := "preload"
           , "as" := "style"
           , "href" := "https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&family=Montserrat:wght@700&family=Source+Code+Pro&display=swap"
           ]
-          mempty
-        el "link"
+        voidEl "link"
           [ "rel" := "stylesheet"
           , "href" := "https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&family=Montserrat:wght@700&family=Source+Code+Pro&display=swap"
           , "media" := "print"
           , "onload" := "this.media='all'"
           ]
-          mempty
 
-        el "link"
+        voidEl "link"
           [ "rel" := "stylesheet"
           , "href" := "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/atom-one-light.min.css"
           ]
-          mempty
 
-        el "meta" [ "name" := "description", "content" := "Documentation for PureScript Jelly, a framework for building reactive web applications." ] mempty
+        voidEl "meta" [ "name" := "description", "content" := "Documentation for PureScript Jelly, a framework for building reactive web applications." ]
         el "script"
           [ "src" := "/index.js", "defer" := true ]
           mempty
@@ -79,7 +75,7 @@ rootComponent = hooks do
           el "div" [ "class" := "flex-shrink-0" ] do
             sidebarComponent
           el "div" [ "class" := "flex-1 overflow-auto" ] do
-            el "div" [ "class" := "min-w-fit" ] $ signalC do
+            el "main" [ "class" := "min-w-fit" ] $ signalC do
               currentUrl <- currentUrlSig
               pure case urlToPage currentUrl of
                 PageTop -> topPage

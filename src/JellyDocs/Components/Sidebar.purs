@@ -54,7 +54,7 @@ sidebarComponent = hooks do
   let
     sectionsMaybe = readJSON_ globalData :: Maybe (Array Section)
 
-  pure $ el "div" [ "class" := "p-10 w-80 h-full bg-slate-50" ] do
+  pure $ el "nav" [ "class" := "p-10 w-80 h-full bg-slate-50" ] do
     genLink_ (pageToUrl $ PageTop) do
       el "div" [ "class" := "w-full h-16" ] do
         el "h1" [ "class" := "text-2xl font-bold flex justify-center items-center h-full font-Montserrat" ] do

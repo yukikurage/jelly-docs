@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "bundle": "npx spago run --main JellyDocs.Main && tailwindcss -i ./src/index.css -o ./public/index.css"
+    "serve": "http-server public -c-1",
+    "bundle": "spago run --main JellyDocs.Main && tailwindcss -i ./src/index.css -o ./public/index.css",
+    "examples:hello-world": "spago bundle-app -m Example.HelloWorld.Main -t ./examples/hello-world/public/index.js"
   },
   "keywords": [],
   "author": "",
@@ -13,6 +15,7 @@
   "dependencies": {
     "esbuild": "^0.15.8",
     "highlight.js": "^11.6.0",
+    "http-server": "^14.1.1",
     "marked": "^4.1.0",
     "purescript": "^0.15.4",
     "purs-tidy": "^0.9.2",

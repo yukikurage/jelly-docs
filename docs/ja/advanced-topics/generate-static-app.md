@@ -1,3 +1,3 @@
-# Hello World
+# Generate Static App
 
 This page is under construction.
