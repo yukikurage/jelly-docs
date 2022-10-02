@@ -66,7 +66,7 @@ Now, when you open `public/index.html` in your browser, you will see a big Hello
 type Context = ()
 ```
 
-This is a Row representation of the context of the component. See [context](. /context) for more information. You don't need to worry about it at this stage.
+This is a Row representation of the context of the component. See [context](../context) for more information. You don't need to worry about it at this stage.
 
 ```haskell
 main :: Effect Unit
