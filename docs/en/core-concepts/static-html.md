@@ -10,7 +10,7 @@ and `text` is a function that creates text nodes.
 
 ```haskell
 component = el "h1" [ "class" := "title" ] do
-  text $ pure "Hello, Jelly!"
+  text "Hello, Jelly!"
 ```
 
 ↓
@@ -24,11 +24,11 @@ Component is a monad and multiple child elements can be created using `do` notat
 ```haskell
 component = el "div" do
   el' "h1" do
-    text $ pure "Hello, Jelly!"
+    text "Hello, Jelly!"
   el' "p" do
-    text $ pure "This is a Jelly example."
+    text "This is a Jelly example."
     el' "div" do
-      text $ pure "This is a nested element."
+      text "This is a nested element."
 ```
 
 ## Props
@@ -38,6 +38,6 @@ Props represent attributes and event handlers.
 In Jelly, you can define attributes using the `:=` operator and handlers using the `on` function.
 
 ```haskell
-component = el "button" [ "class" := "btn", on "click" \_ -> log "Clicked!" ] do
-  text $ pure "Click Me!"
+component = el "button" [ "class" := "btn" ] do
+  text "Click Me!"
 ```
