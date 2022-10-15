@@ -19,7 +19,7 @@ Next, write the main script
 
 `src/Main.purs`.
 
-```haskell
+```purescript
 module Main where
 
 import Prelude
@@ -56,14 +56,14 @@ Now, when you open `public/index.html` in your browser, you will see a big Hello
 
 ## Explanation of Hello World
 
-```haskell
+```purescript
 type Context :: Row Type
 type Context = ()
 ```
 
 This is a Row representation of the context of the component. See [context](../context) for more information. You don't need to worry about it at this stage.
 
-```haskell
+```purescript
 main :: Effect Unit
 main = launchAff_ do
   appMaybe <- awaitBody
@@ -72,7 +72,7 @@ main = launchAff_ do
 
 Get an body element and mount the `bodyComponent`.
 
-```haskell
+```purescript
 bodyComponent :: Component Context
 bodyComponent = do
   el' "h1" do

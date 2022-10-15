@@ -21,7 +21,7 @@
 
 `src/Main.purs`
 
-```haskell
+```purescript
 module Main where
 
 import Prelude
@@ -62,13 +62,13 @@ spago bundle-app -t ./public/index.js
 
 ## Hello World の解説
 
-```haskell
+```purescript
 type Context = ()
 ```
 
 これは、コンポーネントのコンテキストを Row で表したものです。詳しい事は [context](../context) を参照してください。現段階では気にする必要はありません。
 
-```haskell
+```purescript
 main :: Effect Unit
 main = launchAff_ do
   appMaybe <- awaitQuerySelector (QuerySelector "#app")
@@ -81,7 +81,7 @@ main = launchAff_ do
 
 そのような要素が確実に存在するのか分からないため、`appMaybe` は `Maybe Element` 型になっていて、また `mount_` 関数は `Node` 型をとるため `Element.toNode` で変換しています。
 
-```haskell
+```purescript
 bodyComponent :: Component Context
 bodyComponent = do
   el' "h1" do
