@@ -44,7 +44,7 @@ docPage docIdSig = hooks do
         _ -> pure unit
       mempty
 
-  pure $ el "div" [ "class" := "py-10 px-20", emojiProp ] $ signalC $ docSig <#> case _ of
+  pure $ el "div" [ "class" := "py-10 px-20" ] $ signalC $ docSig <#> case _ of
     Just (Right doc) -> do
       el "div" [ "class" := "w-full flex justify-end" ] do
         el "a"
@@ -54,6 +54,7 @@ docPage docIdSig = hooks do
               ".md"
           , "target" := "_blank"
           , "rel" := "noopener noreferrer"
+          , emojiProp
           ]
           do
             text "Edit this page ✏️"

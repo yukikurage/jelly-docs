@@ -6,4 +6,4 @@ It is assumed that NPM, purescript and spago are installed.
 spago install jelly
 ```
 
-0.6.0 is the latest version.
+0.6.x is the latest version.
