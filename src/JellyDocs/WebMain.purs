@@ -24,7 +24,8 @@ main = launchAff_ do
     beforeEach url = do
       case urlToPage url of
         PageDoc docId -> void $ apis.doc.refetch docId
-        _ -> pure unit
+        PageTop -> void $ apis.top.refetch
+        PageNotFound -> void $ apis.notFound.refetch
       pure url
 
   -- Make Router

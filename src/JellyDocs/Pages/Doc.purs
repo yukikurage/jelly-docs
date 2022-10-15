@@ -16,6 +16,7 @@ import JellyDocs.Components.Markdown (markdownComponent)
 import JellyDocs.Context (Context)
 import JellyDocs.Contexts.Apis (useApis)
 import JellyDocs.Data.Page (Page(..), pageToUrl)
+import JellyDocs.Twemoji (emoText')
 
 docPage :: Signal String -> Component Context
 docPage docIdSig = hooks do
@@ -55,6 +56,6 @@ docPage docIdSig = hooks do
           , "rel" := "noopener noreferrer"
           ]
           do
-            text "Edit this page 📝"
+            emoText' "Edit this page 📝"
       markdownComponent $ pure doc.content
     _ -> mempty

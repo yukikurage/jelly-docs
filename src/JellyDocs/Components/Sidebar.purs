@@ -14,11 +14,12 @@ import JellyDocs.Context (Context)
 import JellyDocs.Data.Doc (DocListItem)
 import JellyDocs.Data.Page (Page(..), pageToUrl)
 import JellyDocs.Data.Section (Section)
+import JellyDocs.Twemoji (emoText, emoText', emoTextSig')
 
 renderSidebarSection :: Signal Section -> Component Context
 renderSidebarSection sectionSig = do
-  el "li" [ "class" := "my-1 pb-3 pt-5 px-4 font-bold text-sm" ] do
-    textSig $ (_.title) <$> sectionSig
+  el "li" [ "class" := "my-1 pb-3 pt-6 px-3 font-bold text-sm" ] do
+    emoTextSig' $ (_.title) <$> sectionSig
   el' "li" do
     el "ul" [ "class" := "" ] $ signalC do
       { docs } <- sectionSig
@@ -43,10 +44,10 @@ renderSidebarSectionItem docSig = hooks do
             "relative py-2 px-8 rounded transition-colors block before:bg-teal-500 before:absolute before:left-0 before:top-1/2 before:-translate-y-1/2 before:transition-all before:rounded bg-slate-300 bg-opacity-0 hover:bg-opacity-30 hover:active:bg-opacity-10"
               <>
                 if isActive then " before:h-3/4 before:w-1 text-teal-500 font-bold"
-                else " before:h-0 before:w-0 text-slate-700"
+                else " before:h-1/4 before:w-0 text-slate-700"
       ]
       do
-        text title
+        emoText' title
 
 sidebarComponent :: Signal (Array Section) -> Component Context
 sidebarComponent sectionsSig = hooks do
@@ -63,12 +64,12 @@ sidebarComponent sectionsSig = hooks do
         el "h1"
           [ "class" :=@ do
               isActive <- isActiveSig
-              pure $ "text-2xl font-bold flex justify-start items-center h-full font-Montserrat transition-colors" <>
+              pure $ "text-2xl font-black flex justify-start items-center h-full font-Montserrat transition-colors" <>
                 guard isActive
                   " text-teal-500"
           ]
           do
-            text "🍮 Jelly"
+            emoText [] "🍮 Jelly"
     signalC do
       sections <- sectionsSig
       pure $ el "ul" [ "class" := "w-full px-10" ] $

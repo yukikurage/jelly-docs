@@ -55,12 +55,12 @@ rootComponent = hooks do
           [ "rel" := "preload"
           , "as" := "style"
           , "href" :=
-              "https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&family=Montserrat:wght@700&family=Source+Code+Pro&display=swap"
+              "https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&family=Montserrat:wght@700&family=Source+Code+Pro&family=Noto+Color+Emoji&display=swap"
           ]
         voidEl "link"
           [ "rel" := "stylesheet"
           , "href" :=
-              "https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&family=Montserrat:wght@700&family=Source+Code+Pro&display=swap"
+              "https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&family=Montserrat:wght@700&family=Source+Code+Pro&family=Noto+Color+Emoji&display=swap"
           , "media" := "print"
           , "onload" := "this.media='all'"
           ]

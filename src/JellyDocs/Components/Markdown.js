@@ -26,4 +26,4 @@ marked.setOptions({
   },
 });
 
-export const parseMarkdown = (markdown) => () => marked.parse(markdown);
+export const parseMarkdown = (markdown) => marked.parse(markdown);

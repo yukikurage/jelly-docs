@@ -80,3 +80,11 @@
   @apply ml-8;
   @apply my-2;
 }
+
+img.emoji {
+  @apply inline-block;
+  height: 1.1em;
+  width: 1.2em;
+  margin: 0 0.3em;
+  vertical-align: -0.25em;
+}
