@@ -1,10 +1,10 @@
-# 🍮 Jelly
+# Jelly - Overview
 
 Jelly is a simple framework for building web applications in PureScript.
 
 ## Features
 
-- **Reactive**
+- **💥 Reactive**
   State management can be done using a reactive value called a `Signal`. It is not FRP (Functional Reactive Programming) because it is basically a discrete value.
 - **No Virtual DOM**
   Jelly does not use a virtual DOM. It updates the DOM directly.
