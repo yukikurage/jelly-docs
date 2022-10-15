@@ -49,7 +49,7 @@ docPage docIdSig = hooks do
         el "a"
           [ "class" :=
               "block bg-slate-300 bg-opacity-0 text-teal-500 hover:text-teal-700 transition-colors rounded font-bold text-sm"
-          , "href" := "github.com/yukikurage/jelly-docs/blob/master/docs/en/" <> doc.section <> "/" <> doc.id <>
+          , "href" := "https://github.com/yukikurage/jelly-docs/blob/master/docs/en/" <> doc.section <> "/" <> doc.id <>
               ".md"
           , "target" := "_blank"
           , "rel" := "noopener noreferrer"
