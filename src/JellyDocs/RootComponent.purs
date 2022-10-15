@@ -85,7 +85,7 @@ rootComponent = hooks do
             pure case sectionsSig of
               Just (Right sections) -> sidebarComponent $ pure sections
               _ -> sidebarComponent $ pure []
-          el "div" [ "class" := "h-full w-[1px] bg-slate-300 bg-opacity-30" ] mempty
+          el "div" [ "class" := "h-full w-[1px] bg-slate-300 bg-opacity-40" ] mempty
           el "div" [ "class" := "flex-1 overflow-auto" ] do
             el "main" [ "class" := "min-w-fit" ] $ signalC do
               currentUrl <- currentUrlSig

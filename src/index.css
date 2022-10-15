@@ -46,6 +46,8 @@
 .markdown pre {
   @apply overflow-x-auto;
   @apply border;
+  @apply border-slate-300;
+  @apply border-opacity-40;
   @apply py-3;
   @apply px-5;
   @apply rounded;
