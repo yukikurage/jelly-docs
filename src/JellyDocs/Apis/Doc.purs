@@ -1,35 +1,36 @@
-module JellyDocs.Api.Doc where
+module JellyDocs.Apis.Doc where
 
 import Prelude
 
+import Affjax (AffjaxDriver, Error(..), get)
+import Affjax.ResponseFormat (string)
 import Data.Array (concatMap, find)
+import Data.Either (Either(..))
 import Data.Maybe (Maybe(..))
 import Effect.Aff (Aff)
 import Jelly.Router.Data.Path (makeRelativeFilePath)
+import JellyDocs.Apis.BasePath (apiBasePath)
 import JellyDocs.Data.Doc (Doc, DocListItem)
 import JellyDocs.Data.Section (Section)
-import Node.Encoding (Encoding(..))
-import Node.FS.Aff (readTextFile)
 
-getDocs :: Aff (Array DocListItem)
-getDocs = pure $ concatMap (_.docs) sections
+getDocs :: AffjaxDriver -> Aff (Either Error (Array DocListItem))
+getDocs _ = pure $ pure $ concatMap (_.docs) sections
 
-getDoc :: String -> Aff Doc
-getDoc docId = do
-  docsData <- getDocs
+getDoc :: AffjaxDriver -> String -> Aff (Either Error Doc)
+getDoc driver docId = do
   let
-    doc = find (\d -> d.id == docId) docsData
+    docListItem = find (\d -> d.id == docId) docsWithoutContent
 
-    getDocContent :: DocListItem -> Aff Doc
+    getDocContent :: DocListItem -> Aff (Either Error Doc)
     getDocContent { id, title, section } = do
-      content <- readTextFile UTF8 $ (makeRelativeFilePath [ "docs", "en", section, id <> ".md" ])
-      pure { id, title, section, content }
-  case doc of
+      resEither <- get driver string $ apiBasePath <> makeRelativeFilePath [ "docs", "en", section, id <> ".md" ]
+      pure $ resEither <#> \res -> { id, title, section, content: res.body }
+  case docListItem of
     Just d -> getDocContent d
-    Nothing -> pure { id: "", title: "", section: "", content: "" }
+    Nothing -> pure $ Left RequestFailedError
 
-getSections :: Aff (Array Section)
-getSections = pure $ sections
+getSections :: AffjaxDriver -> Aff (Either Error (Array Section))
+getSections _ = pure $ pure $ sections
 
 docsWithoutContent :: Array DocListItem
 docsWithoutContent =
@@ -66,7 +67,7 @@ docsWithoutContent =
 sections :: Array Section
 sections =
   [ { id: "getting-started"
-    , title: "Getting Started"
+    , title: "🚀 Getting Started"
     , docs:
         [ { id: "installation"
           , title: "Installation"
@@ -79,7 +80,7 @@ sections =
         ]
     }
   , { id: "core-concepts"
-    , title: "Core Concepts"
+    , title: "🏗️ Core Concepts"
     , docs:
         [ { id: "static-html"
           , title: "Static HTML"
@@ -92,7 +93,7 @@ sections =
         ]
     }
   , { id: "advanced-topics"
-    , title: "Advanced Topics"
+    , title: "🔧 Advanced Topics"
     , docs:
         [ { id: "spa-routing"
           , title: "SPA Routing"

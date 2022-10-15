@@ -1,6 +1,6 @@
 module JellyDocs.Context where
 
-import Jelly.Generator.Data.StaticData (StaticDataContext)
 import Jelly.Router.Data.Router (RouterContext)
+import JellyDocs.Contexts.Apis (ApisContext)
 
-type Context = RouterContext (StaticDataContext ())
+type Context = RouterContext (ApisContext ())

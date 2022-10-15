@@ -1,10 +1,10 @@
 # Static HTML
 
-## `el`, `el_`, and `text`
+## `el`, `el'`, and `text`
 
-`el` and `el_` are functions that create HTML elements.
+`el` and `el'` are functions that create HTML elements.
 
-`el` can take props, whereas `el_` cannot.
+`el` can take props, whereas `el'` cannot.
 
 and `text` is a function that creates text nodes.
 
@@ -23,11 +23,11 @@ Component is a monad and multiple child elements can be created using `do` notat
 
 ```haskell
 component = el "div" do
-  el_ "h1" do
+  el' "h1" do
     text $ pure "Hello, Jelly!"
-  el_ "p" do
+  el' "p" do
     text $ pure "This is a Jelly example."
-    el_ "div" do
+    el' "div" do
       text $ pure "This is a nested element."
 ```
 

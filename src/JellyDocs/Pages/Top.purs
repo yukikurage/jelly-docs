@@ -2,30 +2,25 @@ module JellyDocs.Pages.Top where
 
 import Prelude
 
+import Data.Either (Either(..))
 import Data.Maybe (Maybe(..))
-import Jelly.Core.Data.Component (Component, el, signalC)
-import Jelly.Core.Data.Hooks (hooks)
-import Jelly.Core.Data.Prop ((:=))
-import Jelly.Core.Hooks.UseAffSignal (useAffSignal)
-import Jelly.Generator.Data.StaticData (useStaticData)
+import Effect.Aff (launchAff_)
+import Effect.Class (liftEffect)
+import Jelly.Data.Component (Component, el, signalC)
+import Jelly.Data.Hooks (hooks)
+import Jelly.Data.Prop ((:=))
 import JellyDocs.Components.Markdown (markdownComponent)
 import JellyDocs.Context (Context)
-import JellyDocs.Data.Page (Page(..), pageToUrl)
+import JellyDocs.Contexts.Apis (useApis)
 
 topPage :: Component Context
 topPage = hooks do
-  { loadData } <- useStaticData
+  apis <- useApis
 
-  let
-    url = pageToUrl PageTop
+  liftEffect $ launchAff_ $ void $ apis.top.initialize
 
-  mdMaybeMaybeSig <- useAffSignal do
-    pure do
-      maybeDocRaw <- loadData url.path
-      pure maybeDocRaw
-
-  pure $ el "div" [ "class" := "p-10" ] $ signalC do
-    mdMaybeMaybe <- mdMaybeMaybeSig
-    pure case mdMaybeMaybe of
-      Just (Just md) -> markdownComponent $ pure md
+  pure $ el "div" [ "class" := "py-12 px-20" ] $ signalC do
+    top <- apis.top.stateSig
+    pure case top of
+      Just (Right md) -> markdownComponent $ pure md
       _ -> mempty

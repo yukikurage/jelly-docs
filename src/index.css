@@ -4,60 +4,61 @@
 
 .markdown h1 {
   @apply text-3xl;
-  @apply font-bold;
-  @apply my-5;
+  @apply text-slate-800;
+  @apply font-black;
+  @apply my-6;
 }
 
 .markdown h2 {
   @apply text-2xl;
-  @apply font-medium;
-  @apply my-4;
-  @apply ml-1;
+  @apply text-slate-800;
+  @apply font-bold;
+  @apply my-5;
 }
 
 .markdown h3 {
   @apply text-xl;
-  @apply font-medium;
-  @apply my-3;
-  @apply ml-2;
+  @apply text-slate-800;
+  @apply font-bold;
+  @apply my-4;
 }
 
 .markdown h4 {
-  @apply text-xl;
-  @apply font-medium;
-  @apply my-3;
-  @apply ml-3;
+  @apply text-lg;
+  @apply text-slate-800;
+  @apply font-bold;
+  @apply my-4;
 }
 
 .markdown h5 {
-  @apply text-lg;
-  @apply font-medium;
-  @apply my-3;
-  @apply ml-4;
+  @apply text-base;
+  @apply text-slate-800;
+  @apply font-bold;
+  @apply my-4;
 }
 
 .markdown p {
   @apply text-base;
-  @apply my-2;
-  @apply ml-5;
+  @apply text-slate-700;
+  @apply my-3;
 }
 
 .markdown pre {
   @apply overflow-x-auto;
-  @apply bg-slate-50;
-  @apply text-black;
+  @apply border;
   @apply py-3;
   @apply px-5;
-  @apply rounded-sm;
-  @apply ml-6;
+  @apply rounded;
   @apply my-3;
 }
 
 .markdown :not(pre) code {
   @apply font-SourceCodePro !important;
-  @apply bg-slate-50;
+  @apply bg-slate-100;
   @apply px-2;
-  @apply rounded-sm;
+  @apply py-0.5;
+  @apply mx-1;
+  @apply rounded;
 }
 
 .markdown a {

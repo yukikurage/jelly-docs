@@ -11,3 +11,4 @@
 /.vscode
 /public/*
 !/public/robots.txt
+/output-es

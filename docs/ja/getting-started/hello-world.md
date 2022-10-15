@@ -30,9 +30,9 @@ import Data.Maybe (Maybe(..))
 import Effect (Effect)
 import Effect.Aff (launchAff_)
 import Effect.Class (liftEffect)
-import Jelly.Core.Aff (awaitQuerySelector)
-import Jelly.Core.Data.Component (Component, el_, text)
-import Jelly.Core.Mount (mount_)
+import Jelly.Aff (awaitQuerySelector)
+import Jelly.Data.Component (Component, el', text)
+import Jelly.Mount (mount_)
 import Web.DOM.Element as Element
 import Web.DOM.ParentNode (QuerySelector(..))
 
@@ -47,7 +47,7 @@ main = launchAff_ do
 
 bodyComponent :: Component Context
 bodyComponent = do
-  el_ "h1" do
+  el' "h1" do
     text $ pure "Hello World!"
 
 ```
@@ -84,11 +84,11 @@ main = launchAff_ do
 ```haskell
 bodyComponent :: Component Context
 bodyComponent = do
-  el_ "h1" do
+  el' "h1" do
     text $ pure "Hello World!"
 ```
 
-`Component` 型は、HTML の一部を表します。`el_`　関数によって `h1` 要素を作成し、その中に `text` 関数で文字列を追加しています。
+`Component` 型は、HTML の一部を表します。`el'`　関数によって `h1` 要素を作成し、その中に `text` 関数で文字列を追加しています。
 
 この `bodyComponent` を index.html にマウントすることで、最終的には次のような HTML が構成されます。
 

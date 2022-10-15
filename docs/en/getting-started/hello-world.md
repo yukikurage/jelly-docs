@@ -30,9 +30,9 @@ import Data.Maybe (Maybe(..))
 import Effect (Effect)
 import Effect.Aff (launchAff_)
 import Effect.Class (liftEffect)
-import Jelly.Core.Aff (awaitQuerySelector)
-import Jelly.Core.Data.Component (Component, el_, text)
-import Jelly.Core.Mount (mount_)
+import Jelly.Aff (awaitQuerySelector)
+import Jelly.Data.Component (Component, el', text)
+import Jelly.Mount (mount_)
 import Web.DOM.Element as Element
 import Web.DOM.ParentNode (QuerySelector(..))
 
@@ -47,7 +47,7 @@ main = launchAff_ do
 
 bodyComponent :: Component Context
 bodyComponent = do
-  el_ "h1" do
+  el' "h1" do
     text $ pure "Hello World!"
 
 ```
@@ -84,11 +84,11 @@ Since we don't know for sure if such an element exists, `appMaybe` is of type `M
 ```haskell
 bodyComponent :: Component Context
 bodyComponent = do
-  el_ "h1" do
+  el' "h1" do
     text $ pure "Hello World!"
 ```
 
-The `Component` type represents a piece of HTML. The `el_` function creates an `h1` element, and the `text` function adds a string to it.
+The `Component` type represents a piece of HTML. The `el'` function creates an `h1` element, and the `text` function adds a string to it.
 
 By mounting this `bodyComponent` in index.html, the final HTML is composed as follows.
 

@@ -13,17 +13,24 @@ to generate this file without the comments in this block.
 { name = "my-project"
 , dependencies =
   [ "aff"
+  , "affjax"
+  , "affjax-node"
+  , "affjax-web"
   , "arrays"
   , "console"
   , "effect"
+  , "either"
   , "foldable-traversable"
   , "jelly"
   , "maybe"
   , "node-buffer"
+  , "node-fs"
   , "node-fs-aff"
+  , "parallel"
   , "prelude"
-  , "simple-json"
-  , "web-html"
+  , "record"
+  , "tuples"
+  , "unordered-collections"
   ]
 , packages = ./packages.dhall
 , sources = [ "src/**/*.purs", "test/**/*.purs" ]

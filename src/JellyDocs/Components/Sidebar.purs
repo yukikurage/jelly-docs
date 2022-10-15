@@ -3,29 +3,26 @@ module JellyDocs.Components.Sidebar where
 import Prelude
 
 import Data.Foldable (for_)
-import Data.Maybe (Maybe(..))
-import Jelly.Core.Data.Component (Component, el, el_, signalC, text)
-import Jelly.Core.Data.Hooks (hooks)
-import Jelly.Core.Data.Prop ((:=), (:=@))
-import Jelly.Core.Data.Signal (Signal)
-import Jelly.Generator.Components (genLink, genLink_)
-import Jelly.Generator.Data.StaticData (useStaticData)
+import Data.Monoid (guard)
+import Jelly.Data.Component (Component, el, el', signalC, text, textSig)
+import Jelly.Data.Hooks (hooks)
+import Jelly.Data.Prop ((:=), (:=@))
+import Jelly.Data.Signal (Signal)
+import Jelly.Router.Components (routerLink, routerLink')
 import Jelly.Router.Data.Router (useRouter)
 import JellyDocs.Context (Context)
 import JellyDocs.Data.Doc (DocListItem)
 import JellyDocs.Data.Page (Page(..), pageToUrl)
 import JellyDocs.Data.Section (Section)
-import Simple.JSON (readJSON_)
 
 renderSidebarSection :: Signal Section -> Component Context
-renderSidebarSection sectionSig = hooks do
-  pure do
-    el "li" [ "class" := "my-1 py-2 px-4 font-bold text-sm" ] do
-      text $ (_.title) <$> sectionSig
-    el_ "li" do
-      el "ul" [ "class" := "" ] $ signalC do
-        { docs } <- sectionSig
-        pure $ for_ docs \doc -> renderSidebarSectionItem $ pure doc
+renderSidebarSection sectionSig = do
+  el "li" [ "class" := "my-1 pb-3 pt-5 px-4 font-bold text-sm" ] do
+    textSig $ (_.title) <$> sectionSig
+  el' "li" do
+    el "ul" [ "class" := "" ] $ signalC do
+      { docs } <- sectionSig
+      pure $ for_ docs \doc -> renderSidebarSectionItem $ pure doc
 
 renderSidebarSectionItem :: Signal DocListItem -> Component Context
 renderSidebarSectionItem docSig = hooks do
@@ -39,28 +36,40 @@ renderSidebarSectionItem docSig = hooks do
 
   pure $ el "li" [ "class" := "my-1" ] $ signalC do
     { id, title } <- docSig
-    pure $ genLink (pageToUrl (PageDoc id))
+    pure $ routerLink (pageToUrl (PageDoc id))
       [ "class" :=@ do
           isActive <- isActiveSig
-          pure $ "py-2 px-8 rounded-sm transition-colors block" <> if isActive then " bg-slate-500 text-white font-bold" else " hover:bg-slate-200"
+          pure $
+            "relative py-2 px-8 rounded transition-colors block before:bg-teal-500 before:absolute before:left-0 before:top-1/2 before:-translate-y-1/2 before:transition-all before:rounded bg-slate-300 bg-opacity-0 hover:bg-opacity-30 hover:active:bg-opacity-10"
+              <>
+                if isActive then " before:h-3/4 before:w-1 text-teal-500 font-bold"
+                else " before:h-0 before:w-0 "
       ]
       do
-        text $ pure title
+        text title
 
-sidebarComponent :: Component Context
-sidebarComponent = hooks do
-  { globalData } <- useStaticData
+sidebarComponent :: Signal (Array Section) -> Component Context
+sidebarComponent sectionsSig = hooks do
+  { temporaryUrlSig } <- useRouter
 
   let
-    sectionsMaybe = readJSON_ globalData :: Maybe (Array Section)
+    isActiveSig = do
+      temporaryUrl <- temporaryUrlSig
+      pure $ temporaryUrl == (pageToUrl PageTop)
 
-  pure $ el "nav" [ "class" := "p-10 w-80 h-full bg-slate-50" ] do
-    genLink_ (pageToUrl $ PageTop) do
-      el "div" [ "class" := "w-full h-16" ] do
-        el "h1" [ "class" := "text-2xl font-bold flex justify-center items-center h-full font-Montserrat" ] do
-          text $ pure "Jelly"
-    el "div" [ "class" := "h-[1px] bg-slate-500 w-full my-3" ] mempty
-    el "ul" [ "class" := "w-full py-2" ] $ case sectionsMaybe of
-      Just sections -> do
+  pure $ el "nav" [ "class" := "w-80 h-full" ] do
+    routerLink' (pageToUrl $ PageTop) do
+      el "div" [ "class" := "w-full h-16 pb-10 pt-16 px-10" ] do
+        el "h1"
+          [ "class" :=@ do
+              isActive <- isActiveSig
+              pure $ "text-2xl font-bold flex justify-start items-center h-full font-Montserrat transition-colors" <>
+                guard isActive
+                  " text-teal-500"
+          ]
+          do
+            text "🍮 Jelly"
+    signalC do
+      sections <- sectionsSig
+      pure $ el "ul" [ "class" := "w-full px-10" ] $
         for_ sections \section -> renderSidebarSection $ pure section
-      Nothing -> mempty

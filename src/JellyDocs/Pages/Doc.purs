@@ -2,49 +2,49 @@ module JellyDocs.Pages.Doc where
 
 import Prelude
 
+import Data.Either (Either(..))
+import Data.HashMap (lookup)
 import Data.Maybe (Maybe(..))
-import Jelly.Core.Data.Component (Component, el, signalC)
-import Jelly.Core.Data.Hooks (hooks)
-import Jelly.Core.Data.Prop ((:=))
-import Jelly.Core.Data.Signal (Signal)
-import Jelly.Core.Hooks.UseAffSignal (useAffSignal)
-import Jelly.Core.Hooks.UseSignal (useSignal)
-import Jelly.Generator.Data.StaticData (useStaticData)
+import Effect.Aff (launchAff_)
+import Jelly.Data.Component (Component, el, signalC)
+import Jelly.Data.Hooks (hooks)
+import Jelly.Data.Prop ((:=))
+import Jelly.Data.Signal (Signal)
+import Jelly.Hooks.UseSignal (useSignal)
 import Jelly.Router.Data.Router (useRouter)
 import JellyDocs.Components.Markdown (markdownComponent)
 import JellyDocs.Context (Context)
-import JellyDocs.Data.Doc (Doc)
+import JellyDocs.Contexts.Apis (useApis)
 import JellyDocs.Data.Page (Page(..), pageToUrl)
-import Simple.JSON (readJSON_)
 
 docPage :: Signal String -> Component Context
 docPage docIdSig = hooks do
-  { loadData } <- useStaticData
-  { replaceUrl } <- useRouter
+  apis <- useApis
 
   let
-    urlSig = do
+    docSig = do
+      statesSig <- apis.doc.statesSig
       docId <- docIdSig
-      pure $ pageToUrl $ PageDoc docId
+      pure $ lookup docId statesSig
 
-  docMaybeMaybeSig <- useAffSignal do
-    url <- urlSig
-    pure do
-      maybeDocRaw <- loadData url.path
-      pure $ (readJSON_ =<< maybeDocRaw :: Maybe Doc)
+  -- fetch when doc data is not available
+  useSignal $ docIdSig <#> \docId -> do
+    launchAff_ $ void $ apis.doc.initialize docId
+    mempty
 
   -- redirect to 404
+  { replaceUrl } <- useRouter
   useSignal do
-    docMaybeMaybe <- docMaybeMaybeSig
+    doc <- docSig
     pure do
-      case docMaybeMaybe of
-        Just Nothing -> do
+      case doc of
+        Just (Left _) -> do
           replaceUrl $ pageToUrl PageNotFound
         _ -> pure unit
       mempty
 
-  pure $ el "div" [ "class" := "p-10" ] $ signalC do
-    docMaybeMaybe <- docMaybeMaybeSig
-    pure case docMaybeMaybe of
-      Just (Just { content }) -> markdownComponent $ pure content
+  pure $ el "div" [ "class" := "py-12 px-20" ] $ signalC do
+    doc <- docSig
+    pure case doc of
+      Just (Right { content }) -> markdownComponent $ pure content
       _ -> mempty
