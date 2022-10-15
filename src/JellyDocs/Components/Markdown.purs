@@ -2,7 +2,7 @@ module JellyDocs.Components.Markdown where
 
 import Prelude
 
-import Jelly.Data.Component (Component, rawElSig)
+import Jelly.Data.Component (Component, rawEl, signalC)
 import Jelly.Data.Hooks (hooks)
 import Jelly.Data.Prop ((:=))
 import Jelly.Data.Signal (Signal)
@@ -16,4 +16,6 @@ markdownComponent markdownSig = hooks do
   let
     renderedSig = parseMarkdown <$> markdownSig
 
-  pure $ rawElSig "div" [ "class" := "w-full h-full markdown", emojiProp ] renderedSig
+  pure $ signalC do
+    rendered <- renderedSig
+    pure $ rawEl "div" [ "class" := "w-full h-full markdown", emojiProp ] rendered
