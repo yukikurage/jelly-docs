@@ -22,7 +22,7 @@
   @apply text-slate-800;
   @apply font-bold;
   @apply mt-6;
-  @apply my-4;
+  @apply my-3;
 }
 
 .markdown h4 {
@@ -30,7 +30,7 @@
   @apply text-slate-800;
   @apply font-bold;
   @apply mt-6;
-  @apply my-4;
+  @apply my-3;
 }
 
 .markdown h5 {
@@ -38,14 +38,13 @@
   @apply text-slate-800;
   @apply font-bold;
   @apply mt-6;
-  @apply my-4;
+  @apply my-3;
 }
 
 .markdown p {
   @apply text-base;
   @apply text-slate-700;
-  @apply mt-5;
-  @apply my-3;
+  @apply my-4;
 }
 
 .markdown pre {

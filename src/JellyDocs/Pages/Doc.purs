@@ -56,6 +56,6 @@ docPage docIdSig = hooks do
           , "rel" := "noopener noreferrer"
           ]
           do
-            emoText' "Edit this page 📝"
+            emoText' "Edit this page ✏️"
       markdownComponent $ pure doc.content
     _ -> mempty
