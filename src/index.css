@@ -13,13 +13,15 @@
   @apply text-2xl;
   @apply text-slate-800;
   @apply font-bold;
-  @apply my-5;
+  @apply mt-7;
+  @apply mb-4;
 }
 
 .markdown h3 {
   @apply text-xl;
   @apply text-slate-800;
   @apply font-bold;
+  @apply mt-6;
   @apply my-4;
 }
 
@@ -27,6 +29,7 @@
   @apply text-lg;
   @apply text-slate-800;
   @apply font-bold;
+  @apply mt-6;
   @apply my-4;
 }
 
@@ -34,12 +37,14 @@
   @apply text-base;
   @apply text-slate-800;
   @apply font-bold;
+  @apply mt-6;
   @apply my-4;
 }
 
 .markdown p {
   @apply text-base;
   @apply text-slate-700;
+  @apply mt-5;
   @apply my-3;
 }
 
@@ -64,8 +69,10 @@
 }
 
 .markdown a {
-  @apply text-blue-600;
-  @apply hover:text-blue-800;
+  @apply text-teal-500;
+  @apply hover:text-teal-700;
+  @apply transition-colors;
+  @apply font-bold
 }
 
 .markdown ul {

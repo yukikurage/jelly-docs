@@ -6,7 +6,7 @@ import Data.Either (Either(..))
 import Data.HashMap (lookup)
 import Data.Maybe (Maybe(..))
 import Effect.Aff (launchAff_)
-import Jelly.Data.Component (Component, el, signalC)
+import Jelly.Data.Component (Component, el, signalC, text)
 import Jelly.Data.Hooks (hooks)
 import Jelly.Data.Prop ((:=))
 import Jelly.Data.Signal (Signal)
@@ -43,8 +43,18 @@ docPage docIdSig = hooks do
         _ -> pure unit
       mempty
 
-  pure $ el "div" [ "class" := "py-12 px-20" ] $ signalC do
-    doc <- docSig
-    pure case doc of
-      Just (Right { content }) -> markdownComponent $ pure content
-      _ -> mempty
+  pure $ el "div" [ "class" := "py-10 px-20" ] $ signalC $ docSig <#> case _ of
+    Just (Right doc) -> do
+      el "div" [ "class" := "w-full flex justify-end" ] do
+        el "a"
+          [ "class" :=
+              "block bg-slate-300 bg-opacity-0 text-teal-500 hover:text-teal-700 transition-colors rounded font-bold text-sm"
+          , "href" := "github.com/yukikurage/jelly-docs/blob/master/docs/en/" <> doc.section <> "/" <> doc.id <>
+              ".md"
+          , "target" := "_blank"
+          , "rel" := "noopener noreferrer"
+          ]
+          do
+            text "Edit this page 📝"
+      markdownComponent $ pure doc.content
+    _ -> mempty

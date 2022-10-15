@@ -1,6 +1,4 @@
-module JellyDocs.Data.Doc
-  ( DocListItem
-  ) where
+module JellyDocs.Data.Doc where
 
 type Doc =
   { id :: String

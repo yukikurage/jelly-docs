@@ -43,7 +43,7 @@ renderSidebarSectionItem docSig = hooks do
             "relative py-2 px-8 rounded transition-colors block before:bg-teal-500 before:absolute before:left-0 before:top-1/2 before:-translate-y-1/2 before:transition-all before:rounded bg-slate-300 bg-opacity-0 hover:bg-opacity-30 hover:active:bg-opacity-10"
               <>
                 if isActive then " before:h-3/4 before:w-1 text-teal-500 font-bold"
-                else " before:h-0 before:w-0 "
+                else " before:h-0 before:w-0 text-slate-700"
       ]
       do
         text title
