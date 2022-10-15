@@ -47,6 +47,10 @@
   @apply my-4;
 }
 
+.markdown li {
+  @apply my-2;
+}
+
 .markdown pre {
   @apply overflow-x-auto;
   @apply border;
