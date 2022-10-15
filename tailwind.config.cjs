@@ -8,8 +8,8 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        Lato: ['Lato', 'Noto Color Emoji', 'sans-serif'],
-        Montserrat: ['Montserrat', 'Noto Color Emoji', 'sans-serif'],
+        Lato: ['Lato', 'sans-serif'],
+        Montserrat: ['Montserrat', 'sans-serif'],
         SourceCodePro: ['Source Code Pro', 'monospace'],
       }
     },
