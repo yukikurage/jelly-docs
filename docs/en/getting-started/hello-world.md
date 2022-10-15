@@ -11,9 +11,7 @@ First, create HTML to load JavaScript.
     <title>Hello World</title>
     <script src="./index.js" defer=""></script>
   </head>
-  <body>
-    <div id="app"></div>
-  </body>
+  <body></body>
 </html>
 ```
 
@@ -26,30 +24,26 @@ module Main where
 
 import Prelude
 
-import Data.Maybe (Maybe(..))
+import Data.Foldable (traverse_)
 import Effect (Effect)
 import Effect.Aff (launchAff_)
 import Effect.Class (liftEffect)
-import Jelly.Aff (awaitQuerySelector)
+import Jelly.Aff (awaitBody)
 import Jelly.Data.Component (Component, el', text)
 import Jelly.Mount (mount_)
-import Web.DOM.Element as Element
-import Web.DOM.ParentNode (QuerySelector(..))
 
+type Context :: Row Type
 type Context = ()
 
 main :: Effect Unit
 main = launchAff_ do
-  appMaybe <- awaitQuerySelector (QuerySelector "#app")
-  case appMaybe of
-    Nothing -> pure unit
-    Just app -> liftEffect $ mount_ {} bodyComponent $ Element.toNode app
+  appMaybe <- awaitBody
+  liftEffect $ traverse_ (mount_ {} bodyComponent) appMaybe
 
 bodyComponent :: Component Context
 bodyComponent = do
   el' "h1" do
-    text $ pure "Hello World!"
-
+    text "Hello World!"
 ```
 
 Finally, bundle the application.
@@ -63,6 +57,7 @@ Now, when you open `public/index.html` in your browser, you will see a big Hello
 ## Explanation of Hello World
 
 ```haskell
+type Context :: Row Type
 type Context = ()
 ```
 
@@ -71,15 +66,11 @@ This is a Row representation of the context of the component. See [context](../c
 ```haskell
 main :: Effect Unit
 main = launchAff_ do
-  appMaybe <- awaitQuerySelector (QuerySelector "#app")
-  case appMaybe of
-    Nothing -> pure unit
-    Just app -> liftEffect $ mount_ {} bodyComponent $ Element.toNode app
+  appMaybe <- awaitBody
+  liftEffect $ traverse_ (mount_ {} bodyComponent) appMaybe
 ```
 
-It does a lot of things, but the short version is that I get an element with an id of `"app"` and mount the `bodyComponent`.
-
-Since we don't know for sure if such an element exists, `appMaybe` is of type `Maybe Element`, and the `mount_` function takes the `Node` type, so we convert it with `Element.toNode`.
+Get an body element and mount the `bodyComponent`.
 
 ```haskell
 bodyComponent :: Component Context
