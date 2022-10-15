@@ -16,7 +16,7 @@ import JellyDocs.Components.Markdown (markdownComponent)
 import JellyDocs.Context (Context)
 import JellyDocs.Contexts.Apis (useApis)
 import JellyDocs.Data.Page (Page(..), pageToUrl)
-import JellyDocs.Twemoji (emoText')
+import JellyDocs.Twemoji (emojiProp)
 
 docPage :: Signal String -> Component Context
 docPage docIdSig = hooks do
@@ -44,7 +44,7 @@ docPage docIdSig = hooks do
         _ -> pure unit
       mempty
 
-  pure $ el "div" [ "class" := "py-10 px-20" ] $ signalC $ docSig <#> case _ of
+  pure $ el "div" [ "class" := "py-10 px-20", emojiProp ] $ signalC $ docSig <#> case _ of
     Just (Right doc) -> do
       el "div" [ "class" := "w-full flex justify-end" ] do
         el "a"
@@ -56,6 +56,6 @@ docPage docIdSig = hooks do
           , "rel" := "noopener noreferrer"
           ]
           do
-            emoText' "Edit this page ✏️"
+            text "Edit this page ✏️"
       markdownComponent $ pure doc.content
     _ -> mempty

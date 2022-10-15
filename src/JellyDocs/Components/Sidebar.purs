@@ -14,12 +14,12 @@ import JellyDocs.Context (Context)
 import JellyDocs.Data.Doc (DocListItem)
 import JellyDocs.Data.Page (Page(..), pageToUrl)
 import JellyDocs.Data.Section (Section)
-import JellyDocs.Twemoji (emoText, emoText', emoTextSig')
+import JellyDocs.Twemoji (emojiProp)
 
 renderSidebarSection :: Signal Section -> Component Context
 renderSidebarSection sectionSig = do
   el "li" [ "class" := "my-1 pb-3 pt-6 px-3 font-bold text-sm" ] do
-    emoTextSig' $ (_.title) <$> sectionSig
+    textSig $ (_.title) <$> sectionSig
   el' "li" do
     el "ul" [ "class" := "" ] $ signalC do
       { docs } <- sectionSig
@@ -47,7 +47,7 @@ renderSidebarSectionItem docSig = hooks do
                 else " before:h-1/4 before:w-0 text-slate-700"
       ]
       do
-        emoText' title
+        text title
 
 sidebarComponent :: Signal (Array Section) -> Component Context
 sidebarComponent sectionsSig = hooks do
@@ -58,7 +58,7 @@ sidebarComponent sectionsSig = hooks do
       temporaryUrl <- temporaryUrlSig
       pure $ temporaryUrl == (pageToUrl PageTop)
 
-  pure $ el "nav" [ "class" := "w-80 h-full" ] do
+  pure $ el "nav" [ "class" := "w-80 h-full", emojiProp ] do
     routerLink' (pageToUrl $ PageTop) do
       el "div" [ "class" := "w-full h-16 pb-10 pt-16 px-10" ] do
         el "h1"
@@ -69,7 +69,7 @@ sidebarComponent sectionsSig = hooks do
                   " text-teal-500"
           ]
           do
-            emoText [] "🍮 Jelly"
+            text "🍮 Jelly"
     signalC do
       sections <- sectionsSig
       pure $ el "ul" [ "class" := "w-full px-10" ] $

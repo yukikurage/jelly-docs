@@ -7,13 +7,13 @@ import Jelly.Data.Hooks (hooks)
 import Jelly.Data.Prop ((:=))
 import Jelly.Data.Signal (Signal)
 import JellyDocs.Context (Context)
-import JellyDocs.Twemoji (parseEmoji)
+import JellyDocs.Twemoji (emojiProp)
 
 foreign import parseMarkdown :: String -> String
 
 markdownComponent :: Signal String -> Component Context
 markdownComponent markdownSig = hooks do
   let
-    renderedSig = parseMarkdown <<< parseEmoji <$> markdownSig
+    renderedSig = parseMarkdown <$> markdownSig
 
-  pure $ rawElSig "div" [ "class" := "w-full h-full markdown" ] renderedSig
+  pure $ rawElSig "div" [ "class" := "w-full h-full markdown", emojiProp ] renderedSig

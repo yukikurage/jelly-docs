@@ -31,6 +31,7 @@ to generate this file without the comments in this block.
   , "record"
   , "tuples"
   , "unordered-collections"
+  , "web-dom"
   ]
 , packages = ./packages.dhall
 , sources = [ "src/**/*.purs", "test/**/*.purs" ]
