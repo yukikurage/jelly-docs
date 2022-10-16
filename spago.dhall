@@ -27,12 +27,14 @@ to generate this file without the comments in this block.
   , "node-fs"
   , "node-fs-aff"
   , "parallel"
+  , "partial"
   , "prelude"
   , "record"
   , "strings"
   , "tuples"
   , "unordered-collections"
   , "web-dom"
+  , "web-events"
   , "web-html"
   ]
 , packages = ./packages.dhall

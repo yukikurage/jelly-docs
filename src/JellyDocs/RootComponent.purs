@@ -5,12 +5,16 @@ import Prelude
 import Data.Array (find)
 import Data.Either (Either(..))
 import Data.Maybe (Maybe(..))
+import Data.Tuple.Nested ((/\))
 import Effect.Aff (launchAff_)
 import Effect.Class (liftEffect)
-import Jelly.Data.Component (Component, doctypeHtml, el, el', signalC, textSig, voidEl)
+import Jelly.Data.Component (Component, doctypeHtml, el, el', signalC, text, textSig, voidEl)
 import Jelly.Data.Hooks (hooks)
-import Jelly.Data.Prop ((:=))
+import Jelly.Data.Prop (on, (:=))
+import Jelly.Data.Signal (send, signalEq)
+import Jelly.Hooks.UseSignal (useSignal)
 import Jelly.Router.Data.Router (useRouter)
+import JellyDocs.Components.Drawer (drawerComponent)
 import JellyDocs.Components.Sidebar (sidebarComponent)
 import JellyDocs.Context (Context)
 import JellyDocs.Contexts.Apis (useApis)
@@ -18,10 +22,12 @@ import JellyDocs.Data.Page (Page(..), urlToPage)
 import JellyDocs.Pages.Doc (docPage)
 import JellyDocs.Pages.NotFound (notFoundPage)
 import JellyDocs.Pages.Top (topPage)
+import JellyDocs.Twemoji (emojiProp)
+import Web.HTML.Event.EventTypes (click)
 
 rootComponent :: Component Context
 rootComponent = hooks do
-  { currentUrlSig } <- useRouter
+  { currentUrlSig, temporaryUrlSig } <- useRouter
   apis <- useApis
 
   liftEffect $ launchAff_ $ void $ apis.docs.initialize
@@ -78,16 +84,40 @@ rootComponent = hooks do
           [ "src" := "/index.js", "defer" := true ]
           mempty
 
-      el "body" [ "class" := "text-slate-800 relative" ] do
-        el "div" [ "class" := "fixed left-0 top-0 flex flex-row h-screen w-screen font-Lato" ] do
-          el "div" [ "class" := "flex-shrink-0" ] $ signalC do
-            sectionsSig <- apis.sections.stateSig
-            pure case sectionsSig of
-              Just (Right sections) -> sidebarComponent $ pure sections
-              _ -> sidebarComponent $ pure []
-          el "div" [ "class" := "h-full w-[1px] bg-slate-300 bg-opacity-50" ] mempty
-          el "div" [ "class" := "flex-1 overflow-auto" ] do
-            el "main" [ "class" := "min-w-fit" ] $ signalC do
+      el "body" [ "class" := "fixed left-0 top-0 flex flex-row items-start h-screen w-screen font-Lato text-slate-800" ]
+        do
+          let
+            sidebar = sidebarComponent
+              do
+                sectionsSig <- apis.sections.stateSig
+                pure case sectionsSig of
+                  Just (Right sections) -> sections
+                  _ -> []
+          hooks do
+            isSidebarOpenSig /\ isSidebarOpenAtom <- signalEq false
+
+            useSignal do
+              _ <- temporaryUrlSig
+              pure do
+                send isSidebarOpenAtom false
+                mempty
+
+            pure do
+              el "div" [ "class" := "block md:hidden absolute left-0 top-0" ] do
+                el "button"
+                  [ "class" :=
+                      "p-2 m-4 backdrop-blur text-2xl rounded border-slate-300 border-opacity-50 border bg-white bg-opacity-20 hover:bg-slate-300 hover:bg-opacity-30 hover:active:bg-opacity-20 transition-all"
+                  , emojiProp
+                  , on click \_ -> send isSidebarOpenAtom true
+                  ]
+                  do
+                    text "📒"
+                drawerComponent { onClose: send isSidebarOpenAtom false, openSig: isSidebarOpenSig } sidebar
+          el "div" [ "class" := "h-full w-fit hidden md:block" ] do
+            sidebar
+            el "div" [ "class" := "h-full w-[1px] bg-slate-300 bg-opacity-50" ] mempty
+          el "div" [ "class" := "flex-1 overflow-auto h-full flex justify-center" ] do
+            el "main" [ "class" := "w-full lg:w-[56rem] pt-14 md:pt-0" ] $ signalC do
               currentUrl <- currentUrlSig
               pure case urlToPage currentUrl of
                 PageTop -> topPage
