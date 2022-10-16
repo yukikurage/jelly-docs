@@ -106,7 +106,7 @@ rootComponent = hooks do
               el "div" [ "class" := "block md:hidden absolute left-0 top-0" ] do
                 el "button"
                   [ "class" :=
-                      "p-2 m-4 backdrop-blur text-2xl rounded border-slate-300 border-opacity-50 border bg-white bg-opacity-20 hover:bg-slate-300 hover:bg-opacity-30 hover:active:bg-opacity-20 transition-all"
+                      "p-2 m-4 backdrop-blur text-lg rounded border-slate-300 border-opacity-50 border bg-white bg-opacity-20 hover:bg-slate-300 hover:bg-opacity-30 hover:active:bg-opacity-20 transition-all"
                   , emojiProp
                   , on click \_ -> send isSidebarOpenAtom true
                   ]
