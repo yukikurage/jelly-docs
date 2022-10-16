@@ -29,6 +29,7 @@ to generate this file without the comments in this block.
   , "parallel"
   , "prelude"
   , "record"
+  , "strings"
   , "tuples"
   , "unordered-collections"
   , "web-dom"
