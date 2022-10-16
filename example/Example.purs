@@ -9,6 +9,7 @@ import Data.String (codePointFromChar, takeWhile)
 import Data.Tuple.Nested ((/\))
 import Effect (Effect)
 import Example.Counter (counterExample)
+import Example.Hooks (hooksExampleWrapper)
 import Jelly.Mount (mount_)
 import Web.DOM (Element, Node)
 import Web.DOM.Element as Element
@@ -19,6 +20,7 @@ import Web.DOM.ParentNode (QuerySelector(..), querySelectorAll)
 examples :: HashMap String (Node -> Effect Unit)
 examples = fromFoldable
   [ "counter" /\ mount_ {} counterExample
+  , "hooks" /\ mount_ {} hooksExampleWrapper
   ]
 
 preview :: Element -> Effect Unit

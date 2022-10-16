@@ -90,12 +90,16 @@ sections =
           , title: "Static HTML"
           , section: "core-concepts"
           }
-        , { id: "context"
-          , title: "Context"
+        , { id: "hooks"
+          , title: "Hooks"
           , section: "core-concepts"
           }
         , { id: "dynamic-component"
           , title: "Dynamic Component"
+          , section: "core-concepts"
+          }
+        , { id: "context"
+          , title: "Context"
           , section: "core-concepts"
           }
         ]
