@@ -33,44 +33,7 @@ getSections :: AffjaxDriver -> Aff (Either Error (Array Section))
 getSections _ = pure $ pure $ sections
 
 docsWithoutContent :: Array DocListItem
-docsWithoutContent =
-  [ { id: "installation"
-    , title: "Installation"
-    , section: "getting-started"
-    }
-  , { id: "hello-world"
-    , title: "Hello World"
-    , section: "getting-started"
-    }
-  , { id: "static-html"
-    , title: "Static HTML"
-    , section: "core-concepts"
-    }
-  , { id: "dynamic-component"
-    , title: "Dynamic Component"
-    , section: "core-concepts"
-    }
-  , { id: "hooks"
-    , title: "Hooks"
-    , section: "core-concepts"
-    }
-  , { id: "context"
-    , title: "Context"
-    , section: "core-concepts"
-    }
-  , { id: "spa-routing"
-    , title: "SPA Routing"
-    , section: "advanced-topics"
-    }
-  , { id: "generate-static-app"
-    , title: "Generate Static App"
-    , section: "advanced-topics"
-    }
-  , { id: "hydration"
-    , title: "Hydration"
-    , section: "advanced-topics"
-    }
-  ]
+docsWithoutContent = concatMap (\{ docs } -> docs) sections
 
 sections :: Array Section
 sections =
@@ -98,8 +61,8 @@ sections =
           , title: "Hooks"
           , section: "core-concepts"
           }
-        , { id: "dynamic-component"
-          , title: "Dynamic Component"
+        , { id: "stateful-component"
+          , title: "Stateful Component"
           , section: "core-concepts"
           }
         , { id: "context"
