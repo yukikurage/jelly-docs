@@ -80,6 +80,10 @@
   @apply hover:bg-opacity-30;
   @apply hover:active:bg-opacity-20;
   @apply transition-colors;
+  @apply font-bold;
+  @apply border;
+  @apply border-slate-300;
+  @apply border-opacity-40;
 }
 
 .markdown pre code.preview div {
