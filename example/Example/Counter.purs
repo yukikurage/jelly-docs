@@ -13,7 +13,7 @@ counterExample :: forall context. Component context
 counterExample = hooks do
   countSig /\ countAtom <- signal 0
 
-  pure $ el' "div" do
+  pure do
     el "button" [ on click \_ -> patch_ countAtom (_ + 1) ] $ text "Increment"
     el "button" [ on click \_ -> patch_ countAtom (_ - 1) ] $ text "Decrement"
     el' "div" do

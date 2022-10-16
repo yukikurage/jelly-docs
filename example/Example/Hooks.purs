@@ -4,7 +4,7 @@ import Prelude
 
 import Data.Tuple.Nested ((/\))
 import Effect.Class.Console (log)
-import Jelly.Data.Component (Component, el, el', text, whenC)
+import Jelly.Data.Component (Component, el, el', ifC, text)
 import Jelly.Data.Hooks (hooks)
 import Jelly.Data.Prop (on)
 import Jelly.Data.Signal (send, signalEq)
@@ -28,4 +28,6 @@ hooksExampleWrapper = hooks do
   pure do
     el "button" [ on click \_ -> send isMountedAtom true ] $ text "Mount"
     el "button" [ on click \_ -> send isMountedAtom false ] $ text "Unmount"
-    whenC isMountedSig $ el' "div" hooksExample
+    ifC isMountedSig
+      do el' "div" hooksExample
+      do el' "div" $ text "Unmounted"

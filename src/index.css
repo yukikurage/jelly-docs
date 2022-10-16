@@ -55,7 +55,7 @@
   @apply overflow-x-auto;
   @apply border;
   @apply border-slate-300;
-  @apply border-opacity-40;
+  @apply border-opacity-50;
   @apply py-3;
   @apply px-5;
   @apply rounded;
@@ -83,7 +83,7 @@
   @apply font-bold;
   @apply border;
   @apply border-slate-300;
-  @apply border-opacity-40;
+  @apply border-opacity-50;
 }
 
 .markdown pre code.preview div {
