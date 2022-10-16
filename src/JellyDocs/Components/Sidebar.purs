@@ -47,7 +47,7 @@ renderSidebarSectionItem docSig = hooks do
           isActive <- isActiveSig
           isTransitioningPage <- isTransitioningPageSig
           pure $
-            "relative py-2 px-8 rounded transition-colors block before:absolute before:left-0 before:top-1/2 before:-translate-y-1/2 before:transition-all before:rounded bg-slate-300 bg-opacity-0 hover:bg-opacity-30 hover:active:bg-opacity-10"
+            "relative py-2 px-8 rounded transition-colors block before:absolute before:left-0 before:top-1/2 before:-translate-y-1/2 before:transition-all before:rounded bg-slate-300 bg-opacity-0 hover:bg-opacity-30 hover:active:bg-opacity-20"
               <>
                 if isActive then " before:h-3/4 before:w-1 text-pink-500 font-bold before:bg-pink-500"
                 else if isTransitioningPage then " before:h-1/2 before:w-1 font-bold before:bg-gray-500"

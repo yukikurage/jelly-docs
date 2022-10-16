@@ -5,6 +5,7 @@ import Prelude
 import Data.Foldable (for_)
 import Data.HashMap (HashMap, fromFoldable, lookup)
 import Data.Maybe (Maybe(..))
+import Data.String (codePointFromChar, takeWhile)
 import Data.Tuple.Nested ((/\))
 import Effect (Effect)
 import Example.Counter (counterExample)
@@ -26,7 +27,7 @@ preview element = do
     pn = Element.toParentNode element
   previewNodes <- NodeList.toArray =<< querySelectorAll (QuerySelector "pre code.preview") pn
   for_ previewNodes \node -> do
-    name <- textContent node
+    name <- takeWhile (\cp -> cp /= codePointFromChar '\n') <$> textContent node
     case lookup name examples of
       Just example -> example node
       Nothing -> pure unit

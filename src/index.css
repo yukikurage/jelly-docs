@@ -60,12 +60,32 @@
   @apply px-5;
   @apply rounded;
   @apply my-3;
-  @apply font-Lato;
 }
 
-.markdown pre code {
+.markdown pre code:not(.preview) {
   @apply font-SourceCodePro !important;
   @apply text-[0.95em] !important;
+}
+
+.markdown pre code.preview {
+  @apply font-Lato !important;
+}
+
+.markdown pre code.preview button {
+  @apply rounded;
+  @apply p-2;
+  @apply m-1;
+  @apply bg-slate-300;
+  @apply bg-opacity-0;
+  @apply hover:bg-opacity-30;
+  @apply hover:active:bg-opacity-20;
+  @apply transition-colors;
+}
+
+.markdown pre code.preview div {
+  @apply rounded;
+  @apply p-2;
+  @apply m-1;
 }
 
 .markdown :not(pre) code {
@@ -82,7 +102,7 @@
   @apply text-pink-500;
   @apply hover:text-pink-700;
   @apply transition-colors;
-  @apply font-bold
+  @apply font-bold;
 }
 
 .markdown ul {
