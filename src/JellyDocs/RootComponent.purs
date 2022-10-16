@@ -113,9 +113,9 @@ rootComponent = hooks do
                   do
                     text "📒"
                 drawerComponent { onClose: send isSidebarOpenAtom false, openSig: isSidebarOpenSig } sidebar
-          el "div" [ "class" := "h-full w-fit hidden md:block" ] do
+          el "div" [ "class" := "h-full w-fit hidden md:block overflow-auto" ] do
             sidebar
-            el "div" [ "class" := "h-full w-[1px] bg-slate-300 bg-opacity-50" ] mempty
+          el "div" [ "class" := "h-full w-[1px] bg-slate-300 bg-opacity-50 hidden md:block" ] mempty
           el "div" [ "class" := "flex-1 overflow-auto h-full flex justify-center" ] do
             el "main" [ "class" := "w-full lg:w-[56rem] pt-14 md:pt-0" ] $ signalC do
               currentUrl <- currentUrlSig

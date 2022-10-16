@@ -65,7 +65,7 @@ sidebarComponent sectionsSig = hooks do
       currentUrl <- currentUrlSig
       pure $ currentUrl == (pageToUrl PageTop)
 
-  pure $ el "nav" [ "class" := "w-80 h-full", emojiProp ] do
+  pure $ el "nav" [ "class" := "w-80", emojiProp ] do
     routerLink' (pageToUrl $ PageTop) do
       el "div" [ "class" := "w-full h-16 pb-10 pt-16 px-10" ] do
         el "h1"
