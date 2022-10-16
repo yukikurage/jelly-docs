@@ -50,6 +50,10 @@ docsWithoutContent =
     , title: "Dynamic Component"
     , section: "core-concepts"
     }
+  , { id: "hooks"
+    , title: "Hooks"
+    , section: "core-concepts"
+    }
   , { id: "context"
     , title: "Context"
     , section: "core-concepts"
