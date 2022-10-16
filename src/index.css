@@ -72,8 +72,8 @@
 }
 
 .markdown a {
-  @apply text-teal-500;
-  @apply hover:text-teal-700;
+  @apply text-pink-500;
+  @apply hover:text-pink-700;
   @apply transition-colors;
   @apply font-bold
 }

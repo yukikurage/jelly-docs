@@ -9,6 +9,7 @@ import Data.Maybe (Maybe(..))
 import Data.Tuple.Nested ((/\))
 import Effect (Effect)
 import Effect.Aff (Aff)
+import Effect.Class.Console (log)
 import Jelly.Data.Hooks (Hooks)
 import Jelly.Data.Signal (Signal, get, patch_, send, signal)
 import Jelly.Hooks.UseContext (useContext)
@@ -78,7 +79,8 @@ newApis driver = do
         initialize key = do
           states <- get statesSig
           case lookup key states of
-            Just response -> pure response
+            Just response -> do
+              pure response
             Nothing -> refetch key
       pure { statesSig, refetch, initialize }
 

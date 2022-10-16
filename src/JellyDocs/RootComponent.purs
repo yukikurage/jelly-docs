@@ -9,7 +9,7 @@ import Effect.Aff (launchAff_)
 import Effect.Class (liftEffect)
 import Jelly.Data.Component (Component, doctypeHtml, el, el', signalC, textSig, voidEl)
 import Jelly.Data.Hooks (hooks)
-import Jelly.Data.Prop ((:=))
+import Jelly.Data.Prop ((:=), (:=@))
 import Jelly.Router.Data.Router (useRouter)
 import JellyDocs.Components.Sidebar (sidebarComponent)
 import JellyDocs.Context (Context)
@@ -32,7 +32,7 @@ rootComponent = hooks do
       docs <- apis.docs.stateSig
       currentUrl <- currentUrlSig
       case urlToPage currentUrl of
-        PageTop -> pure "Jelly"
+        PageTop -> pure "Overview - Jelly"
         PageDoc docId
           | Just (Right ds) <- docs, Just { title } <- find (\{ id } -> docId == id) ds -> pure $ title <> " - Jelly"
         _ -> pure "Not Found - Jelly"
@@ -78,7 +78,7 @@ rootComponent = hooks do
           [ "src" := "/index.js", "defer" := true ]
           mempty
 
-      el "body" [ "class" := "text-slate-800" ] do
+      el "body" [ "class" := "text-slate-800 relative" ] do
         el "div" [ "class" := "fixed left-0 top-0 flex flex-row h-screen w-screen font-Lato" ] do
           el "div" [ "class" := "flex-shrink-0" ] $ signalC do
             sectionsSig <- apis.sections.stateSig

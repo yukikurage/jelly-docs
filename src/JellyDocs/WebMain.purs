@@ -23,9 +23,9 @@ main = launchAff_ do
   let
     beforeEach url = do
       case urlToPage url of
-        PageDoc docId -> void $ apis.doc.refetch docId
-        PageTop -> void $ apis.top.refetch
-        PageNotFound -> void $ apis.notFound.refetch
+        PageDoc docId -> void $ apis.doc.initialize docId
+        PageTop -> void $ apis.top.initialize
+        PageNotFound -> void $ apis.notFound.initialize
       pure url
 
   -- Make Router
