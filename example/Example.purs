@@ -8,6 +8,8 @@ import Data.Maybe (Maybe(..))
 import Data.String (codePointFromChar, takeWhile)
 import Data.Tuple.Nested ((/\))
 import Effect (Effect)
+import Example.AppendContexts (appendContextsMount)
+import Example.Context (mountWithContext)
 import Example.Counter (counterExample)
 import Example.Hooks (hooksExampleWrapper)
 import Example.SignalEq (signalEqExample)
@@ -23,6 +25,8 @@ examples = fromFoldable
   [ "counter" /\ mount_ {} counterExample
   , "hooks" /\ mount_ {} hooksExampleWrapper
   , "signalEq" /\ mount_ {} signalEqExample
+  , "context" /\ mountWithContext
+  , "appendContexts" /\ appendContextsMount
   ]
 
 preview :: Element -> Effect Unit

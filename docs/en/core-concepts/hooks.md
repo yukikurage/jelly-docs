@@ -1,5 +1,7 @@
 # Hooks
 
+## `hooks` function
+
 Hooks is a way to execute effects in a component's life cycle (on mount & unmount).
 
 Using `useUnmountEffect` function in `Hooks` Monad and converting it to `Component` by `hooks` function, you can attach effects to a component.
@@ -10,9 +12,13 @@ Using `useUnmountEffect` function in `Hooks` Monad and converting it to `Compone
 hooks :: forall context. Hooks context (Component context) -> Component context
 ```
 
-## Example
+### Example
 
 Open devtools and see the console.
+
+```preview
+hooks
+```
 
 ```purescript
 module Example.Hooks where
@@ -37,8 +43,4 @@ hooksExample = hooks do
 
   pure do
     text "This is Hooks"
-```
-
-```preview
-hooks
 ```

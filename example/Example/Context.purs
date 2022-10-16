@@ -1,18 +1,3 @@
-# Context
-
-## Context's role
-
-The context is a global record that is passed to all components. You can provide context by passing it to `_mount` function, and get the context by using the `useContext` function. Type of a component that uses the context is `Component context`.
-
-State can be shared among components by managing `Signal` values in context.
-
-### Example
-
-```preview
-context
-```
-
-```purescript
 module Example.Context where
 
 import Prelude
@@ -49,14 +34,3 @@ childComponent = hooks do
 
   pure do
     textSig $ show <$> countSig
-```
-
-## Append contexts
-
-Context is defined as a record, so you can append contexts.
-
-### Example
-
-```preview
-appendContexts
-```
