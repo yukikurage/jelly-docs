@@ -46,6 +46,10 @@ docsWithoutContent =
     , title: "Static HTML"
     , section: "core-concepts"
     }
+  , { id: "dynamic-component"
+    , title: "Dynamic Component"
+    , section: "core-concepts"
+    }
   , { id: "context"
     , title: "Context"
     , section: "core-concepts"
@@ -88,6 +92,10 @@ sections =
           }
         , { id: "context"
           , title: "Context"
+          , section: "core-concepts"
+          }
+        , { id: "dynamic-component"
+          , title: "Dynamic Component"
           , section: "core-concepts"
           }
         ]

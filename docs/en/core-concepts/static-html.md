@@ -1,12 +1,12 @@
 # Static HTML
 
-## `el`, `el'`, and `text`
+## Component
 
-`el` and `el'` are functions that create HTML elements.
+`el` and `el'` are functions to create a single element Component.
 
 `el` can take props, whereas `el'` cannot.
 
-and `text` is a function that creates text nodes.
+and `text` is a function to creates a text node Component.
 
 ```purescript
 component = el "h1" [ "class" := "title" ] do
