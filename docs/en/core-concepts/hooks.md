@@ -15,6 +15,19 @@ hooks :: forall context. Hooks context (Component context) -> Component context
 Open devtools and see the console.
 
 ```purescript
+module Example.Hooks where
+
+import Prelude
+
+import Data.Tuple.Nested ((/\))
+import Effect.Class.Console (log)
+import Jelly.Data.Component (Component, el, el', text, whenC)
+import Jelly.Data.Hooks (hooks)
+import Jelly.Data.Prop (on)
+import Jelly.Data.Signal (send, signalEq)
+import Jelly.Hooks.UseUnmountEffect (useUnmountEffect)
+import Web.HTML.Event.EventTypes (click)
+
 hooksExample :: forall context. Component context
 hooksExample = hooks do
   log "Mounted"
