@@ -17,6 +17,7 @@ signalCExample = hooks do
     el "button" [ on click \_ -> patch_ componentNumAtom (_ - 1) ] $ text "Decrement"
     el' "div" do
       textSig $ pure "Component number: " <> show <$> componentNumSig
+    el' "div" do
       signalC do
         componentNum <- componentNumSig
         pure case componentNum of

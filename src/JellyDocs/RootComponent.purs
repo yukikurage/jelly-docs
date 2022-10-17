@@ -117,7 +117,7 @@ rootComponent = hooks do
             sidebar
           el "div" [ "class" := "h-full w-[1px] bg-slate-300 bg-opacity-50 hidden md:block" ] mempty
           el "div" [ "class" := "flex-1 overflow-auto h-full flex justify-center" ] do
-            el "main" [ "class" := "w-full lg:w-[56rem] pt-14 md:pt-0" ] $ signalC do
+            el "main" [ "class" := "w-full xl:w-[60rem] pt-14 md:pt-0" ] $ signalC do
               currentUrl <- currentUrlSig
               pure case urlToPage currentUrl of
                 PageTop -> topPage
