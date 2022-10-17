@@ -38,7 +38,7 @@ rootComponent = hooks do
       docs <- apis.docs.stateSig
       currentUrl <- currentUrlSig
       case urlToPage currentUrl of
-        PageTop -> pure "Overview - Jelly"
+        PageTop -> pure "Jelly : Reactive-based UI framework for PureScript"
         PageDoc docId
           | Just (Right ds) <- docs, Just { title } <- find (\{ id } -> docId == id) ds -> pure $ title <> " - Jelly"
         _ -> pure "Not Found - Jelly"
