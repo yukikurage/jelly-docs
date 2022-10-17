@@ -3,10 +3,11 @@ module JellyDocs.Components.Sidebar where
 import Prelude
 
 import Data.Foldable (for_)
-import Jelly.Data.Component (Component, el, el', signalC, text, textSig)
+import Jelly.Data.Component (Component, signalC, text, textSig)
 import Jelly.Data.Hooks (hooks)
 import Jelly.Data.Prop ((:=), (:=@))
 import Jelly.Data.Signal (Signal)
+import Jelly.Element (elDiv, li, nav, ul)
 import Jelly.Router.Components (routerLink)
 import Jelly.Router.Data.Router (useRouter)
 import JellyDocs.Components.Logo (logoComponent)
@@ -18,10 +19,10 @@ import JellyDocs.Twemoji (emojiProp)
 
 renderSidebarSection :: Signal Section -> Component Context
 renderSidebarSection sectionSig = do
-  el "li" [ "class" := "my-1 pb-3 pt-6 px-3 font-bold text-sm" ] do
+  li [ "class" := "my-1 pb-3 pt-6 px-3 font-bold text-sm" ] do
     textSig $ (_.title) <$> sectionSig
-  el' "li" do
-    el "ul" [ "class" := "" ] $ signalC do
+  li [] do
+    ul [] $ signalC do
       { docs } <- sectionSig
       pure $ for_ docs \doc -> renderSidebarSectionItem $ pure doc
 
@@ -40,7 +41,7 @@ renderSidebarSectionItem docSig = hooks do
       { id } <- docSig
       pure $ temporaryUrl == (pageToUrl $ PageDoc id) && currentUrl /= temporaryUrl
 
-  pure $ el "li" [ "class" := "my-1" ] $ signalC do
+  pure $ li [ "class" := "my-1" ] $ signalC do
     { id, title } <- docSig
     pure $ routerLink (pageToUrl (PageDoc id))
       [ "class" :=@ do
@@ -58,9 +59,9 @@ renderSidebarSectionItem docSig = hooks do
 
 sidebarComponent :: Signal (Array Section) -> Component Context
 sidebarComponent sectionsSig = hooks do
-  pure $ el "nav" [ "class" := "w-80", emojiProp ] do
-    el "div" [ "class" := "w-full h-16 pt-16 px-10 hidden lg:block" ] logoComponent
+  pure $ nav [ "class" := "w-80", emojiProp ] do
+    elDiv [ "class" := "w-full h-16 pt-16 px-10 hidden lg:block" ] logoComponent
     signalC do
       sections <- sectionsSig
-      pure $ el "ul" [ "class" := "w-full p-10" ] $
+      pure $ ul [ "class" := "w-full p-10" ] $
         for_ sections \section -> renderSidebarSection $ pure section

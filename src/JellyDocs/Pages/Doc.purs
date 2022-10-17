@@ -6,10 +6,11 @@ import Data.Either (Either(..))
 import Data.HashMap (lookup)
 import Data.Maybe (Maybe(..))
 import Effect.Aff (launchAff_)
-import Jelly.Data.Component (Component, el, signalC, text)
+import Jelly.Data.Component (Component, signalC, text)
 import Jelly.Data.Hooks (hooks)
 import Jelly.Data.Prop ((:=))
 import Jelly.Data.Signal (Signal)
+import Jelly.Element (a, elDiv)
 import Jelly.Hooks.UseSignal (useSignal)
 import Jelly.Router.Data.Router (useRouter)
 import JellyDocs.Components.Markdown (markdownComponent)
@@ -44,10 +45,10 @@ docPage docIdSig = hooks do
         _ -> pure unit
       mempty
 
-  pure $ el "div" [ "class" := "px-4 py-10 lg:px-10" ] $ signalC $ docSig <#> case _ of
+  pure $ elDiv [ "class" := "px-4 py-10 lg:px-10" ] $ signalC $ docSig <#> case _ of
     Just (Right doc) -> do
-      el "div" [ "class" := "w-full flex justify-start" ] do
-        el "a"
+      elDiv [ "class" := "w-full flex justify-start" ] do
+        a
           [ "class" :=
               "block bg-slate-300 bg-opacity-0 text-pink-500 hover:text-pink-700 transition-colors rounded font-bold text-sm"
           , "href" := "https://github.com/yukikurage/jelly-docs/blob/master/docs/en/" <> doc.section <> "/" <> doc.id <>

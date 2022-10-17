@@ -6,9 +6,10 @@ import Data.Either (Either(..))
 import Data.Maybe (Maybe(..))
 import Effect.Aff (launchAff_)
 import Effect.Class (liftEffect)
-import Jelly.Data.Component (Component, el, signalC)
+import Jelly.Data.Component (Component, signalC)
 import Jelly.Data.Hooks (hooks)
 import Jelly.Data.Prop ((:=))
+import Jelly.Element (elDiv)
 import JellyDocs.Components.Markdown (markdownComponent)
 import JellyDocs.Context (Context)
 import JellyDocs.Contexts.Apis (useApis)
@@ -19,7 +20,7 @@ topPage = hooks do
 
   liftEffect $ launchAff_ $ void $ apis.top.initialize
 
-  pure $ el "div" [ "class" := "px-4 py-10 lg:px-10" ] $ signalC do
+  pure $ elDiv [ "class" := "px-4 py-10 lg:px-10" ] $ signalC do
     top <- apis.top.stateSig
     pure case top of
       Just (Right md) -> markdownComponent $ pure md
