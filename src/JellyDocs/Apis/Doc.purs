@@ -69,6 +69,10 @@ sections =
           , title: "Context"
           , section: "core-concepts"
           }
+        , { id: "manage-lifecycle"
+          , title: "Manage LifeCycle"
+          , section: "core-concepts"
+          }
         ]
     }
   , { id: "advanced-topics"
