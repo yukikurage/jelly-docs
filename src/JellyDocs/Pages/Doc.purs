@@ -44,7 +44,7 @@ docPage docIdSig = hooks do
         _ -> pure unit
       mempty
 
-  pure $ el "div" [ "class" := "px-4 py-10 md:px-20" ] $ signalC $ docSig <#> case _ of
+  pure $ el "div" [ "class" := "px-4 py-10 lg:px-10" ] $ signalC $ docSig <#> case _ of
     Just (Right doc) -> do
       el "div" [ "class" := "w-full flex justify-start" ] do
         el "a"

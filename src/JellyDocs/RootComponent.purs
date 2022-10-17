@@ -15,6 +15,7 @@ import Jelly.Data.Signal (send, signalEq)
 import Jelly.Hooks.UseSignal (useSignal)
 import Jelly.Router.Data.Router (useRouter)
 import JellyDocs.Components.Drawer (drawerComponent)
+import JellyDocs.Components.Logo (logoComponent)
 import JellyDocs.Components.Sidebar (sidebarComponent)
 import JellyDocs.Context (Context)
 import JellyDocs.Contexts.Apis (useApis)
@@ -103,21 +104,23 @@ rootComponent = hooks do
                 mempty
 
             pure do
-              el "div" [ "class" := "block md:hidden absolute left-0 top-0" ] do
+              el "div" [ "class" := "block lg:hidden absolute left-0 top-0 w-full backdrop-blur bg-white bg-opacity-60" ] do
                 el "button"
                   [ "class" :=
-                      "p-2 m-4 backdrop-blur text-lg rounded border-slate-300 border-opacity-50 border bg-white bg-opacity-20 hover:bg-slate-300 hover:bg-opacity-30 hover:active:bg-opacity-20 transition-all"
+                      "p-1 m-3 text-lg rounded border-slate-300 border-opacity-50 border hover:bg-slate-300 hover:bg-opacity-30 hover:active:bg-opacity-20 transition-all"
                   , emojiProp
                   , on click \_ -> send isSidebarOpenAtom true
                   ]
                   do
                     text "📒"
+                el "div" [ "class" := "w-full h-[1px] bg-slate-300 bg-opacity-50" ] mempty
+                el "div" ["class" := "absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2"] logoComponent
                 drawerComponent { onClose: send isSidebarOpenAtom false, openSig: isSidebarOpenSig } sidebar
-          el "div" [ "class" := "h-full w-fit hidden md:block overflow-auto" ] do
+          el "div" [ "class" := "h-full w-fit hidden lg:block overflow-auto" ] do
             sidebar
-          el "div" [ "class" := "h-full w-[1px] bg-slate-300 bg-opacity-50 hidden md:block" ] mempty
+          el "div" [ "class" := "h-full w-[1px] bg-slate-300 bg-opacity-50 hidden lg:block" ] mempty
           el "div" [ "class" := "flex-1 overflow-auto h-full flex justify-center" ] do
-            el "main" [ "class" := "w-full xl:w-[60rem] pt-14 md:pt-0" ] $ signalC do
+            el "main" [ "class" := "w-full xl:w-[60rem] pt-14 lg:pt-0" ] $ signalC do
               currentUrl <- currentUrlSig
               pure case urlToPage currentUrl of
                 PageTop -> topPage

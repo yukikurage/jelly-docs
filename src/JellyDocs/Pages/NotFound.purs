@@ -19,7 +19,7 @@ notFoundPage = hooks do
 
   liftEffect $ launchAff_ $ void $ apis.notFound.initialize
 
-  pure $ el "div" [ "class" := "px-4 py-10 md:px-20" ] $ signalC do
+  pure $ el "div" [ "class" := "px-4 py-10 lg:px-10" ] $ signalC do
     notFound <- apis.notFound.stateSig
     pure case notFound of
       Just (Right md) -> markdownComponent $ pure md

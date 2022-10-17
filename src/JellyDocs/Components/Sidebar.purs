@@ -3,13 +3,13 @@ module JellyDocs.Components.Sidebar where
 import Prelude
 
 import Data.Foldable (for_)
-import Data.Monoid (guard)
 import Jelly.Data.Component (Component, el, el', signalC, text, textSig)
 import Jelly.Data.Hooks (hooks)
 import Jelly.Data.Prop ((:=), (:=@))
 import Jelly.Data.Signal (Signal)
-import Jelly.Router.Components (routerLink, routerLink')
+import Jelly.Router.Components (routerLink)
 import Jelly.Router.Data.Router (useRouter)
+import JellyDocs.Components.Logo (logoComponent)
 import JellyDocs.Context (Context)
 import JellyDocs.Data.Doc (DocListItem)
 import JellyDocs.Data.Page (Page(..), pageToUrl)
@@ -58,26 +58,9 @@ renderSidebarSectionItem docSig = hooks do
 
 sidebarComponent :: Signal (Array Section) -> Component Context
 sidebarComponent sectionsSig = hooks do
-  { currentUrlSig } <- useRouter
-
-  let
-    isActiveSig = do
-      currentUrl <- currentUrlSig
-      pure $ currentUrl == (pageToUrl PageTop)
-
   pure $ el "nav" [ "class" := "w-80", emojiProp ] do
-    routerLink' (pageToUrl $ PageTop) do
-      el "div" [ "class" := "w-full h-16 pb-10 pt-16 px-10" ] do
-        el "h1"
-          [ "class" :=@ do
-              isActive <- isActiveSig
-              pure $ "text-2xl font-black flex justify-start items-center h-full font-Montserrat transition-colors" <>
-                guard isActive
-                  " text-pink-500"
-          ]
-          do
-            text "🍮 Jelly"
+    el "div" [ "class" := "w-full h-16 pt-16 px-10 hidden lg:block" ] logoComponent
     signalC do
       sections <- sectionsSig
-      pure $ el "ul" [ "class" := "w-full px-10" ] $
+      pure $ el "ul" [ "class" := "w-full p-10" ] $
         for_ sections \section -> renderSidebarSection $ pure section

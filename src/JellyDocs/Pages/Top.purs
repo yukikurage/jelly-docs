@@ -19,7 +19,7 @@ topPage = hooks do
 
   liftEffect $ launchAff_ $ void $ apis.top.initialize
 
-  pure $ el "div" [ "class" := "px-4 py-10 md:px-20" ] $ signalC do
+  pure $ el "div" [ "class" := "px-4 py-10 lg:px-10" ] $ signalC do
     top <- apis.top.stateSig
     pure case top of
       Just (Right md) -> markdownComponent $ pure md
