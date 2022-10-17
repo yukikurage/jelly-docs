@@ -34,6 +34,6 @@ drawerComponent { openSig, onClose } component = do
             pure $
               "absolute left-0 top-0 w-fit h-full transition-all duration-300 shadow bg-white bg-opacity-80 overflow-auto "
                 <>
-                  if open then "opacity-100 backdrop-blur " else "opacity-0 -translate-x-3/4"
+                  if open then "opacity-100 backdrop-blur " else "opacity-0 -translate-x-[90%]"
         ]
         component

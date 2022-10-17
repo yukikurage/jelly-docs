@@ -9,6 +9,8 @@ You can manipulate values with the `send` and `patch` functions.
 
 `Signal` and `Atom` can be created using `signal` function.
 
+You can display `Signal String` by `textSig` function.
+
 ### Example
 
 Let's make a simple counter.
@@ -39,7 +41,6 @@ counterExample = hooks do
     el' "div" do
       text "Count: "
       textSig $ show <$> countSig
-
 ```
 
 ## `signalEq` function

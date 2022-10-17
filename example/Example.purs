@@ -12,6 +12,7 @@ import Example.AppendContexts (appendContextsMount)
 import Example.Context (mountWithContext)
 import Example.Counter (counterExample)
 import Example.Hooks (hooksExampleWrapper)
+import Example.SignalC (signalCExample)
 import Example.SignalEq (signalEqExample)
 import Jelly.Mount (mount_)
 import Web.DOM (Element, Node)
@@ -27,6 +28,7 @@ examples = fromFoldable
   , "signalEq" /\ mount_ {} signalEqExample
   , "context" /\ mountWithContext
   , "appendContexts" /\ appendContextsMount
+  , "signalC" /\ mount_ {} signalCExample
   ]
 
 preview :: Element -> Effect Unit
