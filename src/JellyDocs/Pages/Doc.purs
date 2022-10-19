@@ -12,7 +12,7 @@ import Jelly.Data.Prop ((:=))
 import Jelly.Data.Signal (Signal)
 import Jelly.Element as JE
 import Jelly.Hooks.UseEffect (useEffect)
-import Jelly.Router.Data.Path (makeAbsoluteFilePath)
+import Jelly.Router.Data.Path (makeRelativeFilePath)
 import Jelly.Router.Data.Router (class RouterContext, useRouter)
 import JellyDocs.Apis.BasePath (apiBasePath)
 import JellyDocs.Components.Markdown (markdownComponent)
@@ -52,7 +52,7 @@ docPage docIdSig = hooks do
         JE.a
           [ "class" :=
               "block bg-slate-300 bg-opacity-0 text-pink-500 hover:text-pink-700 transition-colors rounded font-bold text-sm"
-          , "href" := makeAbsoluteFilePath
+          , "href" := makeRelativeFilePath
               [ apiBasePath
               , doc.section
               , doc.id <> ".md"
