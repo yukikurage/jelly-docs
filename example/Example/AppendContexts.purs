@@ -7,27 +7,33 @@ import Jelly.Data.Component (Component, text)
 import Jelly.Data.Hooks (hooks)
 import Jelly.Hooks.UseContext (useContext)
 import Jelly.Mount (mount_)
-import Record (union)
 import Web.DOM (Node)
 
-type Fizz r = (fizz :: String | r)
-type Buzz r = (buzz :: String | r)
+class FizzContext context where
+  getFizz :: context -> String
+
+class BuzzContext context where
+  getBuzz :: context -> String
 
 -- | Append two contexts
-type Context = Fizz (Buzz ())
+data Context = Context String String
+
+instance FizzContext Context where
+  getFizz (Context fizz _) = fizz
+
+instance BuzzContext Context where
+  getBuzz (Context _ buzz) = buzz
 
 appendContextsMount :: Node -> Effect Unit
 appendContextsMount node = do
   let
-    fizzContext = { fizz: "fizz" }
-    buzzContext = { buzz: "buzz" }
-    context = union fizzContext buzzContext
+    context = Context "Fizz" "Buzz"
   mount_ context component node
 
 component :: Component Context
 component = hooks do
-  { fizz, buzz } <- useContext
+  context <- useContext
 
   pure do
-    text fizz
-    text buzz
+    text $ getFizz context
+    text $ getBuzz context

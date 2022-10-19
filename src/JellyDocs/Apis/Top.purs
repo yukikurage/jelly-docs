@@ -12,4 +12,4 @@ import JellyDocs.Apis.BasePath (apiBasePath)
 getTopMD :: AffjaxDriver -> Aff (Either Error String)
 getTopMD driver = map (map (_.body))
   $ get driver string
-  $ apiBasePath <> makeRelativeFilePath [ "docs", "en", "overview.md" ]
+  $ apiBasePath <> makeRelativeFilePath [ "overview.md" ]

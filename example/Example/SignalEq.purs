@@ -6,33 +6,33 @@ import Data.Tuple.Nested ((/\))
 import Jelly.Data.Component (Component, el, el', text, textSig)
 import Jelly.Data.Hooks (hooks)
 import Jelly.Data.Prop (on)
-import Jelly.Data.Signal (patch_, send, signal, signalEq)
-import Jelly.Hooks.UseSignal (useSignal)
+import Jelly.Data.Signal (modifyAtom_, newState, newStateEq, writeAtom)
+import Jelly.Hooks.UseEffect (useEffect)
 import Web.HTML.Event.EventTypes (click)
 
 signalEqExample :: forall context. Component context
 signalEqExample = hooks do
-  signalWithoutEq /\ atomWithoutEq <- signal true
-  signalWithEq /\ atomWithEq <- signalEq true
+  signalWithoutEq /\ atomWithoutEq <- newState true
+  signalWithEq /\ atomWithEq <- newStateEq true
 
-  updateCountWithoutEqSig /\ updateCountWithoutEqAtom <- signalEq 0
-  updateCountWithEqSig /\ updateCountWithEqAtom <- signalEq 0
+  updateCountWithoutEqSig /\ updateCountWithoutEqAtom <- newStateEq 0
+  updateCountWithEqSig /\ updateCountWithEqAtom <- newStateEq 0
 
-  useSignal do
+  useEffect do
     _ <- signalWithoutEq
     pure do
-      patch_ updateCountWithoutEqAtom $ add 1
+      modifyAtom_ updateCountWithoutEqAtom $ add 1
       mempty
 
-  useSignal do
+  useEffect do
     _ <- signalWithEq
     pure do
-      patch_ updateCountWithEqAtom $ add 1
+      modifyAtom_ updateCountWithEqAtom $ add 1
       mempty
 
   pure do
-    el "button" [ on click \_ -> send atomWithoutEq true *> send atomWithEq true ] $ text "True"
-    el "button" [ on click \_ -> send atomWithoutEq false *> send atomWithEq false ] $ text "False"
+    el "button" [ on click \_ -> writeAtom atomWithoutEq true *> writeAtom atomWithEq true ] $ text "True"
+    el "button" [ on click \_ -> writeAtom atomWithoutEq false *> writeAtom atomWithEq false ] $ text "False"
     el' "div" do
       text "Update count without Eq: "
       textSig $ show <$> updateCountWithoutEqSig

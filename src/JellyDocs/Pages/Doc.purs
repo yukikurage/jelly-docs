@@ -10,16 +10,17 @@ import Jelly.Data.Component (Component, signalC, text)
 import Jelly.Data.Hooks (hooks)
 import Jelly.Data.Prop ((:=))
 import Jelly.Data.Signal (Signal)
-import Jelly.Element (a, elDiv)
-import Jelly.Hooks.UseSignal (useSignal)
-import Jelly.Router.Data.Router (useRouter)
+import Jelly.Element as JE
+import Jelly.Hooks.UseEffect (useEffect)
+import Jelly.Router.Data.Path (makeAbsoluteFilePath)
+import Jelly.Router.Data.Router (class RouterContext, useRouter)
+import JellyDocs.Apis.BasePath (apiBasePath)
 import JellyDocs.Components.Markdown (markdownComponent)
-import JellyDocs.Context (Context)
-import JellyDocs.Contexts.Apis (useApis)
+import JellyDocs.Contexts.Apis (class ApisContext, useApis)
 import JellyDocs.Data.Page (Page(..), pageToUrl)
 import JellyDocs.Twemoji (emojiProp)
 
-docPage :: Signal String -> Component Context
+docPage :: forall c. ApisContext c => RouterContext c => Signal String -> Component c
 docPage docIdSig = hooks do
   apis <- useApis
 
@@ -30,13 +31,13 @@ docPage docIdSig = hooks do
       pure $ lookup docId statesSig
 
   -- fetch when doc data is not available
-  useSignal $ docIdSig <#> \docId -> do
+  useEffect $ docIdSig <#> \docId -> do
     launchAff_ $ void $ apis.doc.initialize docId
     mempty
 
   -- redirect to 404
   { replaceUrl } <- useRouter
-  useSignal do
+  useEffect do
     doc <- docSig
     pure do
       case doc of
@@ -45,14 +46,17 @@ docPage docIdSig = hooks do
         _ -> pure unit
       mempty
 
-  pure $ elDiv [ "class" := "px-4 py-10 lg:px-10" ] $ signalC $ docSig <#> case _ of
+  pure $ JE.div [ "class" := "px-4 py-10 lg:px-10" ] $ signalC $ docSig <#> case _ of
     Just (Right doc) -> do
-      elDiv [ "class" := "w-full flex justify-start" ] do
-        a
+      JE.div [ "class" := "w-full flex justify-start" ] do
+        JE.a
           [ "class" :=
               "block bg-slate-300 bg-opacity-0 text-pink-500 hover:text-pink-700 transition-colors rounded font-bold text-sm"
-          , "href" := "https://github.com/yukikurage/jelly-docs/blob/master/docs/en/" <> doc.section <> "/" <> doc.id <>
-              ".md"
+          , "href" := makeAbsoluteFilePath
+              [ apiBasePath
+              , doc.section
+              , doc.id <> ".md"
+              ]
           , "target" := "_blank"
           , "rel" := "noopener noreferrer"
           , emojiProp

@@ -7,30 +7,25 @@ import Effect (Effect)
 import Jelly.Data.Component (Component)
 import Jelly.Data.Prop (on, (:=@))
 import Jelly.Data.Signal (Signal)
-import Jelly.Element (elDiv)
+import Jelly.Element as JE
 import Partial.Unsafe (unsafePartial)
 import Web.Event.Event (eventPhase)
 import Web.Event.EventPhase (EventPhase(..))
 import Web.HTML.Event.EventTypes (click)
 
 drawerComponent
-  :: forall context. { openSig :: Signal Boolean, onClose :: Effect Unit } -> Component context -> Component context
+  :: forall c. { openSig :: Signal Boolean, onClose :: Effect Unit } -> Component c -> Component c
 drawerComponent { openSig, onClose } component = do
-  elDiv
+  JE.div
     [ "class" :=@ do
         open <- openSig
         pure $ [ "fixed left-0 top-0 w-screen h-screen transition-all duration-300 bg-opacity-0" ] <> guard (not open)
           [ "pointer-events-none" ]
-    , on click \e -> do
-        let
-          ep = unsafePartial $ eventPhase e
-        if ep == AtTarget then
-          onClose
-        else
-          pure unit
+    , on click \e -> when (unsafePartial $ eventPhase e == AtTarget) onClose
+
     ]
     do
-      elDiv
+      JE.div
         [ "class" :=@ do
             open <- openSig
             pure $

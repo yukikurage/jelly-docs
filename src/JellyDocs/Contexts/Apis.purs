@@ -10,14 +10,13 @@ import Data.Tuple.Nested ((/\))
 import Effect (Effect)
 import Effect.Aff (Aff)
 import Jelly.Data.Hooks (Hooks)
-import Jelly.Data.Signal (Signal, get, patch_, send, signal)
+import Jelly.Data.Signal (Signal, modifyAtom_, newState, readSignal, writeAtom)
 import Jelly.Hooks.UseContext (useContext)
 import JellyDocs.Apis.Doc (getDoc, getDocs, getSections)
 import JellyDocs.Apis.NotFound (getNotFoundMD)
 import JellyDocs.Apis.Top (getTopMD)
 import JellyDocs.Data.Doc (Doc, DocListItem)
 import JellyDocs.Data.Section (Section)
-import Record (union)
 
 type AffjaxResponse a = Either Error a
 
@@ -41,27 +40,25 @@ type Apis =
   , top :: Api String
   }
 
-type ApisContext r = (apis :: Apis | r)
+class ApisContext context where
+  getApis :: context -> Apis
 
-useApis :: forall r. Hooks (ApisContext r) Apis
-useApis = useContext <#> (_.apis)
-
-provideApisContext :: forall r. Apis -> Record r -> Record (ApisContext r)
-provideApisContext apis context = union { apis } context
+useApis :: forall context. ApisContext context => Hooks context Apis
+useApis = getApis <$> useContext
 
 newApis :: AffjaxDriver -> Effect Apis
 newApis driver = do
   let
     monoDataApi :: forall a. Aff (AffjaxResponse a) -> Effect (Api a)
     monoDataApi affjax = do
-      stateSig /\ stateAtom <- signal Nothing
+      stateSig /\ stateAtom <- newState Nothing
       let
         refetch = do
           response <- affjax
-          send stateAtom $ Just response
+          writeAtom stateAtom $ Just response
           pure response
         initialize = do
-          state <- get stateSig
+          state <- readSignal stateSig
           case state of
             Just response -> pure response
             Nothing -> refetch
@@ -69,14 +66,14 @@ newApis driver = do
 
     multipleDataApi :: forall a. (String -> Aff (AffjaxResponse a)) -> Effect (MultipleApi a)
     multipleDataApi affjax = do
-      statesSig /\ statesAtom <- signal empty
+      statesSig /\ statesAtom <- newState empty
       let
         refetch key = do
           response <- affjax key
-          patch_ statesAtom \states -> insert key response states
+          modifyAtom_ statesAtom \states -> insert key response states
           pure response
         initialize key = do
-          states <- get statesSig
+          states <- readSignal statesSig
           case lookup key states of
             Just response -> do
               pure response

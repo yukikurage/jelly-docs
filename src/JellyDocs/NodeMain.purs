@@ -11,8 +11,9 @@ import Effect.Aff (launchAff_)
 import Effect.Class (liftEffect)
 import Jelly.Render (render)
 import Jelly.Router.Data.Path (makeRelativeFilePath)
-import Jelly.Router.Data.Router (mockRouter, provideRouterContext)
-import JellyDocs.Contexts.Apis (newApis, provideApisContext)
+import Jelly.Router.Data.Router (newMockRouter)
+import JellyDocs.Context (Context(..))
+import JellyDocs.Contexts.Apis (newApis)
 import JellyDocs.Data.Page (Page(..), pageToUrl)
 import JellyDocs.RootComponent (rootComponent)
 import Node.Encoding (Encoding(..))
@@ -44,9 +45,9 @@ main = launchAff_ do
   let
     pageToOutDir page = [ "public" ] <> (pageToUrl page).path
     genHTML page dirname filename = do
-      router <- liftEffect $ mockRouter $ pageToUrl page
+      router <- liftEffect $ newMockRouter $ pageToUrl page
       let
-        context = provideRouterContext router $ provideApisContext apis {}
+        context = Context { router, apis }
       rendered <- liftEffect $ render context rootComponent
       mkdir' (makeRelativeFilePath $ dirname) { mode: mkPerms all all all, recursive: true }
       writeTextFile UTF8 (makeRelativeFilePath $ dirname <> [ filename ]) rendered

@@ -9,7 +9,6 @@ import Jelly.Data.Component (Component, rawEl, signalC)
 import Jelly.Data.Hooks (hooks)
 import Jelly.Data.Prop (onMount, (:=))
 import Jelly.Data.Signal (Signal)
-import JellyDocs.Context (Context)
 import JellyDocs.Twemoji (emojiProp)
 import Web.DOM (Element)
 import Web.DOM.Element (setAttribute)
@@ -26,7 +25,7 @@ addOpenNewTabAttrToAnchors el = do
     traverse_ (setAttribute "target" "_blank") $ Element.fromNode anchor
     traverse_ (setAttribute "rel" "noopener noreferrer") $ Element.fromNode anchor
 
-markdownComponent :: Signal String -> Component Context
+markdownComponent :: forall context. Signal String -> Component context
 markdownComponent markdownSig = hooks do
   let
     renderedSig = parseMarkdown <$> markdownSig

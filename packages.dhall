@@ -116,7 +116,6 @@ in  upstream
       , "maybe"
       , "newtype"
       , "prelude"
-      , "record"
       , "refs"
       , "strings"
       , "tailrec"
@@ -128,5 +127,5 @@ in  upstream
       , "web-html"
       ]
     , repo = "https://github.com/yukikurage/purescript-jelly.git"
-    , version = "development"
+    , version = "v0.7"
     }

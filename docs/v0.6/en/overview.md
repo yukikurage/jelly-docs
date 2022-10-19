@@ -2,6 +2,8 @@
 
 Jelly is a simple framework for building web applications in PureScript.
 
+This document is for v0.6.x
+
 ## Features
 
 - 💥 **Reactive**

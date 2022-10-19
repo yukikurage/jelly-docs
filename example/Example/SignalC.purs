@@ -6,15 +6,15 @@ import Data.Tuple.Nested ((/\))
 import Jelly.Data.Component (Component, el, el', signalC, text, textSig)
 import Jelly.Data.Hooks (hooks)
 import Jelly.Data.Prop (on)
-import Jelly.Data.Signal (patch_, signal)
+import Jelly.Data.Signal (modifyAtom_, newStateEq)
 import Web.HTML.Event.EventTypes (click)
 
 signalCExample :: forall context. Component context
 signalCExample = hooks do
-  componentNumSig /\ componentNumAtom <- signal 1
+  componentNumSig /\ componentNumAtom <- newStateEq 1
   pure do
-    el "button" [ on click \_ -> patch_ componentNumAtom (_ + 1) ] $ text "Increment"
-    el "button" [ on click \_ -> patch_ componentNumAtom (_ - 1) ] $ text "Decrement"
+    el "button" [ on click \_ -> modifyAtom_ componentNumAtom (_ + 1) ] $ text "Increment"
+    el "button" [ on click \_ -> modifyAtom_ componentNumAtom (_ - 1) ] $ text "Decrement"
     el' "div" do
       textSig $ pure "Component number: " <> show <$> componentNumSig
     el' "div" do

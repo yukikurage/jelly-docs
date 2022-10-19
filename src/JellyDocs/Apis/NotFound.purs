@@ -12,4 +12,4 @@ import JellyDocs.Apis.BasePath (apiBasePath)
 getNotFoundMD :: AffjaxDriver -> Aff (Either Error String)
 getNotFoundMD driver = map (map (_.body))
   $ get driver string
-  $ apiBasePath <> makeRelativeFilePath [ "docs", "en", "not-found.md" ]
+  $ apiBasePath <> makeRelativeFilePath [ "not-found.md" ]
