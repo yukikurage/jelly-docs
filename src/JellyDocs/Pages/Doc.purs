@@ -14,7 +14,6 @@ import Jelly.Element as JE
 import Jelly.Hooks.UseEffect (useEffect)
 import Jelly.Router.Data.Path (makeRelativeFilePath)
 import Jelly.Router.Data.Router (class RouterContext, useRouter)
-import JellyDocs.Apis.BasePath (apiBasePath)
 import JellyDocs.Components.Markdown (markdownComponent)
 import JellyDocs.Contexts.Apis (class ApisContext, useApis)
 import JellyDocs.Data.Page (Page(..), pageToUrl)
@@ -52,7 +51,7 @@ docPage docIdSig = hooks do
         JE.a
           [ "class" :=
               "block bg-slate-300 bg-opacity-0 text-pink-500 hover:text-pink-700 transition-colors rounded font-bold text-sm"
-          , "href" := "https://github.com/yukikurage/jelly-docs/blob/master/docs/en/" <> makeRelativeFilePath
+          , "href" := "https://github.com/yukikurage/jelly-docs/blob/master/docs/v0.6/en/" <> makeRelativeFilePath
               [ doc.section
               , doc.id <> ".md"
               ]
