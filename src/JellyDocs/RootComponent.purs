@@ -55,6 +55,10 @@ headComponent = JE.head [] do
     titleSig <- useTitleSig
     pure $ textSig titleSig
 
+  JE.script
+    [ "src" := "/index.js", "defer" := true ]
+    mempty
+
   JE.link [ "rel" := "stylesheet", "href" := "/index.css" ]
 
   JE.meta [ "name" := "viewport", "content" := "width=device-width,initial-scale=1.0" ]
@@ -79,17 +83,22 @@ headComponent = JE.head [] do
     ]
 
   JE.link
+    [ "rel" := "preload"
+    , "as" := "style"
+    , "href" :=
+        "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/atom-one-light.min.css"
+    ]
+  JE.link
     [ "rel" := "stylesheet"
     , "href" := "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/atom-one-light.min.css"
+    , "media" := "print"
+    , "onload" := "this.media='all'"
     ]
 
   JE.meta
     [ "name" := "description"
     , "content" := "Documentation for PureScript Jelly, a framework for building reactive web applications."
     ]
-  JE.script
-    [ "src" := "/index.js", "defer" := true ]
-    mempty
 
 bodyComponent :: forall c. RouterContext c => ApisContext c => Component c
 bodyComponent = hooks do
