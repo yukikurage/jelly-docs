@@ -56,7 +56,7 @@ headComponent = JE.head [] do
     pure $ textSig titleSig
 
   JE.script
-    [ "src" := "/index.js", "defer" := true ]
+    [ "src" := "/index.js" ]
     mempty
 
   JE.link [ "rel" := "stylesheet", "href" := "/index.css" ]
