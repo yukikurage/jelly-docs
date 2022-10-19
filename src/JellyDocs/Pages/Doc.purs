@@ -52,9 +52,8 @@ docPage docIdSig = hooks do
         JE.a
           [ "class" :=
               "block bg-slate-300 bg-opacity-0 text-pink-500 hover:text-pink-700 transition-colors rounded font-bold text-sm"
-          , "href" := makeRelativeFilePath
-              [ apiBasePath
-              , doc.section
+          , "href" := apiBasePath <> makeRelativeFilePath
+              [ doc.section
               , doc.id <> ".md"
               ]
           , "target" := "_blank"
