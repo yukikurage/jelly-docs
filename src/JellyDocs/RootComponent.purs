@@ -50,8 +50,8 @@ useTitleSig = do
       _ -> pure "Not Found - Jelly"
 
 headComponent :: forall c. RouterContext c => ApisContext c => Component c
-headComponent = JE.head [] do
-  JE.title [] $ hooks do
+headComponent = JE.head' do
+  JE.title' $ hooks do
     titleSig <- useTitleSig
     pure $ textSig titleSig
 

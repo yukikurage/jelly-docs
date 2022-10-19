@@ -21,8 +21,8 @@ renderSidebarSection :: forall c. RouterContext c => Signal Section -> Component
 renderSidebarSection sectionSig = do
   JE.li [ "class" := "my-1 pb-3 pt-6 px-3 font-bold text-sm" ] do
     textSig $ (_.title) <$> sectionSig
-  JE.li [] do
-    JE.ul [] $ signalC do
+  JE.li' do
+    JE.ul' $ signalC do
       { docs } <- sectionSig
       pure $ for_ docs \doc -> renderSidebarSectionItem $ pure doc
 
