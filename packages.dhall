@@ -129,5 +129,5 @@ in  upstream
   , "web-html"
   ]
     , repo = "https://github.com/yukikurage/purescript-jelly.git"
-    , version = "v0.7"
+    , version = "master"
     }

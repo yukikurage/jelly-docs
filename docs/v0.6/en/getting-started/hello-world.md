@@ -28,9 +28,8 @@ import Data.Foldable (traverse_)
 import Effect (Effect)
 import Effect.Aff (launchAff_)
 import Effect.Class (liftEffect)
-import Jelly.Aff (awaitBody)
-import Jelly.Data.Component (Component, el', text)
-import Jelly.Mount (mount_)
+import Jelly (Component, awaitBody, mount_, text)
+import Jelly.Element as JE
 
 type Context :: Row Type
 type Context = ()
@@ -42,8 +41,9 @@ main = launchAff_ do
 
 bodyComponent :: Component Context
 bodyComponent = do
-  el' "h1" do
+  JE.h1' do
     text "Hello World!"
+
 ```
 
 Finally, bundle the application.
@@ -75,8 +75,9 @@ Get an body element and mount the `bodyComponent`.
 ```purescript
 bodyComponent :: Component Context
 bodyComponent = do
-  el' "h1" do
-    text $ pure "Hello World!"
+  JE.h1' do
+    text "Hello World!"
+
 ```
 
 The `Component` type represents a piece of HTML. The `el'` function creates an `h1` element, and the `text` function adds a string to it.

@@ -20,7 +20,7 @@ appendContextsMount node = do
 
 component :: Component Context
 component = hooks do
-  {fizz, buzz} <- useContext
+  { fizz, buzz } <- useContext
 
   pure do
     text fizz

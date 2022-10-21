@@ -2,14 +2,16 @@
 
 ## Component
 
-`el` and `el'` are functions to create a single element Component. `el` can take props, whereas `el'` cannot. `text` is a function to creates a text node Component.
+`Jelly.Element` provides `{tag}` & `{tag}'` function for each HTML tag.
+
+`{tag}` and `{tag}'` are functions to create a single element Component. `{tag}` can take props, whereas `{tag}'` cannot. `text` is a function to creates a text node Component.
 
 Props represent attributes and event handlers. You can define attributes using the `:=` operator.
 
 ### Example
 
 ```purescript
-component = el "h1" [ "class" := "title" ] do
+component = JE.h1 [ "class" := "title" ] do
   text "Hello, Jelly!"
 ```
 
@@ -26,11 +28,11 @@ Component is a monad and multiple child elements can be created using `do` notat
 ### Example
 
 ```purescript
-component = el' "div" do
-  el' "h1" do
+component = JE.div' do
+  JE.h1' do
     text "Hello, Jelly!"
-  el' "p" do
+  JE.p' do
     text "This is a Jelly example."
-    el' "div" do
+    JE.div' do
       text "This is a nested element."
 ```
