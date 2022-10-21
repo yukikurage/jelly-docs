@@ -6,14 +6,12 @@ import Data.Either (Either(..))
 import Data.Maybe (Maybe(..))
 import Effect.Aff (launchAff_)
 import Effect.Class (liftEffect)
-import Jelly.Data.Component (Component, signalC)
-import Jelly.Data.Hooks (hooks)
-import Jelly.Data.Prop ((:=))
+import Jelly (Component, hooks, signalC, (:=))
 import Jelly.Element as JE
 import JellyDocs.Components.Markdown (markdownComponent)
-import JellyDocs.Contexts.Apis (class ApisContext, useApis)
+import JellyDocs.Contexts.Apis (ApisContext, useApis)
 
-topPage :: forall c. ApisContext c => Component c
+topPage :: forall c. Component (ApisContext c)
 topPage = hooks do
   apis <- useApis
 

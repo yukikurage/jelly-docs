@@ -5,10 +5,9 @@ import Prelude
 import Data.Foldable (for_, traverse_)
 import Effect (Effect)
 import Example (preview)
-import Jelly.Data.Component (Component, rawEl, signalC)
-import Jelly.Data.Hooks (hooks)
-import Jelly.Data.Prop (onMount, (:=))
+import Jelly (Component, hooks, onMount, rawC, signalC, (:=))
 import Jelly.Data.Signal (Signal)
+import Jelly.Element as JE
 import JellyDocs.Twemoji (emojiProp)
 import Web.DOM (Element)
 import Web.DOM.Element (setAttribute)
@@ -32,6 +31,7 @@ markdownComponent markdownSig = hooks do
 
   pure $ signalC do
     rendered <- renderedSig
-    pure $ rawEl "div"
-      [ "class" := "w-full h-full markdown", emojiProp, onMount preview, onMount addOpenNewTabAttrToAnchors ]
-      rendered
+    pure
+      $ JE.div
+          [ "class" := "w-full h-full markdown", emojiProp, onMount preview, onMount addOpenNewTabAttrToAnchors ]
+      $ rawC rendered

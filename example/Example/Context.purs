@@ -2,35 +2,33 @@ module Example.Context where
 
 import Prelude
 
-import Data.Tuple.Nested (type (/\), (/\))
+import Data.Tuple.Nested ((/\))
 import Effect (Effect)
-import Jelly.Data.Component (Component, el, text, textSig)
-import Jelly.Data.Hooks (hooks)
-import Jelly.Data.Prop (on)
+import Jelly (Component, hooks, mount_, on, text, textSig)
 import Jelly.Data.Signal (Atom, Signal, modifyAtom_, newStateEq)
-import Jelly.Hooks.UseContext (useContext)
-import Jelly.Mount (mount_)
+import Jelly.Element as JE
+import Jelly.Hooks (useContext)
 import Web.DOM (Node)
 import Web.HTML.Event.EventTypes (click)
 
-type Context = Signal Int /\ Atom Int
+type Context = (countSig :: Signal Int, countAtom :: Atom Int)
 
 mountWithContext :: Node -> Effect Unit
 mountWithContext node = do
-  countState <- newStateEq 0
-  mount_ countState parentComponent node
+  countSig /\ countAtom <- newStateEq 0
+  mount_ { countSig, countAtom } parentComponent node
 
 parentComponent :: Component Context
 parentComponent = hooks do
-  _ /\ countAtom <- useContext
+  { countAtom } <- useContext
 
   pure do
-    el "button" [ on click \_ -> modifyAtom_ countAtom (add 1) ] $ text "Increment"
+    JE.button [ on click \_ -> modifyAtom_ countAtom (add 1) ] $ text "Increment"
     childComponent
 
 childComponent :: Component Context
 childComponent = hooks do
-  countSig /\ _ <- useContext
+  { countSig } <- useContext
 
   pure do
     textSig $ show <$> countSig

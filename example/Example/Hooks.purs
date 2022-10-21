@@ -4,11 +4,10 @@ import Prelude
 
 import Data.Tuple.Nested ((/\))
 import Effect.Class.Console (log)
-import Jelly.Data.Component (Component, el, el', ifC, text)
-import Jelly.Data.Hooks (hooks)
-import Jelly.Data.Prop (on)
+import Jelly (Component, hooks, ifC, on, text)
 import Jelly.Data.Signal (newStateEq, writeAtom)
-import Jelly.Hooks.UseCleanup (useCleanup)
+import Jelly.Element as JE
+import Jelly.Hooks (useCleanup)
 import Web.HTML.Event.EventTypes (click)
 
 hooksExample :: forall context. Component context
@@ -26,8 +25,8 @@ hooksExampleWrapper = hooks do
   isMountedSig /\ isMountedAtom <- newStateEq true
 
   pure do
-    el "button" [ on click \_ -> writeAtom isMountedAtom true ] $ text "Mount"
-    el "button" [ on click \_ -> writeAtom isMountedAtom false ] $ text "Unmount"
+    JE.button [ on click \_ -> writeAtom isMountedAtom true ] $ text "Mount"
+    JE.button [ on click \_ -> writeAtom isMountedAtom false ] $ text "Unmount"
     ifC isMountedSig
-      do el' "div" hooksExample
-      do el' "div" $ text "Unmounted"
+      do JE.div' hooksExample
+      do JE.div' $ text "Unmounted"

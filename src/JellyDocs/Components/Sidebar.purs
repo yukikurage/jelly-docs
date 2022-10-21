@@ -4,20 +4,17 @@ import Prelude
 
 import Data.Array (singleton)
 import Data.Foldable (for_)
-import Jelly.Data.Component (Component, signalC, text, textSig)
-import Jelly.Data.Hooks (hooks)
-import Jelly.Data.Prop ((:=), (:=@))
+import Jelly (Component, hooks, signalC, text, textSig, (:=), (:=@))
 import Jelly.Data.Signal (Signal)
 import Jelly.Element as JE
-import Jelly.Router.Components (routerLink)
-import Jelly.Router.Data.Router (class RouterContext, useRouter)
+import Jelly.Router (RouterContext, routerLink, useRouter)
 import JellyDocs.Components.Logo (logoComponent)
 import JellyDocs.Data.Doc (DocListItem)
 import JellyDocs.Data.Page (Page(..), pageToUrl)
 import JellyDocs.Data.Section (Section)
 import JellyDocs.Twemoji (emojiProp)
 
-renderSidebarSection :: forall c. RouterContext c => Signal Section -> Component c
+renderSidebarSection :: forall c. Signal Section -> Component (RouterContext c)
 renderSidebarSection sectionSig = do
   JE.li [ "class" := "my-1 pb-3 pt-6 px-3 font-bold text-sm" ] do
     textSig $ (_.title) <$> sectionSig
@@ -26,7 +23,7 @@ renderSidebarSection sectionSig = do
       { docs } <- sectionSig
       pure $ for_ docs \doc -> renderSidebarSectionItem $ pure doc
 
-renderSidebarSectionItem :: forall c. RouterContext c => Signal DocListItem -> Component c
+renderSidebarSectionItem :: forall c. Signal DocListItem -> Component (RouterContext c)
 renderSidebarSectionItem docSig = hooks do
   { currentUrlSig, temporaryUrlSig } <- useRouter
 
@@ -59,7 +56,7 @@ renderSidebarSectionItem docSig = hooks do
       do
         text title
 
-sidebarComponent :: forall c. RouterContext c => Signal (Array Section) -> Component c
+sidebarComponent :: forall c. Signal (Array Section) -> Component (RouterContext c)
 sidebarComponent sectionsSig = hooks do
   pure $ JE.nav [ "class" := "w-80", emojiProp ] do
     JE.div [ "class" := "w-full h-16 pt-16 px-10 hidden lg:block" ] logoComponent

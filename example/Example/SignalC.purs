@@ -3,21 +3,20 @@ module Example.SignalC where
 import Prelude
 
 import Data.Tuple.Nested ((/\))
-import Jelly.Data.Component (Component, el, el', signalC, text, textSig)
-import Jelly.Data.Hooks (hooks)
-import Jelly.Data.Prop (on)
+import Jelly (Component, hooks, on, signalC, text, textSig)
 import Jelly.Data.Signal (modifyAtom_, newStateEq)
+import Jelly.Element as JE
 import Web.HTML.Event.EventTypes (click)
 
 signalCExample :: forall context. Component context
 signalCExample = hooks do
   componentNumSig /\ componentNumAtom <- newStateEq 1
   pure do
-    el "button" [ on click \_ -> modifyAtom_ componentNumAtom (_ + 1) ] $ text "Increment"
-    el "button" [ on click \_ -> modifyAtom_ componentNumAtom (_ - 1) ] $ text "Decrement"
-    el' "div" do
+    JE.button [ on click \_ -> modifyAtom_ componentNumAtom (_ + 1) ] $ text "Increment"
+    JE.button [ on click \_ -> modifyAtom_ componentNumAtom (_ - 1) ] $ text "Decrement"
+    JE.div' do
       textSig $ pure "Component number: " <> show <$> componentNumSig
-    el' "div" do
+    JE.div' do
       signalC do
         componentNum <- componentNumSig
         pure case componentNum of

@@ -9,17 +9,15 @@ import Data.Maybe (Maybe(..))
 import Data.Tuple.Nested ((/\))
 import Effect.Aff (launchAff_)
 import Effect.Class (liftEffect)
-import Jelly.Data.Component (Component, doctypeHtml, signalC, text, textSig)
-import Jelly.Data.Hooks (Hooks, hooks)
-import Jelly.Data.Prop (on, onMount, (:=))
+import Jelly (type (+), Component, Hooks, doctypeHtml, hooks, on, onMount, signalC, text, textSig, (:=))
 import Jelly.Data.Signal (Signal, newState, newStateEq, readSignal, writeAtom)
 import Jelly.Element as JE
-import Jelly.Hooks.UseEffect (useEffect)
-import Jelly.Router.Data.Router (class RouterContext, useRouter)
+import Jelly.Hooks (useEffect_)
+import Jelly.Router (RouterContext, useRouter)
 import JellyDocs.Components.Drawer (drawerComponent)
 import JellyDocs.Components.Logo (logoComponent)
 import JellyDocs.Components.Sidebar (sidebarComponent)
-import JellyDocs.Contexts.Apis (class ApisContext, useApis)
+import JellyDocs.Contexts.Apis (ApisContext, useApis)
 import JellyDocs.Data.Page (Page(..), urlToPage)
 import JellyDocs.Pages.Doc (docPage)
 import JellyDocs.Pages.NotFound (notFoundPage)
@@ -28,14 +26,14 @@ import JellyDocs.Twemoji (emojiProp)
 import JellyDocs.Utils (scrollToTop)
 import Web.HTML.Event.EventTypes (click)
 
-rootComponent :: forall c. RouterContext c => ApisContext c => Component c
+rootComponent :: forall c. Component (RouterContext + ApisContext + c)
 rootComponent = do
   doctypeHtml
   JE.html [ "lang" := "en", "class" := "font-Lato text-slate-800" ] do
     headComponent
     bodyComponent
 
-useTitleSig :: forall c. RouterContext c => ApisContext c => Hooks c (Signal String)
+useTitleSig :: forall c. Hooks (RouterContext + ApisContext + c) (Signal String)
 useTitleSig = do
   { currentUrlSig } <- useRouter
   apis <- useApis
@@ -49,7 +47,7 @@ useTitleSig = do
         | Just (Right ds) <- docs, Just { title } <- find (\{ id } -> docId == id) ds -> pure $ title <> " - Jelly"
       _ -> pure "Not Found - Jelly"
 
-headComponent :: forall c. RouterContext c => ApisContext c => Component c
+headComponent :: forall c. Component (RouterContext + ApisContext + c)
 headComponent = JE.head' do
   JE.title' $ hooks do
     titleSig <- useTitleSig
@@ -100,20 +98,17 @@ headComponent = JE.head' do
     , "content" := "Documentation for PureScript Jelly, a framework for building reactive web applications."
     ]
 
-bodyComponent :: forall c. RouterContext c => ApisContext c => Component c
+bodyComponent :: forall c. Component (RouterContext + ApisContext + c)
 bodyComponent = hooks do
   isSidebarOpenSig /\ isSidebarOpenAtom <- newStateEq false
   { currentUrlSig } <- useRouter
   scrollElSig /\ scrollElAtom <- newState Nothing
 
   -- | Hide sidebar when temporary url is changed
-  useEffect do
-    _ <- currentUrlSig
-    pure do
-      writeAtom isSidebarOpenAtom false
-      scrollEl <- readSignal scrollElSig
-      traverse_ scrollToTop scrollEl
-      mempty
+  useEffect_ $ currentUrlSig $> do
+    writeAtom isSidebarOpenAtom false
+    scrollEl <- readSignal scrollElSig
+    traverse_ scrollToTop scrollEl
 
   apis <- useApis
   liftEffect $ launchAff_ $ void $ apis.sections.initialize

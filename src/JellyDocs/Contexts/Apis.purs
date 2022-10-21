@@ -17,6 +17,7 @@ import JellyDocs.Apis.NotFound (getNotFoundMD)
 import JellyDocs.Apis.Top (getTopMD)
 import JellyDocs.Data.Doc (Doc, DocListItem)
 import JellyDocs.Data.Section (Section)
+import Record (union)
 
 type AffjaxResponse a = Either Error a
 
@@ -40,11 +41,13 @@ type Apis =
   , top :: Api String
   }
 
-class ApisContext context where
-  getApis :: context -> Apis
+type ApisContext context = (apis :: Apis | context)
 
-useApis :: forall context. ApisContext context => Hooks context Apis
-useApis = getApis <$> useContext
+provideApis :: forall context. Apis -> Record context -> Record (ApisContext context)
+provideApis apis context = { apis } `union` context
+
+useApis :: forall context. Hooks (ApisContext context) Apis
+useApis = _.apis <$> useContext
 
 newApis :: AffjaxDriver -> Effect Apis
 newApis driver = do

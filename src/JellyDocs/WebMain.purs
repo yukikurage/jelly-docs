@@ -6,11 +6,9 @@ import Affjax.Web (driver)
 import Effect (Effect)
 import Effect.Aff (launchAff_)
 import Effect.Class (liftEffect)
-import Jelly.Aff (awaitDocument)
-import Jelly.Hydrate (hydrate_)
-import Jelly.Router.Data.Router (newRouter)
-import JellyDocs.Context (Context(..))
-import JellyDocs.Contexts.Apis (newApis)
+import Jelly (awaitDocument, hydrate_)
+import Jelly.Router (newRouter, provideRouter)
+import JellyDocs.Contexts.Apis (newApis, provideApis)
 import JellyDocs.Data.Page (Page(..), urlToPage)
 import JellyDocs.RootComponent (rootComponent)
 
@@ -36,7 +34,7 @@ main = launchAff_ do
 
   -- Make Context
   let
-    context = Context { apis, router }
+    context = provideApis apis $ provideRouter router {}
 
   -- Run App
   liftEffect $ hydrate_ context rootComponent d

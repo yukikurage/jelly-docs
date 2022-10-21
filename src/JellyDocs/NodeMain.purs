@@ -9,11 +9,9 @@ import Data.Functor (mapFlipped)
 import Effect (Effect)
 import Effect.Aff (launchAff_)
 import Effect.Class (liftEffect)
-import Jelly.Render (render)
-import Jelly.Router.Data.Path (makeRelativeFilePath)
-import Jelly.Router.Data.Router (newMockRouter)
-import JellyDocs.Context (Context(..))
-import JellyDocs.Contexts.Apis (newApis)
+import Jelly (render)
+import Jelly.Router (makeRelativeFilePath, newMockRouter, provideRouter)
+import JellyDocs.Contexts.Apis (newApis, provideApis)
 import JellyDocs.Data.Page (Page(..), pageToUrl)
 import JellyDocs.RootComponent (rootComponent)
 import Node.Encoding (Encoding(..))
@@ -47,7 +45,7 @@ main = launchAff_ do
     genHTML page dirname filename = do
       router <- liftEffect $ newMockRouter $ pageToUrl page
       let
-        context = Context { router, apis }
+        context = provideApis apis $ provideRouter router {}
       rendered <- liftEffect $ render context rootComponent
       mkdir' (makeRelativeFilePath $ dirname) { mode: mkPerms all all all, recursive: true }
       writeTextFile UTF8 (makeRelativeFilePath $ dirname <> [ filename ]) rendered

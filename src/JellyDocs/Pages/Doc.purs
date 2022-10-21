@@ -5,21 +5,17 @@ import Prelude
 import Data.Either (Either(..))
 import Data.HashMap (lookup)
 import Data.Maybe (Maybe(..))
-import Effect.Aff (launchAff_)
-import Jelly.Data.Component (Component, signalC, text)
-import Jelly.Data.Hooks (hooks)
-import Jelly.Data.Prop ((:=))
+import Jelly (type (+), Component, hooks, signalC, text, (:=))
 import Jelly.Data.Signal (Signal)
 import Jelly.Element as JE
-import Jelly.Hooks.UseEffect (useEffect)
-import Jelly.Router.Data.Path (makeRelativeFilePath)
-import Jelly.Router.Data.Router (class RouterContext, useRouter)
+import Jelly.Hooks (useAff_, useEffect_)
+import Jelly.Router (RouterContext, makeRelativeFilePath, useRouter)
 import JellyDocs.Components.Markdown (markdownComponent)
-import JellyDocs.Contexts.Apis (class ApisContext, useApis)
+import JellyDocs.Contexts.Apis (ApisContext, useApis)
 import JellyDocs.Data.Page (Page(..), pageToUrl)
 import JellyDocs.Twemoji (emojiProp)
 
-docPage :: forall c. ApisContext c => RouterContext c => Signal String -> Component c
+docPage :: forall c. Signal String -> Component (RouterContext + ApisContext + c)
 docPage docIdSig = hooks do
   apis <- useApis
 
@@ -30,20 +26,14 @@ docPage docIdSig = hooks do
       pure $ lookup docId statesSig
 
   -- fetch when doc data is not available
-  useEffect $ docIdSig <#> \docId -> do
-    launchAff_ $ void $ apis.doc.initialize docId
-    mempty
+  useAff_ $ docIdSig <#> (void <<< apis.doc.initialize)
 
   -- redirect to 404
   { replaceUrl } <- useRouter
-  useEffect do
-    doc <- docSig
-    pure do
-      case doc of
-        Just (Left _) -> do
-          replaceUrl $ pageToUrl PageNotFound
-        _ -> pure unit
-      mempty
+  useEffect_ $ docSig <#> case _ of
+    Just (Left _) -> do
+      replaceUrl $ pageToUrl PageNotFound
+    _ -> pure unit
 
   pure $ JE.div [ "class" := "px-4 py-10 lg:px-10" ] $ signalC $ docSig <#> case _ of
     Just (Right doc) -> do
