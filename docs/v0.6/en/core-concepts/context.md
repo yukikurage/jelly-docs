@@ -17,38 +17,37 @@ module Example.Context where
 
 import Prelude
 
-import Data.Tuple.Nested (type (/\), (/\))
+import Data.Tuple.Nested ((/\))
 import Effect (Effect)
-import Jelly.Data.Component (Component, el, text, textSig)
-import Jelly.Data.Hooks (hooks)
-import Jelly.Data.Prop (on)
-import Jelly.Data.Signal (Atom, Signal, patch_, signal)
-import Jelly.Hooks.UseContext (useContext)
-import Jelly.Mount (mount_)
+import Jelly (Component, hooks, mount_, on, text, textSig)
+import Jelly.Data.Signal (Atom, Signal, modifyAtom_, newStateEq)
+import Jelly.Element as JE
+import Jelly.Hooks (useContext)
 import Web.DOM (Node)
 import Web.HTML.Event.EventTypes (click)
 
-type Context = (countState :: Signal Int /\ Atom Int)
+type Context = (countSig :: Signal Int, countAtom :: Atom Int)
 
 mountWithContext :: Node -> Effect Unit
 mountWithContext node = do
-  countState <- signal 0
-  mount_ { countState } parentComponent node
+  countSig /\ countAtom <- newStateEq 0
+  mount_ { countSig, countAtom } parentComponent node
 
 parentComponent :: Component Context
 parentComponent = hooks do
-  { countState: _ /\ countAtom } <- useContext
+  { countAtom } <- useContext
 
   pure do
-    el "button" [ on click \_ -> patch_ countAtom (add 1) ] $ text "Increment"
+    JE.button [ on click \_ -> modifyAtom_ countAtom (add 1) ] $ text "Increment"
     childComponent
 
 childComponent :: Component Context
 childComponent = hooks do
-  { countState: countSig /\ _ } <- useContext
+  { countSig } <- useContext
 
   pure do
     textSig $ show <$> countSig
+
 ```
 
 ## Append contexts
@@ -67,26 +66,20 @@ module Example.AppendContexts where
 import Prelude
 
 import Effect (Effect)
-import Jelly.Data.Component (Component, text)
-import Jelly.Data.Hooks (hooks)
-import Jelly.Hooks.UseContext (useContext)
-import Jelly.Mount (mount_)
-import Record (union)
+import Jelly (type (+), Component, hooks, mount_, text)
+import Jelly.Hooks (useContext)
 import Web.DOM (Node)
 
-type Fizz r = (fizz :: String | r)
-type Buzz r = (buzz :: String | r)
+type FizzContext context = (fizz :: String | context)
+
+type BuzzContext context = (buzz :: String | context)
 
 -- | Append two contexts
-type Context = Fizz (Buzz ())
+type Context = FizzContext + BuzzContext + ()
 
 appendContextsMount :: Node -> Effect Unit
 appendContextsMount node = do
-  let
-    fizzContext = { fizz: "fizz" }
-    buzzContext = { buzz: "buzz" }
-    context = union fizzContext buzzContext
-  mount_ context component node
+  mount_ { fizz: "Fizz", buzz: "Buzz" } component node
 
 component :: Component Context
 component = hooks do
@@ -95,4 +88,5 @@ component = hooks do
   pure do
     text fizz
     text buzz
+
 ```
