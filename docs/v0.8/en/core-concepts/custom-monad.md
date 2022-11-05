@@ -59,10 +59,6 @@ mountContext (ContextT cmp) node = do
   state <- newStateEq 0
   mount (runReaderT cmp state) node
 
-mountWithContext :: Node -> Hooks Unit
-mountWithContext node = do
-  mountContext parentComponent node
-
 parentComponent :: forall m. Component m => Context m => m Unit
 parentComponent = do
   countChannel <- useCountChannel

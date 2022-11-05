@@ -15,13 +15,13 @@ module.exports = {
           '50%': { translate: '60%' },
         },
         fadeIn: {
-          '0%': { opacity: 0, transform: 'translateY(-3px)' },
-          '100%': { opacity: 1, transform: 'translateY(0)' },
+          '0%': { opacity: 0 },
+          '100%': { opacity: 1 },
         }
       },
       animation: {
         sweep: 'sweep 0.8s ease-in-out infinite',
-        fadeIn: 'fadeIn 0.08s ease-in-out',
+        fadeIn: 'fadeIn 0.08s ease-out 0s 1',
       },
     },
   },

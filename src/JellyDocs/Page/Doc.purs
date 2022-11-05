@@ -32,7 +32,7 @@ docPage docIdSig = do
     _ -> pure unit
 
   useHooks_ $ docSig <#> case _ of
-    Just (Right doc) -> JE.div [ "class" := "px-4 py-10 lg:px-10 animate-fadeIn" ] do
+    Just (Right doc) -> JE.div [ "class" := "px-4 py-10 lg:px-10 animate-fadeIn transition-colors" ] do
       JE.div [ "class" := "w-full flex justify-start" ] do
         JE.a
           [ "class" :=

@@ -21,6 +21,6 @@ topPage = do
   useHooks_ do
     top <- topSig
     pure case top of
-      Just (Right md) -> JE.div [ "class" := "px-4 py-10 lg:px-10 animate-fadeIn" ] $ markdownComponent $ pure md
+      Just (Right md) -> JE.div [ "class" := "px-4 py-10 lg:px-10 animate-fadeIn transition-colors" ] $ markdownComponent $ pure md
       _ -> JE.div [ "class" := "h-full w-full" ] do
         loadingComponent
