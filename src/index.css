@@ -103,8 +103,8 @@
 }
 
 .markdown a {
-  @apply text-pink-500;
-  @apply hover:text-pink-700;
+  @apply text-pink-600;
+  @apply hover:text-pink-800;
   @apply transition-colors;
   @apply font-bold;
 }

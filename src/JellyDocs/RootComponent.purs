@@ -137,7 +137,7 @@ bodyComponent = do
     JE.div [ "class" := "h-full w-[1px] bg-slate-300 bg-opacity-50 hidden lg:block" ] $ pure unit
     JE.div [ "class" := "flex-1 overflow-auto h-full flex justify-center", onMount (Just >>> writeChannel scrollElChannel) ]
       do
-        JE.main [ "class" := "w-full xl:w-[60rem] pt-14 lg:pt-0" ] $ useHooks_ do
+        JE.main [ "class" := "w-full xl:w-[60rem] pt-14 min-h-0 lg:pt-0" ] $ useHooks_ do
           cp <- currentPage
           pure case cp of
             PageTop -> topPage

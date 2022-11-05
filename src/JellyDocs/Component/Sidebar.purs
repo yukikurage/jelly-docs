@@ -45,7 +45,7 @@ renderSidebarSectionItem docSig = do
             ]
               <> singleton
                 if isActive then
-                  "before:h-3/4 before:w-1 text-pink-500 font-bold before:bg-pink-500"
+                  "before:h-3/4 before:w-1 text-pink-600 font-bold before:bg-pink-600"
                 else "before:h-1/2 before:w-0 text-slate-700 before:bg-slate-500"
       ]
       do

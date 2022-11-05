@@ -8,6 +8,7 @@ import Jelly.Component (class Component)
 import Jelly.Element as JE
 import Jelly.Prop ((:=))
 import JellyDocs.Capability.Api (class Api, useTopApi)
+import JellyDocs.Component.Loading (loadingComponent)
 import JellyDocs.Component.Markdown (markdownComponent)
 import Signal.Hooks (useAff, useHooks_)
 
@@ -17,8 +18,9 @@ topPage = do
 
   topSig <- useAff $ pure topApi
 
-  JE.div [ "class" := "px-4 py-10 lg:px-10" ] $ useHooks_ do
+  useHooks_ do
     top <- topSig
     pure case top of
-      Just (Right md) -> markdownComponent $ pure md
-      _ -> pure unit
+      Just (Right md) -> JE.div [ "class" := "px-4 py-10 lg:px-10 animate-fadeIn" ] $ markdownComponent $ pure md
+      _ -> JE.div [ "class" := "h-full w-full" ] do
+        loadingComponent

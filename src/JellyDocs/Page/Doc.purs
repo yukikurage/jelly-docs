@@ -10,6 +10,7 @@ import Jelly.Element as JE
 import Jelly.Prop ((:=))
 import JellyDocs.Capability.Api (class Api, useDocApi)
 import JellyDocs.Capability.Nav (class Nav, useReplacePage)
+import JellyDocs.Component.Loading (loadingComponent)
 import JellyDocs.Component.Markdown (markdownComponent)
 import JellyDocs.Data.Page (Page(..))
 import JellyDocs.Twemoji (emojiProp)
@@ -30,12 +31,12 @@ docPage docIdSig = do
       useReplacePage PageNotFound
     _ -> pure unit
 
-  JE.div [ "class" := "px-4 py-10 lg:px-10" ] $ useHooks_ $ docSig <#> case _ of
-    Just (Right doc) -> do
+  useHooks_ $ docSig <#> case _ of
+    Just (Right doc) -> JE.div [ "class" := "px-4 py-10 lg:px-10 animate-fadeIn" ] do
       JE.div [ "class" := "w-full flex justify-start" ] do
         JE.a
           [ "class" :=
-              "block bg-slate-300 bg-opacity-0 text-pink-500 hover:text-pink-700 transition-colors rounded font-bold text-sm"
+              "block bg-slate-300 bg-opacity-0 text-pink-600 hover:text-pink-800 transition-colors rounded font-bold text-sm"
           , "href" := "https://github.com/yukikurage/jelly-docs/blob/master/docs/v0.8/en/" <> joinWith "/"
               [ doc.section
               , doc.id <> ".md"
@@ -47,4 +48,5 @@ docPage docIdSig = do
           do
             text "Edit this page ✏️"
       markdownComponent $ pure doc.content
-    _ -> pure unit
+    _ -> JE.div [ "class" := "h-full w-full" ] do
+      loadingComponent
