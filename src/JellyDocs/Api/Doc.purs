@@ -65,12 +65,12 @@ sections =
           , title: "Stateful Component"
           , section: "core-concepts"
           }
-        , { id: "context"
-          , title: "Context"
+        , { id: "component-switching"
+          , title: "Component Switching"
           , section: "core-concepts"
           }
-        , { id: "manage-lifecycle"
-          , title: "Manage LifeCycle"
+        , { id: "custom-monad"
+          , title: "Custom Monad"
           , section: "core-concepts"
           }
         ]
