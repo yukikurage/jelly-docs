@@ -4,13 +4,7 @@
 
 Hooks is a way to execute effects in a component's life cycle (on mount & unmount).
 
-Using `useCleanup` function in `Hooks` Monad and converting it to `Component` by `hooks` function, you can attach effects to a component.
-
-`hooks` has following type:
-
-```purescript
-hooks :: forall context. Hooks context (Component context) -> Component context
-```
+Using `useCleaner` function, you can register a function to be executed when the component is unmounted.
 
 ### Example
 
@@ -27,20 +21,19 @@ import Prelude
 
 import Data.Tuple.Nested ((/\))
 import Effect.Class.Console (log)
-import Jelly (Component, hooks, ifC, on, text)
-import Jelly.Data.Signal (newStateEq, writeAtom)
+import Jelly.Component (class Component, text)
 import Jelly.Element as JE
-import Jelly.Hooks (useCleanup)
+import Jelly.Prop (on)
+import Signal (writeChannel)
+import Signal.Hooks (newStateEq, useCleaner, useIf_)
 import Web.HTML.Event.EventTypes (click)
 
-hooksExample :: forall context. Component context
-hooksExample = hooks do
+hooksExample :: forall m. Component m => m Unit
+hooksExample = do
   log "Mounted"
 
-  useCleanup do
+  useCleaner do
     log "Unmounted"
 
-  pure do
-    text "This is Hooks"
-
+  text "This is Hooks"
 ```
