@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "serve": "http-server public -c-1",
-    "bundle:script": "npx spago -x spago_prod.dhall build && purs-backend-es bundle-app -s -t public/index.js -y -m JellyDocs.WebMain",
+    "bundle:script": "npx spago -x spago-prod.dhall build && purs-backend-es bundle-app -s -t public/index.js -y -m JellyDocs.WebMain",
     "bundle:html": "node ./generate.js",
     "bundle:tailwindcss": "tailwindcss -i ./src/index.css -o ./public/index.css -m",
     "bundle": "run-s bundle:*",
