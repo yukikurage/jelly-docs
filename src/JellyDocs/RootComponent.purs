@@ -7,55 +7,53 @@ import Data.Either (Either(..))
 import Data.Foldable (traverse_)
 import Data.Maybe (Maybe(..))
 import Data.Tuple.Nested ((/\))
-import Effect.Aff (launchAff_)
-import Effect.Class (liftEffect)
-import Jelly (type (+), Component, Hooks, doctypeHtml, hooks, on, onMount, signalC, text, textSig, (:=))
-import Jelly.Data.Signal (Signal, newState, newStateEq, readSignal, writeAtom)
+import Jelly.Component (class Component, doctypeHtml, text, textSig)
 import Jelly.Element as JE
-import Jelly.Hooks (useEffect_)
-import Jelly.Router (RouterContext, useRouter)
-import JellyDocs.Components.Drawer (drawerComponent)
-import JellyDocs.Components.Logo (logoComponent)
-import JellyDocs.Components.Sidebar (sidebarComponent)
-import JellyDocs.Contexts.Apis (ApisContext, useApis)
-import JellyDocs.Data.Page (Page(..), urlToPage)
-import JellyDocs.Pages.Doc (docPage)
-import JellyDocs.Pages.NotFound (notFoundPage)
-import JellyDocs.Pages.Top (topPage)
+import Jelly.Prop (on, onMount, (:=))
+import JellyDocs.Capability.Api (class Api, useDocsApi, useSectionsApi)
+import JellyDocs.Capability.Nav (class Nav, useCurrentPage)
+import JellyDocs.Component.Drawer (drawerComponent)
+import JellyDocs.Component.Logo (logoComponent)
+import JellyDocs.Component.Sidebar (sidebarComponent)
+import JellyDocs.Data.Page (Page(..))
+import JellyDocs.Page.Doc (docPage)
+import JellyDocs.Page.NotFound (notFoundPage)
+import JellyDocs.Page.Top (topPage)
 import JellyDocs.Twemoji (emojiProp)
 import JellyDocs.Utils (scrollToTop)
+import Signal (Signal, newState, readSignal, writeChannel)
+import Signal.Hooks (class MonadHooks, newStateEq, useAff, useEffect_, useHooks_)
 import Web.HTML.Event.EventTypes (click)
 
-rootComponent :: forall c. Component (RouterContext + ApisContext + c)
+rootComponent :: forall m. Nav m => Api m => Component m => m Unit
 rootComponent = do
   doctypeHtml
   JE.html [ "lang" := "en", "class" := "font-Lato text-slate-800" ] do
     headComponent
     bodyComponent
 
-useTitleSig :: forall c. Hooks (RouterContext + ApisContext + c) (Signal String)
+useTitleSig :: forall m. Nav m => MonadHooks m => Api m => m (Signal String)
 useTitleSig = do
-  { currentUrlSig } <- useRouter
-  apis <- useApis
-  liftEffect $ launchAff_ $ void $ apis.docs.initialize
+  currentPage <- useCurrentPage
+  docsApi <- useDocsApi
+  docsSig <- useAff $ pure docsApi
   pure do
-    docs <- apis.docs.stateSig
-    currentUrl <- currentUrlSig
-    case urlToPage currentUrl of
+    docs <- docsSig
+    cp <- currentPage
+    case cp of
       PageTop -> pure "Jelly : Reactive-based UI framework for PureScript"
       PageDoc docId
         | Just (Right ds) <- docs, Just { title } <- find (\{ id } -> docId == id) ds -> pure $ title <> " - Jelly"
       _ -> pure "Not Found - Jelly"
 
-headComponent :: forall c. Component (RouterContext + ApisContext + c)
+headComponent :: forall m. Nav m => Api m => Component m => m Unit
 headComponent = JE.head' do
-  JE.title' $ hooks do
-    titleSig <- useTitleSig
-    pure $ textSig titleSig
+  JE.title' do
+    textSig =<< useTitleSig
 
   JE.script
     [ "src" := "/index.js" ]
-    mempty
+    $ pure unit
 
   JE.link [ "rel" := "stylesheet", "href" := "/index.css" ]
 
@@ -98,27 +96,27 @@ headComponent = JE.head' do
     , "content" := "Documentation for PureScript Jelly, a framework for building reactive web applications."
     ]
 
-bodyComponent :: forall c. Component (RouterContext + ApisContext + c)
-bodyComponent = hooks do
-  isSidebarOpenSig /\ isSidebarOpenAtom <- newStateEq false
-  { currentUrlSig } <- useRouter
-  scrollElSig /\ scrollElAtom <- newState Nothing
+bodyComponent :: forall m. Nav m => Api m => Component m => m Unit
+bodyComponent = do
+  isSidebarOpenSig /\ isSidebarOpenChannel <- newStateEq false
+  currentPage <- useCurrentPage
+  scrollElSig /\ scrollElChannel <- newState Nothing
 
   -- | Hide sidebar when temporary url is changed
-  useEffect_ $ currentUrlSig $> do
-    writeAtom isSidebarOpenAtom false
+  useEffect_ $ currentPage $> do
+    writeChannel isSidebarOpenChannel false
     scrollEl <- readSignal scrollElSig
     traverse_ scrollToTop scrollEl
 
-  apis <- useApis
-  liftEffect $ launchAff_ $ void $ apis.sections.initialize
+  sectionsApi <- useSectionsApi
+  sectionsSig <- useAff $ pure sectionsApi
 
-  pure $ JE.body [ "class" := "fixed left-0 top-0 flex flex-row items-start h-screen w-screen" ] do
+  JE.body [ "class" := "fixed left-0 top-0 flex flex-row items-start h-screen w-screen" ] do
     let
       sidebar = sidebarComponent do
-        sectionsSig <- apis.sections.stateSig
-        pure case sectionsSig of
-          Just (Right sections) -> sections
+        sections <- sectionsSig
+        pure case sections of
+          Just (Right scts) -> scts
           _ -> []
     JE.div
       [ "class" := "block lg:hidden absolute left-0 top-0 w-full backdrop-blur bg-white bg-opacity-60" ]
@@ -127,21 +125,21 @@ bodyComponent = hooks do
           [ "class" :=
               "p-1 m-3 text-lg rounded border-slate-300 border-opacity-50 border hover:bg-slate-300 hover:bg-opacity-30 hover:active:bg-opacity-20 transition-all"
           , emojiProp
-          , on click \_ -> writeAtom isSidebarOpenAtom true
+          , on click \_ -> writeChannel isSidebarOpenChannel true
           ]
           do
             text "📒"
-        JE.div [ "class" := "w-full h-[1px] bg-slate-300 bg-opacity-50" ] mempty
+        JE.div [ "class" := "w-full h-[1px] bg-slate-300 bg-opacity-50" ] $ pure unit
         JE.div [ "class" := "absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2" ] logoComponent
-        drawerComponent { onClose: writeAtom isSidebarOpenAtom false, openSig: isSidebarOpenSig } sidebar
+        drawerComponent { onClose: writeChannel isSidebarOpenChannel false, openSig: isSidebarOpenSig } sidebar
     JE.div [ "class" := "h-full w-fit hidden lg:block overflow-auto" ] do
       sidebar
-    JE.div [ "class" := "h-full w-[1px] bg-slate-300 bg-opacity-50 hidden lg:block" ] mempty
-    JE.div [ "class" := "flex-1 overflow-auto h-full flex justify-center", onMount (Just >>> writeAtom scrollElAtom) ]
+    JE.div [ "class" := "h-full w-[1px] bg-slate-300 bg-opacity-50 hidden lg:block" ] $ pure unit
+    JE.div [ "class" := "flex-1 overflow-auto h-full flex justify-center", onMount (Just >>> writeChannel scrollElChannel) ]
       do
-        JE.main [ "class" := "w-full xl:w-[60rem] pt-14 lg:pt-0" ] $ signalC do
-          currentUrl <- currentUrlSig
-          pure case urlToPage currentUrl of
+        JE.main [ "class" := "w-full xl:w-[60rem] pt-14 lg:pt-0" ] $ useHooks_ do
+          cp <- currentPage
+          pure case cp of
             PageTop -> topPage
             PageDoc docId -> docPage $ pure docId
             PageNotFound -> notFoundPage

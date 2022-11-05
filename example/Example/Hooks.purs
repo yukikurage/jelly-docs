@@ -4,29 +4,28 @@ import Prelude
 
 import Data.Tuple.Nested ((/\))
 import Effect.Class.Console (log)
-import Jelly (Component, hooks, ifC, on, text)
-import Jelly.Data.Signal (newStateEq, writeAtom)
+import Jelly.Component (class Component, text)
 import Jelly.Element as JE
-import Jelly.Hooks (useCleanup)
+import Jelly.Prop (on)
+import Signal (writeChannel)
+import Signal.Hooks (newStateEq, useCleaner, useIf_)
 import Web.HTML.Event.EventTypes (click)
 
-hooksExample :: forall context. Component context
-hooksExample = hooks do
+hooksExample :: forall m. Component m => m Unit
+hooksExample = do
   log "Mounted"
 
-  useCleanup do
+  useCleaner do
     log "Unmounted"
 
-  pure do
-    text "This is Hooks"
+  text "This is Hooks"
 
-hooksExampleWrapper :: forall context. Component context
-hooksExampleWrapper = hooks do
-  isMountedSig /\ isMountedAtom <- newStateEq true
+hooksExampleWrapper :: forall m. Component m => m Unit
+hooksExampleWrapper = do
+  isMountedSig /\ isMountedChannel <- newStateEq true
 
-  pure do
-    JE.button [ on click \_ -> writeAtom isMountedAtom true ] $ text "Mount"
-    JE.button [ on click \_ -> writeAtom isMountedAtom false ] $ text "Unmount"
-    ifC isMountedSig
-      do JE.div' hooksExample
-      do JE.div' $ text "Unmounted"
+  JE.button [ on click \_ -> writeChannel isMountedChannel true ] $ text "Mount"
+  JE.button [ on click \_ -> writeChannel isMountedChannel false ] $ text "Unmount"
+  useIf_ isMountedSig
+    do JE.div' hooksExample
+    do JE.div' $ text "Unmounted"

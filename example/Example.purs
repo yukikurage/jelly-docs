@@ -7,37 +7,34 @@ import Data.HashMap (HashMap, fromFoldable, lookup)
 import Data.Maybe (Maybe(..))
 import Data.String (codePointFromChar, takeWhile)
 import Data.Tuple.Nested ((/\))
-import Effect (Effect)
-import Example.AppendContexts (appendContextsMount)
+import Effect.Class (liftEffect)
 import Example.Context (mountWithContext)
 import Example.Counter (counterExample)
 import Example.Hooks (hooksExampleWrapper)
-import Example.SignalC (signalCExample)
-import Example.SignalEq (signalEqExample)
-import Jelly.Mount (mount_)
+import Example.Switching (switchingExample)
+import Jelly.Hydrate (mount)
+import Signal.Hooks (class MonadHooks, Hooks, liftHooks)
 import Web.DOM (Element, Node)
 import Web.DOM.Element as Element
 import Web.DOM.Node (textContent)
 import Web.DOM.NodeList as NodeList
 import Web.DOM.ParentNode (QuerySelector(..), querySelectorAll)
 
-examples :: HashMap String (Node -> Effect Unit)
+examples :: HashMap String (Node -> Hooks Unit)
 examples = fromFoldable
-  [ "counter" /\ mount_ {} counterExample
-  , "hooks" /\ mount_ {} hooksExampleWrapper
-  , "signalEq" /\ mount_ {} signalEqExample
+  [ "counter" /\ mount counterExample
+  , "hooks" /\ mount hooksExampleWrapper
   , "context" /\ mountWithContext
-  , "appendContexts" /\ appendContextsMount
-  , "signalC" /\ mount_ {} signalCExample
+  , "switching" /\ mount switchingExample
   ]
 
-preview :: Element -> Effect Unit
+preview :: forall m. MonadHooks m => Element -> m Unit
 preview element = do
   let
     pn = Element.toParentNode element
-  previewNodes <- NodeList.toArray =<< querySelectorAll (QuerySelector "pre code.preview") pn
+  previewNodes <- liftEffect $ NodeList.toArray =<< querySelectorAll (QuerySelector "pre code.preview") pn
   for_ previewNodes \node -> do
-    name <- takeWhile (\cp -> cp /= codePointFromChar '\n') <$> textContent node
+    name <- liftEffect $ takeWhile (\cp -> cp /= codePointFromChar '\n') <$> textContent node
     case lookup name examples of
-      Just example -> example node
+      Just example -> liftHooks $ example node
       Nothing -> pure unit

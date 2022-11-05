@@ -1,4 +1,4 @@
-module JellyDocs.Apis.Doc where
+module JellyDocs.Api.Doc where
 
 import Prelude
 
@@ -7,9 +7,9 @@ import Affjax.ResponseFormat (string)
 import Data.Array (concatMap, find)
 import Data.Either (Either(..))
 import Data.Maybe (Maybe(..))
+import Data.String (joinWith)
 import Effect.Aff (Aff)
-import Jelly.Router.Data.Path (makeRelativeFilePath)
-import JellyDocs.Apis.BasePath (apiBasePath)
+import JellyDocs.Api.BasePath (apiBasePath)
 import JellyDocs.Data.Doc (Doc, DocListItem)
 import JellyDocs.Data.Section (Section)
 
@@ -23,7 +23,7 @@ getDoc driver docId = do
 
     getDocContent :: DocListItem -> Aff (Either Error Doc)
     getDocContent { id, title, section } = do
-      resEither <- get driver string $ apiBasePath <> makeRelativeFilePath [ section, id <> ".md" ]
+      resEither <- get driver string $ apiBasePath <> joinWith "/" [ section, id <> ".md" ]
       pure $ resEither <#> \res -> { id, title, section, content: res.body }
   case docListItem of
     Just d -> getDocContent d

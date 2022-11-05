@@ -105,29 +105,63 @@ let upstream =
 in  upstream
   with jelly =
     { dependencies =
-  [ "aff"
-  , "arrays"
-  , "console"
-  , "effect"
-  , "either"
-  , "foldable-traversable"
-  , "foreign"
-  , "free"
-  , "js-timers"
-  , "maybe"
-  , "newtype"
-  , "prelude"
-  , "refs"
-  , "strings"
-  , "tailrec"
-  , "transformers"
-  , "tuples"
-  , "typelevel-prelude"
-  , "unordered-collections"
-  , "web-dom"
-  , "web-events"
-  , "web-html"
-  ]
+      [ "aff"
+      , "arrays"
+      , "effect"
+      , "either"
+      , "foldable-traversable"
+      , "maybe"
+      , "prelude"
+      , "refs"
+      , "simple-hooks"
+      , "simple-signal"
+      , "tailrec"
+      , "transformers"
+      , "tuples"
+      , "web-dom"
+      , "web-events"
+      , "web-html"
+      ]
     , repo = "https://github.com/yukikurage/purescript-jelly.git"
+    , version = "development"
+    }
+  with simple-signal =
+    { dependencies = [ "effect", "prelude", "refs", "tuples", "unsafe-coerce" ]
+    , repo = "https://github.com/yukikurage/purescript-simple-signal.git"
+    , version = "master"
+    }
+  with simple-hooks =
+    { dependencies =
+      [ "aff"
+      , "effect"
+      , "js-timers"
+      , "maybe"
+      , "prelude"
+      , "refs"
+      , "simple-signal"
+      , "tailrec"
+      , "transformers"
+      , "tuples"
+      , "unsafe-coerce"
+      , "web-events"
+      ]
+    , repo = "https://github.com/yukikurage/purescript-simple-hooks.git"
+    , version = "master"
+    }
+  with jelly-router =
+    { dependencies =
+      [ "effect"
+      , "foreign"
+      , "jelly"
+      , "prelude"
+      , "simple-hooks"
+      , "simple-signal"
+      , "transformers"
+      , "tuples"
+      , "web-dom"
+      , "web-events"
+      , "web-html"
+      ]
+    , repo = "https://github.com/yukikurage/purescript-jelly-router.git"
     , version = "master"
     }

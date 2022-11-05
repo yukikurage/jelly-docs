@@ -2,33 +2,59 @@ module Example.Context where
 
 import Prelude
 
-import Data.Tuple.Nested ((/\))
-import Effect (Effect)
-import Jelly (Component, hooks, mount_, on, text, textSig)
-import Jelly.Data.Signal (Atom, Signal, modifyAtom_, newStateEq)
+import Control.Monad.Reader (class MonadAsk, class MonadReader, ReaderT, asks, runReaderT)
+import Data.Tuple (fst, snd)
+import Data.Tuple.Nested (type (/\))
+import Effect.Class (class MonadEffect)
+import Jelly.Component (class Component, text, textSig)
 import Jelly.Element as JE
-import Jelly.Hooks (useContext)
+import Jelly.Hydrate (HydrateM, mount)
+import Jelly.Prop (on)
+import Signal (Channel, Signal, modifyChannel)
+import Signal.Hooks (class MonadHooks, Hooks, newStateEq)
 import Web.DOM (Node)
 import Web.HTML.Event.EventTypes (click)
 
-type Context = (countSig :: Signal Int, countAtom :: Atom Int)
+newtype ContextT :: forall k. (k -> Type) -> k -> Type
+newtype ContextT m a = ContextT (ReaderT (Signal Int /\ Channel Int) m a)
 
-mountWithContext :: Node -> Effect Unit
+derive newtype instance Monad m => Functor (ContextT m)
+derive newtype instance Monad m => Apply (ContextT m)
+derive newtype instance Monad m => Applicative (ContextT m)
+derive newtype instance Monad m => Bind (ContextT m)
+derive newtype instance Monad m => Monad (ContextT m)
+derive newtype instance MonadEffect m => MonadEffect (ContextT m)
+derive newtype instance Component m => Component (ContextT m)
+derive newtype instance MonadHooks m => MonadHooks (ContextT m)
+derive newtype instance Monad m => MonadAsk (Signal Int /\ Channel Int) (ContextT m)
+derive newtype instance Monad m => MonadReader (Signal Int /\ Channel Int) (ContextT m)
+
+class Monad m <= Context m where
+  useCountSignal :: m (Signal Int)
+  useCountChannel :: m (Channel Int)
+
+instance Monad m => Context (ContextT m) where
+  useCountSignal = ContextT $ asks fst
+  useCountChannel = ContextT $ asks snd
+
+mountContext :: ContextT HydrateM Unit -> Node -> Hooks Unit
+mountContext (ContextT cmp) node = do
+  state <- newStateEq 0
+  mount (runReaderT cmp state) node
+
+mountWithContext :: Node -> Hooks Unit
 mountWithContext node = do
-  countSig /\ countAtom <- newStateEq 0
-  mount_ { countSig, countAtom } parentComponent node
+  mountContext parentComponent node
 
-parentComponent :: Component Context
-parentComponent = hooks do
-  { countAtom } <- useContext
+parentComponent :: forall m. Component m => Context m => m Unit
+parentComponent = do
+  countChannel <- useCountChannel
 
-  pure do
-    JE.button [ on click \_ -> modifyAtom_ countAtom (add 1) ] $ text "Increment"
-    childComponent
+  JE.button [ on click \_ -> modifyChannel countChannel (add 1) ] $ text "Increment"
+  childComponent
 
-childComponent :: Component Context
-childComponent = hooks do
-  { countSig } <- useContext
+childComponent :: forall m. Component m => Context m => m Unit
+childComponent = do
+  countSig <- useCountSignal
 
-  pure do
-    textSig $ show <$> countSig
+  textSig $ show <$> countSig
