@@ -156,6 +156,7 @@ in  upstream
       , "prelude"
       , "simple-hooks"
       , "simple-signal"
+      , "tailrec"
       , "transformers"
       , "tuples"
       , "web-dom"
