@@ -111,7 +111,7 @@ bodyComponent = do
   sectionsApi <- useSectionsApi
   sectionsSig <- useAff $ pure sectionsApi
 
-  JE.body [ "class" := "fixed left-0 top-0 flex flex-row items-start h-screen w-screen" ] do
+  JE.body [ "class" := "fixed left-0 top-0 flex flex-row items-start h-window w-screen" ] do
     let
       sidebar = sidebarComponent do
         sections <- sectionsSig

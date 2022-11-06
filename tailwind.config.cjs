@@ -23,6 +23,10 @@ module.exports = {
         sweep: 'sweep 0.8s ease-in-out infinite',
         fadeIn: 'fadeIn 0.08s ease-out 0s 1',
       },
+      // use window height var
+      height: {
+        'window': 'var(--window-height)',
+      },
     },
   },
   plugins: [],
