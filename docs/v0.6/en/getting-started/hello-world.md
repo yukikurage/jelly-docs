@@ -49,7 +49,7 @@ bodyComponent = do
 Finally, bundle the application.
 
 ```
-spago bundle-app -t . /public/index.js
+spago bundle-app -t ./public/index.js
 ```
 
 Now, when you open `public/index.html` in your browser, you will see a big Hello World!
