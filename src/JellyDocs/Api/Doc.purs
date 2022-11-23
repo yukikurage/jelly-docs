@@ -69,6 +69,10 @@ sections =
           , title: "Component Switching"
           , section: "core-concepts"
           }
+        , { id: "component-props"
+          , title: "Component Props"
+          , section: "core-concepts"
+          }
         , { id: "custom-monad"
           , title: "Custom Monad"
           , section: "core-concepts"

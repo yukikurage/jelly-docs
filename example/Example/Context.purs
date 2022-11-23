@@ -4,17 +4,28 @@ import Prelude
 
 import Control.Monad.Reader (class MonadAsk, class MonadReader, ReaderT, asks, runReaderT)
 import Control.Monad.Rec.Class (class MonadRec)
+import Data.Foldable (traverse_)
 import Data.Tuple (fst, snd)
 import Data.Tuple.Nested (type (/\))
+import Effect (Effect)
+import Effect.Aff (launchAff_)
 import Effect.Class (class MonadEffect)
+import Jelly.Aff (awaitBody)
 import Jelly.Component (Component, hooks, text, textSig)
 import Jelly.Element as JE
-import Jelly.Hooks (class MonadHooks, Hooks, useStateEq)
+import Jelly.Hooks (class MonadHooks, Hooks, runHooks_, useStateEq)
 import Jelly.Hydrate (mount)
 import Jelly.Prop (on)
 import Jelly.Signal (Channel, Signal, modifyChannel_)
 import Web.DOM (Node)
 import Web.HTML.Event.EventTypes (click)
+
+main :: Effect Unit
+main = launchAff_ do
+  mb <- awaitBody
+  runHooks_ do
+    state <- useStateEq 0
+    runContextM (traverse_ (mount parentComponent) mb) state
 
 newtype ContextM a = ContextM (ReaderT (Signal Int /\ Channel Int) Hooks a)
 

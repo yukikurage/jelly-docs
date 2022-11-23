@@ -39,7 +39,7 @@ docPage docIdSig = hooks do
             JE.a
               [ "class" :=
                   "block bg-slate-300 bg-opacity-0 text-pink-600 hover:text-pink-800 transition-colors rounded font-bold text-sm"
-              , "href" := "https://github.com/yukikurage/jelly-docs/blob/master/docs/v0.8/en/" <> joinWith "/"
+              , "href" := "https://github.com/yukikurage/jelly-docs/blob/master/docs/v0.9/en/" <> joinWith "/"
                   [ doc.section
                   , doc.id <> ".md"
                   ]
