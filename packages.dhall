@@ -124,7 +124,7 @@ in  upstream
       , "web-html"
       ]
     , repo = "https://github.com/yukikurage/purescript-jelly.git"
-    , version = "development"
+    , version = "v0.9.0"
     }
   with jelly-signal =
     { dependencies = [ "effect", "prelude", "refs", "tuples", "unsafe-coerce" ]
@@ -165,5 +165,5 @@ in  upstream
         , "web-html"
         ]
     , repo = "https://github.com/yukikurage/purescript-jelly-router.git"
-    , version = "master"
+    , version = "v0.2.0"
     }
