@@ -8,10 +8,11 @@ import Effect (Effect)
 import Effect.Aff (launchAff_)
 import Effect.Class (liftEffect)
 import Jelly.Aff (awaitDocument)
-import JellyDocs.AppT (hydrateApp)
+import Jelly.Hooks (runHooks_, useHooks_)
+import Jelly.Hydrate (hydrate)
+import JellyDocs.AppM (runAppMWeb)
 import JellyDocs.Hooks.UseWindowHeight (useWindowHeight)
 import JellyDocs.RootComponent (rootComponent)
-import Signal.Hooks (runHooks_, useHooks_)
 import Web.DOM.Document (documentElement)
 import Web.DOM.Element (setAttribute)
 import Web.HTML (window)
@@ -29,4 +30,4 @@ main = launchAff_ do
       doc <- document =<< window
       docEl <- documentElement $ HTMLDocument.toDocument doc
       traverse_ (setAttribute "style" ("--window-height: " <> show wh <> "px")) docEl
-    hydrateApp rootComponent driver d
+    runAppMWeb (hydrate rootComponent d) driver

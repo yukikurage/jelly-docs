@@ -99,8 +99,8 @@ in  upstream
 -------------------------------
 -}
 let upstream =
-      https://github.com/purescript/package-sets/releases/download/psc-0.15.4-20221103/packages.dhall
-        sha256:26d3b3b4052e533534b9a888052a46b594abdd615cb56e58fde188b110480857
+      https://github.com/purescript/package-sets/releases/download/psc-0.15.4-20221122/packages.dhall
+        sha256:c0cfb849a0f886d38cab7bbf40a5c23911d82ba4f09946cbc9d7b5362f2b8819
 
 in  upstream
   with jelly =
@@ -109,12 +109,13 @@ in  upstream
       , "arrays"
       , "effect"
       , "either"
-      , "foldable-traversable"
+      , "free"
+      , "jelly-hooks"
+      , "jelly-signal"
       , "maybe"
       , "prelude"
       , "refs"
-      , "simple-hooks"
-      , "simple-signal"
+      , "safely"
       , "tailrec"
       , "transformers"
       , "tuples"
@@ -125,12 +126,12 @@ in  upstream
     , repo = "https://github.com/yukikurage/purescript-jelly.git"
     , version = "development"
     }
-  with simple-signal =
+  with jelly-signal =
     { dependencies = [ "effect", "prelude", "refs", "tuples", "unsafe-coerce" ]
-    , repo = "https://github.com/yukikurage/purescript-simple-signal.git"
-    , version = "master"
+    , repo = "https://github.com/yukikurage/purescript-jelly-signal.git"
+    , version = "v0.3.0"
     }
-  with simple-hooks =
+  with jelly-hooks =
     { dependencies =
       [ "aff"
       , "effect"
@@ -138,31 +139,31 @@ in  upstream
       , "maybe"
       , "prelude"
       , "refs"
-      , "simple-signal"
+      , "jelly-signal"
       , "tailrec"
       , "transformers"
       , "tuples"
       , "unsafe-coerce"
       , "web-events"
       ]
-    , repo = "https://github.com/yukikurage/purescript-simple-hooks.git"
-    , version = "master"
+    , repo = "https://github.com/yukikurage/purescript-jelly-hooks.git"
+    , version = "v0.3.0"
     }
   with jelly-router =
     { dependencies =
-      [ "effect"
-      , "foreign"
-      , "jelly"
-      , "prelude"
-      , "simple-hooks"
-      , "simple-signal"
-      , "tailrec"
-      , "transformers"
-      , "tuples"
-      , "web-dom"
-      , "web-events"
-      , "web-html"
-      ]
+        [ "effect"
+        , "foreign"
+        , "jelly"
+        , "prelude"
+        , "jelly-hooks"
+        , "jelly-signal"
+        , "tailrec"
+        , "transformers"
+        , "tuples"
+        , "web-dom"
+        , "web-events"
+        , "web-html"
+        ]
     , repo = "https://github.com/yukikurage/purescript-jelly-router.git"
     , version = "master"
     }

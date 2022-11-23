@@ -27,8 +27,8 @@ import Jelly.Component (class Component, text, textSig)
 import Jelly.Element as JE
 import Jelly.Hydrate (HydrateM, mount)
 import Jelly.Prop (on)
-import Signal (Channel, Signal, modifyChannel)
-import Signal.Hooks (class MonadHooks, Hooks, newStateEq)
+import Jelly.Signal (Channel, Signal, modifyChannel)
+import Jelly.Hooks (class MonadHooks, Hooks, newStateEq)
 import Web.DOM (Node)
 import Web.HTML.Event.EventTypes (click)
 

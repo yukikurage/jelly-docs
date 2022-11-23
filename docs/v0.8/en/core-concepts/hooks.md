@@ -24,8 +24,8 @@ import Effect.Class.Console (log)
 import Jelly.Component (class Component, text)
 import Jelly.Element as JE
 import Jelly.Prop (on)
-import Signal (writeChannel)
-import Signal.Hooks (newStateEq, useCleaner, useIf_)
+import Jelly.Signal (writeChannel)
+import Jelly.Hooks (newStateEq, useCleaner, useIf_)
 import Web.HTML.Event.EventTypes (click)
 
 hooksExample :: forall m. Component m => m Unit

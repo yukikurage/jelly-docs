@@ -3,18 +3,20 @@ module Example.Counter where
 import Prelude
 
 import Data.Tuple.Nested ((/\))
-import Jelly.Component (class Component, text, textSig)
+import Jelly.Component (Component, hooks, text, textSig)
 import Jelly.Element as JE
+import Jelly.Hooks (class MonadHooks)
 import Jelly.Prop (on)
-import Signal (modifyChannel, newState)
+import Jelly.Signal (modifyChannel_, newState)
 import Web.HTML.Event.EventTypes (click)
 
-counterExample :: forall m. Component m => m Unit
-counterExample = do
+counterExample :: forall m. MonadHooks m => Component m
+counterExample = hooks do
   countSig /\ countChannel <- newState 0
 
-  JE.button [ on click \_ -> modifyChannel countChannel (_ + 1) ] $ text "Increment"
-  JE.button [ on click \_ -> modifyChannel countChannel (_ - 1) ] $ text "Decrement"
-  JE.div' do
-    text "Count: "
-    textSig $ show <$> countSig
+  pure do
+    JE.button [ on click \_ -> modifyChannel_ countChannel (_ + 1) ] $ text "Increment"
+    JE.button [ on click \_ -> modifyChannel_ countChannel (_ - 1) ] $ text "Decrement"
+    JE.div' do
+      text "Count: "
+      textSig $ show <$> countSig

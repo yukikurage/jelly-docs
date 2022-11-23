@@ -6,12 +6,12 @@ import Data.Foldable (for_, traverse_)
 import Effect (Effect)
 import Effect.Class (liftEffect)
 import Example (preview)
-import Jelly.Component (class Component, raw)
+import Jelly.Component (Component, raw, switch)
 import Jelly.Element as JE
+import Jelly.Hooks (class MonadHooks)
 import Jelly.Prop (onMount, (:=))
+import Jelly.Signal (Signal)
 import JellyDocs.Twemoji (emojiProp)
-import Signal (Signal)
-import Signal.Hooks (useHooks_)
 import Web.DOM (Element)
 import Web.DOM.Element (setAttribute)
 import Web.DOM.Element as Element
@@ -27,14 +27,14 @@ addOpenNewTabAttrToAnchors el = do
     traverse_ (setAttribute "target" "_blank") $ Element.fromNode anchor
     traverse_ (setAttribute "rel" "noopener noreferrer") $ Element.fromNode anchor
 
-markdownComponent :: forall m. Component m => Signal String -> m Unit
-markdownComponent markdownSig = do
+markdownComponent :: forall m. MonadHooks m => Signal String -> Component m
+markdownComponent markdownSig =
   let
     renderedSig = parseMarkdown <$> markdownSig
-
-  useHooks_ do
-    rendered <- renderedSig
-    pure
-      $ JE.div
-          [ "class" := "w-full h-full markdown", emojiProp, onMount preview, onMount $ liftEffect <<< addOpenNewTabAttrToAnchors ]
-      $ raw rendered
+  in
+    switch do
+      rendered <- renderedSig
+      pure
+        $ JE.div
+            [ "class" := "w-full h-full markdown", emojiProp, onMount preview, onMount $ liftEffect <<< addOpenNewTabAttrToAnchors ]
+        $ raw rendered

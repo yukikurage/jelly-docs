@@ -32,7 +32,7 @@ import Jelly.Aff (awaitBody)
 import Jelly.Component (class Component, text)
 import Jelly.Element as JE
 import Jelly.Hydrate (mount)
-import Signal.Hooks (runHooks_)
+import Jelly.Hooks (runHooks_)
 
 main :: Effect Unit
 main = launchAff_ do

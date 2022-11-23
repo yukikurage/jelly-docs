@@ -7,9 +7,11 @@ import Data.Either (Either(..))
 import Data.Foldable (traverse_)
 import Data.Maybe (Maybe(..))
 import Data.Tuple.Nested ((/\))
-import Jelly.Component (class Component, doctypeHtml, text, textSig)
+import Jelly.Component (Component, doctypeHtml, hooks, switch, text, textSig)
 import Jelly.Element as JE
+import Jelly.Hooks (class MonadHooks, useAff, useEffect_, useStateEq)
 import Jelly.Prop (on, onMount, (:=))
+import Jelly.Signal (Signal, newState, readSignal, writeChannel)
 import JellyDocs.Capability.Api (class Api, useDocsApi, useSectionsApi)
 import JellyDocs.Capability.Nav (class Nav, useCurrentPage)
 import JellyDocs.Component.Drawer (drawerComponent)
@@ -21,11 +23,9 @@ import JellyDocs.Page.NotFound (notFoundPage)
 import JellyDocs.Page.Top (topPage)
 import JellyDocs.Twemoji (emojiProp)
 import JellyDocs.Utils (scrollToTop)
-import Signal (Signal, newState, readSignal, writeChannel)
-import Signal.Hooks (class MonadHooks, newStateEq, useAff, useEffect_, useHooks_)
 import Web.HTML.Event.EventTypes (click)
 
-rootComponent :: forall m. Nav m => Api m => Component m => m Unit
+rootComponent :: forall m. Nav m => Api m => MonadHooks m => Component m
 rootComponent = do
   doctypeHtml
   JE.html [ "lang" := "en", "class" := "font-Lato text-slate-800" ] do
@@ -46,59 +46,61 @@ useTitleSig = do
         | Just (Right ds) <- docs, Just { title } <- find (\{ id } -> docId == id) ds -> pure $ title <> " - Jelly"
       _ -> pure "Not Found - Jelly"
 
-headComponent :: forall m. Nav m => Api m => Component m => m Unit
-headComponent = JE.head' do
-  JE.title' do
-    textSig =<< useTitleSig
+headComponent :: forall m. Nav m => Api m => MonadHooks m => Component m
+headComponent =
+  JE.head' do
+    JE.title' $ hooks do
+      titleSig <- useTitleSig
+      pure $ textSig titleSig
 
-  JE.script
-    [ "src" := "/index.js" ]
-    $ pure unit
+    JE.script
+      [ "src" := "/index.js" ]
+      $ pure unit
 
-  JE.link [ "rel" := "stylesheet", "href" := "/index.css" ]
+    JE.link [ "rel" := "stylesheet", "href" := "/index.css" ]
 
-  JE.meta [ "name" := "viewport", "content" := "width=device-width,initial-scale=1.0" ]
+    JE.meta [ "name" := "viewport", "content" := "width=device-width,initial-scale=1.0" ]
 
-  JE.link
-    [ "rel" := "preconnect"
-    , "href" := "https://fonts.gstatic.com"
-    , "crossorigin" := true
-    ]
-  JE.link
-    [ "rel" := "preload"
-    , "as" := "style"
-    , "href" :=
-        "https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&family=Montserrat:wght@900&family=Source+Code+Pro&display=swap"
-    ]
-  JE.link
-    [ "rel" := "stylesheet"
-    , "href" :=
-        "https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&family=Montserrat:wght@900&family=Source+Code+Pro&display=swap"
-    , "media" := "print"
-    , "onload" := "this.media='all'"
-    ]
+    JE.link
+      [ "rel" := "preconnect"
+      , "href" := "https://fonts.gstatic.com"
+      , "crossorigin" := true
+      ]
+    JE.link
+      [ "rel" := "preload"
+      , "as" := "style"
+      , "href" :=
+          "https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&family=Montserrat:wght@900&family=Source+Code+Pro&display=swap"
+      ]
+    JE.link
+      [ "rel" := "stylesheet"
+      , "href" :=
+          "https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&family=Montserrat:wght@900&family=Source+Code+Pro&display=swap"
+      , "media" := "print"
+      , "onload" := "this.media='all'"
+      ]
 
-  JE.link
-    [ "rel" := "preload"
-    , "as" := "style"
-    , "href" :=
-        "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/atom-one-light.min.css"
-    ]
-  JE.link
-    [ "rel" := "stylesheet"
-    , "href" := "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/atom-one-light.min.css"
-    , "media" := "print"
-    , "onload" := "this.media='all'"
-    ]
+    JE.link
+      [ "rel" := "preload"
+      , "as" := "style"
+      , "href" :=
+          "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/atom-one-light.min.css"
+      ]
+    JE.link
+      [ "rel" := "stylesheet"
+      , "href" := "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/atom-one-light.min.css"
+      , "media" := "print"
+      , "onload" := "this.media='all'"
+      ]
 
-  JE.meta
-    [ "name" := "description"
-    , "content" := "Documentation for PureScript Jelly, a framework for building reactive web applications."
-    ]
+    JE.meta
+      [ "name" := "description"
+      , "content" := "Documentation for PureScript Jelly, a framework for building reactive web applications."
+      ]
 
-bodyComponent :: forall m. Nav m => Api m => Component m => m Unit
-bodyComponent = do
-  isSidebarOpenSig /\ isSidebarOpenChannel <- newStateEq false
+bodyComponent :: forall m. Nav m => Api m => MonadHooks m => Component m
+bodyComponent = hooks do
+  isSidebarOpenSig /\ isSidebarOpenChannel <- useStateEq false
   currentPage <- useCurrentPage
   scrollElSig /\ scrollElChannel <- newState Nothing
 
@@ -111,35 +113,36 @@ bodyComponent = do
   sectionsApi <- useSectionsApi
   sectionsSig <- useAff $ pure sectionsApi
 
-  JE.body [ "class" := "fixed left-0 top-0 flex flex-row items-start h-window w-screen" ] do
-    let
-      sidebar = sidebarComponent do
-        sections <- sectionsSig
-        pure case sections of
-          Just (Right scts) -> scts
-          _ -> []
-    JE.div
-      [ "class" := "block lg:hidden absolute left-0 top-0 w-full backdrop-blur bg-white bg-opacity-60" ]
-      do
-        JE.button
-          [ "class" :=
-              "p-1 m-3 text-lg rounded border-slate-300 border-opacity-50 border hover:bg-slate-300 hover:bg-opacity-30 hover:active:bg-opacity-20 transition-all"
-          , emojiProp
-          , on click \_ -> writeChannel isSidebarOpenChannel true
-          ]
-          do
-            text "📒"
-        JE.div [ "class" := "w-full h-[1px] bg-slate-300 bg-opacity-50" ] $ pure unit
-        JE.div [ "class" := "absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2" ] logoComponent
-        drawerComponent { onClose: writeChannel isSidebarOpenChannel false, openSig: isSidebarOpenSig } sidebar
-    JE.div [ "class" := "h-full w-fit hidden lg:block overflow-auto" ] do
-      sidebar
-    JE.div [ "class" := "h-full w-[1px] bg-slate-300 bg-opacity-50 hidden lg:block" ] $ pure unit
-    JE.div [ "class" := "flex-1 overflow-auto h-full flex justify-center", onMount (Just >>> writeChannel scrollElChannel) ]
-      do
-        JE.main [ "class" := "w-full xl:w-[60rem] pt-14 min-h-0 lg:pt-0" ] $ useHooks_ do
-          cp <- currentPage
-          pure case cp of
-            PageTop -> topPage
-            PageDoc docId -> docPage $ pure docId
-            PageNotFound -> notFoundPage
+  pure do
+    JE.body [ "class" := "fixed left-0 top-0 flex flex-row items-start h-window w-screen" ] do
+      let
+        sidebar = sidebarComponent do
+          sections <- sectionsSig
+          pure case sections of
+            Just (Right scts) -> scts
+            _ -> []
+      JE.div
+        [ "class" := "block lg:hidden absolute left-0 top-0 w-full backdrop-blur bg-white bg-opacity-60" ]
+        do
+          JE.button
+            [ "class" :=
+                "p-1 m-3 text-lg rounded border-slate-300 border-opacity-50 border hover:bg-slate-300 hover:bg-opacity-30 hover:active:bg-opacity-20 transition-all"
+            , emojiProp
+            , on click \_ -> writeChannel isSidebarOpenChannel true
+            ]
+            do
+              text "📒"
+          JE.div [ "class" := "w-full h-[1px] bg-slate-300 bg-opacity-50" ] $ pure unit
+          JE.div [ "class" := "absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2" ] logoComponent
+          drawerComponent { onClose: writeChannel isSidebarOpenChannel false, openSig: isSidebarOpenSig } sidebar
+      JE.div [ "class" := "h-full w-fit hidden lg:block overflow-auto" ] do
+        sidebar
+      JE.div [ "class" := "h-full w-[1px] bg-slate-300 bg-opacity-50 hidden lg:block" ] $ pure unit
+      JE.div [ "class" := "flex-1 overflow-auto h-full flex justify-center", onMount (Just >>> writeChannel scrollElChannel) ]
+        do
+          JE.main [ "class" := "w-full xl:w-[60rem] pt-14 min-h-0 lg:pt-0" ] $ switch do
+            cp <- currentPage
+            pure case cp of
+              PageTop -> topPage
+              PageDoc docId -> docPage $ pure docId
+              PageNotFound -> notFoundPage

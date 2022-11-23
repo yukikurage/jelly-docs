@@ -28,7 +28,7 @@ import Data.Tuple.Nested ((/\))
 import Jelly.Component (class Component, text, textSig)
 import Jelly.Element as JE
 import Jelly.Prop (on)
-import Signal (modifyChannel, newState)
+import Jelly.Signal (modifyChannel, newState)
 import Web.HTML.Event.EventTypes (click)
 
 counterExample :: forall m. Component m => m Unit
