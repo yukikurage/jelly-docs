@@ -15,9 +15,7 @@ You can display `Signal String` by `textSig` function.
 
 Let's make a simple counter.
 
-```preview
-counter
-```
+<pre class="preview">counter</pre>
 
 ```purescript
 module Example.Counter where

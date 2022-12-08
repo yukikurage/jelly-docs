@@ -20,7 +20,7 @@ main = launchAff_ do
 helloComponent :: forall m. Component m
 helloComponent = do
   JE.div' do
-    text "Hello World!"
+    text "Hello World! "
     text "this is component"
 
 hello3Component :: forall m. Component m

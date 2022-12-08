@@ -10,9 +10,7 @@ By managing Signal in ReaderT, status can be shared throughout the app.
 
 Create a `ContextM` monad to share the Int type state.
 
-```preview
-context
-```
+<pre class="preview">context</pre>
 
 ```purescript
 module Example.Context where

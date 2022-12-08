@@ -21,7 +21,7 @@ It takes an array of properties and child components as arguments and generates 
 component :: forall m. Component m
 component = do
   JE.div [] do
-    text "Hello World!"
+    text "Hello World! "
     text "this is component"
 ```
 
@@ -39,7 +39,7 @@ The above example could be rewritten as follows
 component :: forall m. Component m
 component = do
   JE.div' do
-    text "Hello World!"
+    text "Hello World! "
     text "this is component"
 ```
 
@@ -51,7 +51,7 @@ Components can be easily separated and reused.
 helloWorld :: forall m. Component m
 helloWorld = do
   JE.div' do
-    text "Hello World!"
+    text "Hello World! "
     text "this is component"
 
 component :: forall m. Component m

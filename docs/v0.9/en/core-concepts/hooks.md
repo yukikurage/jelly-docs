@@ -12,9 +12,7 @@ Then, you can convert `m (Component m)` to `Component m` with the `hooks` functi
 
 Open devtools and see the console.
 
-```preview
-hooks
-```
+<pre class="preview">hooks</pre>
 
 ```purescript
 module Example.Hooks where
