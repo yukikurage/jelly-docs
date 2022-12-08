@@ -25,7 +25,7 @@ component = do
     text "this is component"
 ```
 
-## Element with no propaties
+## Element with no properties
 
 When the property is an empty array, as in the `div` example above, you can use functions with dash instead: `div'`, `p'`, `button'` ...
 
