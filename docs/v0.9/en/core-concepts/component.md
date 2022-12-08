@@ -47,6 +47,8 @@ component = do
 
 Components can be easily separated and reused.
 
+<pre class="preview">hello3</pre>
+
 ```purescript
 helloWorld :: forall m. Component m
 helloWorld = do
@@ -60,5 +62,3 @@ component = do
   helloWorld
   helloWorld
 ```
-
-<pre class="preview">hello3</pre>
