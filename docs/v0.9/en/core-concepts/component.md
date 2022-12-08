@@ -15,19 +15,19 @@ It takes an array of properties and child components as arguments and generates 
 
 ### Example
 
-<pre class="preview">hello-world</pre>
+<pre class="preview">hello</pre>
 
 ```purescript
 component :: forall m. Component m
 component = do
-  JE.h1 [] do
+  JE.div [] do
     text "Hello World!"
     text "this is component"
 ```
 
 ## Element with no propaties
 
-When the property is an empty array, as in the `h1` example above, you can use functions with dash instead: `div'`, `p'`, `button'` ...
+When the property is an empty array, as in the `div` example above, you can use functions with dash instead: `div'`, `p'`, `button'` ...
 
 ```purescript
 div' :: forall m. Component m -> Component m
@@ -38,10 +38,27 @@ The above example could be rewritten as follows
 ```purescript
 component :: forall m. Component m
 component = do
-  JE.h1 do
+  JE.div' do
     text "Hello World!"
     text "this is component"
 ```
 
 ## Component separation
 
+Components can be easily separated and reused.
+
+```purescript
+helloWorld :: forall m. Component m
+helloWorld = do
+  JE.div' do
+    text "Hello World!"
+    text "this is component"
+
+component :: forall m. Component m
+component = do
+  helloWorld
+  helloWorld
+  helloWorld
+```
+
+<pre class="preview">hello3</pre>
