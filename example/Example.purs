@@ -32,8 +32,8 @@ preview :: forall m. MonadHooks m => Element -> m Unit
 preview element = do
   let
     pn = Element.toParentNode element
-  previewNodes <- liftEffect $ NodeList.toArray =<< querySelectorAll (QuerySelector "pre code.preview") pn
-  for_ previewNodes \node -> do
+  previewPres <- liftEffect $ NodeList.toArray =<< querySelectorAll (QuerySelector "pre.preview") pn
+  for_ previewPres \node -> do
     name <- liftEffect $ takeWhile (\cp -> cp /= codePointFromChar '\n') <$> textContent node
     case lookup name examples of
       Just example -> liftHooks $ example node

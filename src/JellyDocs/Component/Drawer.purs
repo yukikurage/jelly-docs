@@ -15,7 +15,7 @@ drawerComponent :: forall m. Monad m => { openSig :: Signal Boolean, onClose :: 
 drawerComponent { openSig, onClose } component = JE.div
   [ "class" @= do
       open <- openSig
-      pure $ [ "fixed left-0 top-0 w-screen h-screen transition-opacity bg-slate-600 bg-opacity-20 overflow-hidden will-change-contents z-50" ] <> if open then [ "opacity-100" ] else [ "opacity-0 pointer-events-none" ]
+      pure $ [ "fixed left-0 top-0 w-screen h-screen transition-opacity bg-gray-600 bg-opacity-50 overflow-hidden will-change-contents z-50 backdrop-blur-sm" ] <> if open then [ "opacity-100" ] else [ "opacity-0 pointer-events-none" ]
   , on click \e -> when (unsafePartial $ eventPhase e == AtTarget) onClose
   ]
   do

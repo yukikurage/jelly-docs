@@ -48,7 +48,7 @@ docPage docIdSig = hooks do
               , emojiProp
               ]
               do
-                text "Edit this page ✏️"
+                text "Edit this page"
           markdownComponent $ pure doc.content
       _ -> JE.div [ "class" := "h-full w-full" ] do
         loadingComponent

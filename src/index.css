@@ -6,31 +6,31 @@
   @apply text-3xl;
   @apply text-slate-800;
   @apply font-black;
-  @apply my-6;
+  @apply my-8;
 }
 
 .markdown h2 {
   @apply text-2xl;
   @apply text-slate-800;
   @apply font-bold;
-  @apply mt-7;
-  @apply mb-4;
+  @apply mt-12;
+  @apply mb-6;
 }
 
 .markdown h3 {
   @apply text-xl;
   @apply text-slate-800;
   @apply font-bold;
-  @apply mt-6;
-  @apply my-3;
+  @apply mt-10;
+  @apply mb-6;
 }
 
 .markdown h4 {
   @apply text-lg;
   @apply text-slate-800;
   @apply font-bold;
-  @apply mt-6;
-  @apply my-3;
+  @apply mt-8;
+  @apply mb-4;
 }
 
 .markdown h5 {
@@ -38,68 +38,72 @@
   @apply text-slate-800;
   @apply font-bold;
   @apply mt-6;
-  @apply my-3;
+  @apply mb-3;
 }
 
 .markdown p {
   @apply text-base;
   @apply text-slate-700;
-  @apply my-4;
+  @apply mb-3;
 }
 
 .markdown li {
   @apply my-2;
 }
 
-.markdown pre {
+.markdown pre:not(.preview) {
   @apply overflow-x-auto;
-  @apply border;
+  @apply bg-gray-800;
+  @apply text-white;
+  @apply py-5;
+  @apply px-7;
+  @apply rounded;
+  @apply my-4;
+  @apply font-SourceCodePro !important;
+  @apply text-[0.95em] !important;
+  @apply shadow;
+}
+
+.markdown pre.preview {
+  @apply overflow-x-auto;
+  @apply border-l-4;
   @apply border-slate-300;
   @apply border-opacity-50;
   @apply py-3;
   @apply px-5;
-  @apply rounded;
   @apply my-3;
-}
-
-.markdown pre code:not(.preview) {
-  @apply font-SourceCodePro !important;
-  @apply text-[0.95em] !important;
-}
-
-.markdown pre code.preview {
   @apply font-Lato !important;
 }
 
-.markdown pre code.preview button {
+.markdown pre.preview button {
   @apply rounded;
-  @apply p-2;
+  @apply px-3;
+  @apply py-1;
   @apply m-1;
-  @apply bg-slate-300;
-  @apply bg-opacity-0;
-  @apply hover:bg-opacity-30;
-  @apply hover:active:bg-opacity-20;
+  @apply bg-pink-600;
+  @apply bg-opacity-100;
+  @apply hover:bg-pink-700;
+  @apply hover:active:bg-pink-800;
   @apply transition-colors;
   @apply font-bold;
-  @apply border;
-  @apply border-slate-300;
-  @apply border-opacity-50;
+  @apply text-white;
 }
 
-.markdown pre code.preview div {
+.markdown pre.preview div {
   @apply rounded;
   @apply p-2;
   @apply m-1;
 }
 
-.markdown :not(pre) code {
+.markdown :not(pre) > code {
   @apply font-SourceCodePro !important;
   @apply text-[0.95em] !important;
-  @apply bg-slate-100;
-  @apply px-2;
-  @apply py-0.5;
-  @apply mx-1;
-  @apply rounded;
+  @apply text-slate-800;
+  @apply font-bold;
+}
+
+.markdown :not(pre) > code::before, .markdown :not(pre) > code::after {
+  @apply content-["`"];
 }
 
 .markdown a {

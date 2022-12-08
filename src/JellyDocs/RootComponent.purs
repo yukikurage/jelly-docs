@@ -84,11 +84,11 @@ headComponent =
       [ "rel" := "preload"
       , "as" := "style"
       , "href" :=
-          "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/atom-one-light.min.css"
+          "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/github-dark.min.css"
       ]
     JE.link
       [ "rel" := "stylesheet"
-      , "href" := "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/atom-one-light.min.css"
+      , "href" := "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/github-dark.min.css"
       , "media" := "print"
       , "onload" := "this.media='all'"
       ]
