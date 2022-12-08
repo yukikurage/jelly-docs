@@ -69,8 +69,8 @@
   @apply border-l-4;
   @apply border-slate-300;
   @apply border-opacity-50;
-  @apply py-3;
-  @apply px-5;
+  @apply py-2;
+  @apply px-3;
   @apply my-3;
   @apply font-Lato !important;
 }
