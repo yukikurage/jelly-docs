@@ -10,9 +10,7 @@ switch :: forall a. Signal (Component m) -> Component m
 
 ### Example
 
-```preview
-switching
-```
+<pre class="preview">switching</pre>
 
 ```purescript
 module Example.Switching where
