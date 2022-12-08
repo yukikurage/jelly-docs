@@ -11,9 +11,6 @@ switch :: forall a. Signal (Component m) -> Component m
 ### Example
 
 <pre class="preview">switching</pre>
-
-<details class="preview">
-<summary>Code</summary>
   
 ```purescript
 module Example.Switching where
@@ -54,6 +51,3 @@ component3 :: forall m. Component m
 component3 = text "This is component 3"
 
 ```
-
-</details>
-
