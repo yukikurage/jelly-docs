@@ -135,9 +135,8 @@ bodyComponent = hooks do
           JE.div [ "class" := "w-full h-[1px] bg-slate-300 bg-opacity-50" ] $ pure unit
           JE.div [ "class" := "absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2" ] logoComponent
           drawerComponent { onClose: writeChannel isSidebarOpenChannel false, openSig: isSidebarOpenSig } sidebar
-      JE.div [ "class" := "h-full w-fit hidden lg:block overflow-auto" ] do
+      JE.div [ "class" := "h-full w-fit hidden lg:block overflow-auto bg-slate-50" ] do
         sidebar
-      JE.div [ "class" := "h-full w-[1px] bg-slate-300 bg-opacity-50 hidden lg:block" ] $ pure unit
       JE.div [ "class" := "flex-1 overflow-auto h-full flex justify-center", onMount (Just >>> writeChannel scrollElChannel) ]
         do
           JE.main [ "class" := "w-full xl:w-[60rem] pt-14 min-h-0 lg:pt-0" ] $ switch do
