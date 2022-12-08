@@ -99,8 +99,8 @@ in  upstream
 -------------------------------
 -}
 let upstream =
-      https://github.com/purescript/package-sets/releases/download/psc-0.15.4-20221122/packages.dhall
-        sha256:c0cfb849a0f886d38cab7bbf40a5c23911d82ba4f09946cbc9d7b5362f2b8819
+      https://github.com/purescript/package-sets/releases/download/psc-0.15.4-20221207/packages.dhall
+        sha256:2ae34b92177adee8938984859e554ef43b0d68736717856edb90effda076aa2a
 
 in  upstream
   with jelly =
@@ -124,7 +124,7 @@ in  upstream
       , "web-html"
       ]
     , repo = "https://github.com/yukikurage/purescript-jelly.git"
-    , version = "v0.9.0"
+    , version = "v0.9.1"
     }
   with jelly-signal =
     { dependencies = [ "effect", "prelude", "refs", "tuples", "unsafe-coerce" ]
@@ -151,19 +151,18 @@ in  upstream
     }
   with jelly-router =
     { dependencies =
-        [ "effect"
-        , "foreign"
-        , "jelly"
-        , "prelude"
-        , "jelly-hooks"
-        , "jelly-signal"
-        , "tailrec"
-        , "transformers"
-        , "tuples"
-        , "web-dom"
-        , "web-events"
-        , "web-html"
-        ]
+      [ "effect"
+      , "foreign"
+      , "jelly"
+      , "prelude"
+      , "jelly-hooks"
+      , "jelly-signal"
+      , "tailrec"
+      , "transformers"
+      , "tuples"
+      , "web-events"
+      , "web-html"
+      ]
     , repo = "https://github.com/yukikurage/purescript-jelly-router.git"
-    , version = "v0.2.0"
+    , version = "v0.2.2"
     }
