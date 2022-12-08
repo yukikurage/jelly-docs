@@ -4,7 +4,6 @@ import Prelude
 
 import Data.Foldable (for_, traverse_)
 import Effect (Effect)
-import Effect.Class (liftEffect)
 import Example (preview)
 import Jelly.Component (Component, raw, switch)
 import Jelly.Element as JE
@@ -36,5 +35,5 @@ markdownComponent markdownSig =
       rendered <- renderedSig
       pure
         $ JE.div
-            [ "class" := "w-full h-full markdown", emojiProp, onMount preview, onMount $ liftEffect <<< addOpenNewTabAttrToAnchors ]
+            [ "class" := "w-full h-full markdown", emojiProp, onMount preview ]
         $ raw rendered

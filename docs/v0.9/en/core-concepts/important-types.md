@@ -6,7 +6,7 @@ Jelly has several basic types.
 
 `Component` represents a piece of HTML. By creating a `Component` for each part of the application, you can reuse it and avoid definition bloat.
 
-[→ Component](./component.md)
+[→ Component](./component)
 
 ## Hooks
 
@@ -22,7 +22,7 @@ When the "cleanup" effect is fired is controlled by the `Signal`.
 useHooks :: forall a. Signal (Hooks a) -> Hooks (Signal a)
 ```
 
-[→ Hooks](./hooks.md)
+[→ Hooks](./hooks)
 
 ### MonadHooks
 
@@ -33,13 +33,13 @@ useCleaner :: forall m. MonadHooks m => Effect Unit -> m Unit
 useHooks :: forall m a. MonadHooks m => Signal (m a) -> m (Signal a)
 ```
 
-[→ Custom Monad](./custom-monad.md)
+[→ Custom Monad](./custom-monad)
 
 ## Signal
 
 `Signal` is a type that represents a changing value. Component states and global states are represented by `Signal`.
 
-[→ Signal](./signal.md)
+[→ Signal](./signal)
 
 ### Channel
 
