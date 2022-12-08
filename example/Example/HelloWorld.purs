@@ -21,3 +21,4 @@ bodyComponent :: forall m. Component m
 bodyComponent = do
   JE.h1' do
     text "Hello World!"
+    text "this is component"

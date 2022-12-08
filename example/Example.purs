@@ -10,6 +10,7 @@ import Data.Tuple.Nested ((/\))
 import Effect.Class (liftEffect)
 import Example.Context (mountWithContext)
 import Example.Counter (counterExample)
+import Example.HelloWorld (bodyComponent)
 import Example.Hooks (hooksExampleWrapper)
 import Example.Switching (switchingExample)
 import Jelly.Hooks (class MonadHooks, Hooks, liftHooks)
@@ -26,6 +27,7 @@ examples = fromFoldable
   , "hooks" /\ mount hooksExampleWrapper
   , "context" /\ mountWithContext
   , "switching" /\ mount switchingExample
+  , "hello-world" /\ mount bodyComponent
   ]
 
 preview :: forall m. MonadHooks m => Element -> m Unit

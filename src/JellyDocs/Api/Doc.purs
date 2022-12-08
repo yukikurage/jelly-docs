@@ -53,20 +53,16 @@ sections =
   , { id: "core-concepts"
     , title: "🏗️ Core Concepts"
     , docs:
-        [ { id: "static-html"
-          , title: "Static HTML"
+        [ { id: "component"
+          , title: "Component"
           , section: "core-concepts"
           }
         , { id: "hooks"
           , title: "Hooks"
           , section: "core-concepts"
           }
-        , { id: "stateful-component"
-          , title: "Stateful Component"
-          , section: "core-concepts"
-          }
-        , { id: "component-switching"
-          , title: "Component Switching"
+        , { id: "signal"
+          , title: "Signal"
           , section: "core-concepts"
           }
         , { id: "component-props"
