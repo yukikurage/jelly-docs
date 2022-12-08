@@ -1,6 +1,6 @@
 # Important Types
 
-Jelly has several basic types, which are combined to create components.
+Jelly has several basic types.
 
 ## Component
 
