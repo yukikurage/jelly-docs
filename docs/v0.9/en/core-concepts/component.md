@@ -42,3 +42,6 @@ component = do
     text "Hello World!"
     text "this is component"
 ```
+
+## Component separation
+

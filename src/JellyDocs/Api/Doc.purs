@@ -53,7 +53,11 @@ sections =
   , { id: "core-concepts"
     , title: "🏗️ Core Concepts"
     , docs:
-        [ { id: "component"
+        [ { id: "important-types"
+          , title: "Important Types"
+          , section: "core-concepts"
+          }
+        , { id: "component"
           , title: "Component"
           , section: "core-concepts"
           }
@@ -63,10 +67,6 @@ sections =
           }
         , { id: "signal"
           , title: "Signal"
-          , section: "core-concepts"
-          }
-        , { id: "component-props"
-          , title: "Component Props"
           , section: "core-concepts"
           }
         , { id: "custom-monad"
