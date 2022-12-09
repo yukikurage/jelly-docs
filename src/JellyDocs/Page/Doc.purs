@@ -34,7 +34,7 @@ docPage docIdSig = hooks do
   pure do
     switch $ docSig <#> case _ of
       Just (Right doc) -> do
-        JE.div [ "class" := "px-4 py-10 lg:px-10 animate-fadeIn transition-colors" ] do
+        JE.main [ "class" := "px-4 py-10 lg:px-10 animate-fadeIn transition-colors" ] do
           JE.div [ "class" := "w-full flex justify-start" ] do
             JE.a
               [ "class" :=

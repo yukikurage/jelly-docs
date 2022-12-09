@@ -1,10 +1,8 @@
-# Jelly
+# Overview
 
 Jelly is a simple framework for building web applications in PureScript.
 
-This document is for v0.9
-
-For documentation of previous versions, see the [docs](https://github.com/yukikurage/jelly-docs/tree/master/docs) directory.
+---
 
 ## Features
 
@@ -23,8 +21,16 @@ For documentation of previous versions, see the [docs](https://github.com/yukiku
 - 📦 **SSG**
   Jelly can be used to generate static HTML files, and hydrate them to make them interactive.
 
+---
+
 ## Links
 
 - [🐙 GitHub Repository](https://github.com/yukikurage/purescript-jelly)
 - [📄 Pursuit Documentation](https://pursuit.purescript.org/packages/purescript-jelly)
 - [✏️ Docs Repository](https://github.com/yukikurage/jelly-docs)
+
+## Versions
+
+This document is for v0.9
+
+For documentation of previous versions, see the [docs](https://github.com/yukikurage/jelly-docs/tree/master/docs) directory.

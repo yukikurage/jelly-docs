@@ -12,7 +12,7 @@ A cleanup effect is a process, for example, to unsubscribe from an event or to s
 useCleaner :: forall m a. MonadHooks m => Effect Unit -> m a
 ```
 
-`MonadHooks` is a typeclass for generalizing monads with the same functionality as `Hooks`. Usually `m` is `Hooks`. See [Custom Monad](./custom-monad) for more information.
+`MonadHooks` is a typeclass for generalizing monads with the same functionality as `Hooks`. Usually `m` is `Hooks`. See [→ Custom Monad](./custom-monad) for more information.
 
 ##### 🚩 Example
 

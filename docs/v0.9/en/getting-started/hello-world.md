@@ -1,5 +1,9 @@
 # Hello World
 
+Let's Create the first Jelly application!
+
+---
+
 First, create HTML to load JavaScript.
 
 `public/index.html`
@@ -17,7 +21,7 @@ First, create HTML to load JavaScript.
 
 Next, write the main script
 
-`src/Main.purs`.
+`src/Main.purs`
 
 ```purescript
 module Example.HelloWorld where
