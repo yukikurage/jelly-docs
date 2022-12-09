@@ -1,4 +1,8 @@
-module Example.Hooks where
+module Example.Hooks
+  ( hook
+  , hookWrapper
+  , hooksExampleWrapper
+  ) where
 
 import Prelude
 
@@ -13,11 +17,7 @@ import Web.HTML.Event.EventTypes (click)
 
 hooksExample :: forall m. MonadHooks m => Component m
 hooksExample = hooks do
-  log "Mounted"
-
-  useCleaner do
-    log "Unmounted"
-
+  hook
   pure $ text "This is Hooks"
 
 hooksExampleWrapper :: forall m. MonadHooks m => Component m
@@ -29,7 +29,7 @@ hooksExampleWrapper = hooks do
     JE.button [ on click \_ -> writeChannel isMountedChannel false ] $ text "Unmount"
     switch $ ifSignal isMountedSig
       do JE.div' hooksExample
-      do JE.div' $ text "Unmounted"
+      do JE.div' $ text " "
 
 hook :: forall m. MonadHooks m => m Unit
 hook = do

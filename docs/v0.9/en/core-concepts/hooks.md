@@ -1,6 +1,6 @@
 # Hooks
 
-Hooks represent side effects and have the feature that a cleanup effect can be written.
+Hooks represent effects and have the feature that a cleanup effect can be written.
 
 ---
 
@@ -55,3 +55,32 @@ component = JE.button [ on click \_ -> hook ] $ text "Run"
 ---
 
 ## As component lifecycle
+
+Hooks can be used as component lifecycle events. That is, it runs when the component is initialized and sets up a cleanup effect for when the component is unmounted.
+
+```purescript
+hooks :: forall m. m (Component m) -> Component m
+```
+
+It is used as follows.
+
+```purescript
+component :: forall m. MonadHooks m => Component m
+component = hooks do
+  -- Some hooks here
+  pure do
+    -- Component here
+```
+
+##### 🚩 Example
+
+Mount/unmount the component using the buttons and check the output on the console. Now, how to perform component mounting/unmounting, please refer to the [next section](./signal).
+
+<pre class="preview">hooks</pre>
+
+```purescript
+component :: forall m. MonadHooks m => Component m
+component = hooks do
+  hook
+  pure $ text "This is Hooks"
+```
