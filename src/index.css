@@ -56,6 +56,11 @@
   @apply my-2;
 }
 
+.markdown hr {
+  @apply mt-10;
+  @apply mb-6
+}
+
 .markdown pre:not(.preview) {
   @apply overflow-x-auto;
   @apply bg-gray-800;

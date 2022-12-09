@@ -10,11 +10,15 @@ Jelly has several basic types.
 
 [→ Component](./component)
 
+---
+
 ## Hooks
 
 `Hooks` is an Effective monad that basically does the same thing as `Effect`, but allows you to write "cleanup" effects such as unsubscribing from events, stopping timers, etc.
 
 [→ Hooks](./hooks)
+
+---
 
 ### MonadHooks
 
@@ -22,11 +26,15 @@ Hooks are abstracted by typeclasses. This is useful for introducing self-defined
 
 [→ Custom Monad](./custom-monad)
 
+---
+
 ## Signal
 
 `Signal` is a type that represents a changing value. Component states and global states are represented by `Signal`.
 
 [→ Signal](./signal)
+
+---
 
 ### Channel
 
