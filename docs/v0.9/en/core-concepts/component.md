@@ -15,6 +15,8 @@ div :: forall m. Array (Prop m) -> Component m -> Component m
 
 It takes an array of properties and child components as arguments and generates components.
 
+##### 🚩 example
+
 <pre class="preview">hello</pre>
 
 ```purescript
@@ -46,6 +48,8 @@ component = do
 ## Component separation
 
 Components can be easily separated and reused.
+
+##### 🚩 example
 
 <pre class="preview">hello3</pre>
 
