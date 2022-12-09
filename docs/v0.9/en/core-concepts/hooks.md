@@ -42,8 +42,7 @@ on :: forall m. EventType -> (Event -> m Unit) -> Prop m
 `EventType` is a type defined in the <a href="https://pursuit.purescript.org/packages/purescript-web-events" target="_blank">purescript-web-events</a> package and represents the type of event, such as `click`, `change` or etc. This time, we will use the `click` event defined in <a href=https://pursuit.purescript.org/packages/purescript-web-html/docs/Web.HTML.Event.EventTypes target="_blank">Web.HTML.Event</a>
 
 ```purescript
-prop :: forall m. MonadHooks m => Prop m
-prop = on click \_ -> hook
+on click \_ -> hook
 ```
 
 Passing this as a Prop for the button will cause a `hook` to be executed when clicked.
