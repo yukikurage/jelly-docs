@@ -55,7 +55,7 @@ component = JE.button [ on click \_ -> hook ] $ text "Run"
 
 ## As component lifecycle
 
-Hooks can be used as component lifecycle events. That is, it runs when the component is initialized and sets up a cleanup effect for when the component is unmounted.
+Hooks can be used as component lifecycle events. That is, it runs when the component is initialized and sets up a cleanup effect for when the component is unmounted. To do this, you need to use the `hooks` function.
 
 ```purescript
 hooks :: forall m. m (Component m) -> Component m
@@ -81,5 +81,6 @@ Mount/unmount the component using the buttons and check the output on the consol
 component :: forall m. MonadHooks m => Component m
 component = hooks do
   hook
-  pure $ text "This is Hooks"
+  pure do
+    text "This is Hooks"
 ```
