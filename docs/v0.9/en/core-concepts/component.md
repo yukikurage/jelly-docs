@@ -2,9 +2,9 @@
 
 `Component` represents a piece of HTML. By creating a `Component` for each part of the application, you can reuse it and avoid definition bloat.
 
-## Element
+## Element Component
 
-`Jelly.Element` provides function for each HTML tag: `div`, `p`, `button`,...
+`Jelly.Element` provides function for each HTML tag: `div`, `p`, `button`...
 They have the following types.
 
 ```purescript

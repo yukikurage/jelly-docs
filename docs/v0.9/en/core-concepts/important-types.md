@@ -2,6 +2,8 @@
 
 Jelly has several basic types.
 
+---
+
 ## Component
 
 `Component` represents a piece of HTML. By creating a `Component` for each part of the application, you can reuse it and avoid definition bloat.
@@ -12,26 +14,11 @@ Jelly has several basic types.
 
 `Hooks` is an Effective monad that basically does the same thing as `Effect`, but allows you to write "cleanup" effects such as unsubscribing from events, stopping timers, etc.
 
-```purescript
-useCleaner :: Effect Unit -> Hooks Unit
-```
-
-When the "cleanup" effect is fired is controlled by the `Signal`.
-
-```purescript
-useHooks :: forall a. Signal (Hooks a) -> Hooks (Signal a)
-```
-
 [→ Hooks](./hooks)
 
 ### MonadHooks
 
 Hooks are abstracted by typeclasses. This is useful for introducing self-defined monads.
-
-```purescript
-useCleaner :: forall m. MonadHooks m => Effect Unit -> m Unit
-useHooks :: forall m a. MonadHooks m => Signal (m a) -> m (Signal a)
-```
 
 [→ Custom Monad](./custom-monad)
 

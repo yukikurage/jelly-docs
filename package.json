@@ -12,7 +12,7 @@
     "watch:script": "npx spago bundle-app -t public/index.js -m JellyDocs.WebMain -w",
     "watch:html": "npx spago run -m JellyDocs.NodeMain -w",
     "watch:tailwindcss": "tailwindcss -i ./src/index.css -o ./public/index.css -w",
-    "watch": "run-p watch:*",
+    "watch": "run-p watch:* serve",
     "examples:hello-world": "spago bundle-app -m Example.HelloWorld.Main -t ./examples/hello-world/public/index.js"
   },
   "keywords": [],

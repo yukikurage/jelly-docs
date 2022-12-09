@@ -5,7 +5,8 @@
 .markdown h1 {
   @apply text-3xl;
   @apply text-slate-800;
-  @apply font-black;
+  @apply font-bold;
+  @apply font-Montserrat;
   @apply my-8;
 }
 
@@ -13,6 +14,7 @@
   @apply text-2xl;
   @apply text-slate-800;
   @apply font-bold;
+  @apply font-Montserrat;
   @apply mt-12;
   @apply mb-6;
 }
@@ -21,6 +23,7 @@
   @apply text-xl;
   @apply text-slate-800;
   @apply font-bold;
+  @apply font-Montserrat;
   @apply mt-10;
   @apply mb-6;
 }
@@ -29,6 +32,7 @@
   @apply text-lg;
   @apply text-slate-800;
   @apply font-bold;
+  @apply font-Montserrat;
   @apply mt-8;
   @apply mb-4;
 }
@@ -37,6 +41,7 @@
   @apply text-base;
   @apply text-slate-800;
   @apply font-bold;
+  @apply font-Montserrat;
   @apply mt-6;
   @apply mb-3;
 }
