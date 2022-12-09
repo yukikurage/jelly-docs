@@ -30,20 +30,16 @@ import Effect.Aff (launchAff_)
 import Effect.Class (liftEffect)
 import Jelly.Aff (awaitBody)
 import Jelly.Component (Component, text)
-import Jelly.Element as JE
 import Jelly.Hooks (runHooks_)
 import Jelly.Hydrate (mount)
 
 main :: Effect Unit
 main = launchAff_ do
   appMaybe <- awaitBody
-  liftEffect $ runHooks_ $ traverse_ (mount bodyComponent) appMaybe
+  liftEffect $ runHooks_ $ traverse_ (mount component) appMaybe
 
-bodyComponent :: forall m. Component m
-bodyComponent = do
-  JE.h1' do
-    text "Hello World!"
-
+component :: forall m. Component m
+component = text "Hello World!"
 ```
 
 Finally, bundle the application.
@@ -60,22 +56,20 @@ Now, when you open `public/index.html` in your browser, you will see a Hello Wor
 main :: Effect Unit
 main = launchAff_ do
   appMaybe <- awaitBody
-  liftEffect $ runHooks_ $ traverse_ (mount bodyComponent) appMaybe
+  liftEffect $ runHooks_ $ traverse_ (mount component) appMaybe
 ```
 
-Get an body element and mount the `bodyComponent`.
+Get an body element and mount the `component`.
 
 ```purescript
-bodyComponent :: forall m. Component m
-bodyComponent = do
-  JE.h1' do
-    text "Hello World!"
+component :: forall m. Component m
+component = text "Hello World!"
 
 ```
 
-The `Component` type class represents a piece of HTML. The `el'` function creates an `h1` element, and the `text` function adds a string to it.
+The `Component` type class represents a piece of HTML. the `text` function adds a string to it.
 
-By mounting this `bodyComponent` in index.html, the final HTML is composed as follows.
+By mounting this `component` in index.html, the final HTML is composed as follows.
 
 ```html
 <!DOCTYPE html>
@@ -85,9 +79,7 @@ By mounting this `bodyComponent` in index.html, the final HTML is composed as fo
     <script src="./index.js" defer=""></script>
   </head>
   <body>
-    <div id="app">
-      <h1>Hello World!</h1>
-    </div>
+    Hello World!
   </body>
 </html>
 ```

@@ -11,6 +11,7 @@ import Jelly.Component (Component, text)
 import Jelly.Element as JE
 import Jelly.Hooks (runHooks_)
 import Jelly.Hydrate (mount)
+import Jelly.Prop ((:=))
 
 main :: Effect Unit
 main = launchAff_ do
@@ -20,8 +21,9 @@ main = launchAff_ do
 helloComponent :: forall m. Component m
 helloComponent = do
   JE.div' do
-    text "Hello World! "
-    text "this is component"
+    text "Hello World!"
+  JE.div [ "style" := "color: red" ] do
+    text "Red text"
 
 hello3Component :: forall m. Component m
 hello3Component = do
