@@ -1,6 +1,8 @@
 # Component
 
-`Component` represents a piece of HTML. By creating a `Component` for each part of the application, you can reuse it and avoid definition bloat.
+`Component` represents a piece of HTML.
+
+---
 
 ## Element Component
 
@@ -13,8 +15,6 @@ div :: forall m. Array (Prop m) -> Component m -> Component m
 
 It takes an array of properties and child components as arguments and generates components.
 
-### Example
-
 <pre class="preview">hello</pre>
 
 ```purescript
@@ -25,7 +25,7 @@ component = do
     text "this is component"
 ```
 
-## Element with no properties
+### Element with no properties
 
 When the property is an empty array, as in the `div` example above, you can use functions with dash instead: `div'`, `p'`, `button'` ...
 
