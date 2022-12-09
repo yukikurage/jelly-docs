@@ -18,8 +18,6 @@ Jelly has several basic types.
 
 [→ Hooks](./hooks)
 
----
-
 ### MonadHooks
 
 Hooks are abstracted by typeclasses. This is useful for introducing self-defined monads.
@@ -33,8 +31,6 @@ Hooks are abstracted by typeclasses. This is useful for introducing self-defined
 `Signal` is a type that represents a changing value. Component states and global states are represented by `Signal`.
 
 [→ Signal](./signal)
-
----
 
 ### Channel
 
