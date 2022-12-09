@@ -54,6 +54,8 @@ spago bundle-app -t ./public/index.js
 
 Now, when you open `public/index.html` in your browser, you will see a Hello World!
 
+---
+
 ## Explanation of Hello World
 
 ```purescript

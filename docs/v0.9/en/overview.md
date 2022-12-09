@@ -29,6 +29,7 @@ Jelly is a simple framework for building web applications in PureScript.
 - [📄 Pursuit Documentation](https://pursuit.purescript.org/packages/purescript-jelly)
 - [✏️ Docs Repository](https://github.com/yukikurage/jelly-docs)
 
+---
 ## Versions
 
 This document is for v0.9
