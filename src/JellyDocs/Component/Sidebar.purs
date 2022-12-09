@@ -18,7 +18,7 @@ import JellyDocs.Twemoji (emojiProp)
 
 renderSidebarSection :: forall m. MonadHooks m => Nav m => Signal Section -> Component m
 renderSidebarSection sectionSig = do
-  JE.li [ "class" := "my-1 pb-3 pt-6 px-2 font-bold text-sm" ] do
+  JE.li [ "class" := "mb-1 mt-3 pb-3 pt-6 px-2 font-bold text-sm font-Montserrat" ] do
     textSig $ (_.title) <$> sectionSig
   JE.li [ "class" := "pl-5" ] do
     JE.ul [ "class" := "border-l-2" ] $ switch $ sectionSig <#> \{ docs } -> do
@@ -35,7 +35,7 @@ renderSidebarSectionItem docSig = hooks do
       pure $ cp == PageDoc id
 
   pure do
-    JE.li [ "class" := "my-1" ] do
+    JE.li' do
       switch $ docSig <#> \{ id, title } ->
         pageLink (PageDoc id)
           [ "class" @= do
@@ -53,8 +53,8 @@ renderSidebarSectionItem docSig = hooks do
 
 sidebarComponent :: forall m. MonadHooks m => Nav m => Signal (Array Section) -> Component m
 sidebarComponent sectionsSig =
-  JE.nav [ "class" := "w-84", emojiProp ] do
+  JE.nav [ "class" := "w-[20rem]", emojiProp ] do
     JE.div [ "class" := "w-full h-16 pt-16 px-10 hidden lg:block" ] logoComponent
     switch $ sectionsSig <#> \sections -> do
-      JE.ul [ "class" := "w-full p-10" ] $
+      JE.ul [ "class" := "w-full p-12" ] $
         for_ sections \section -> renderSidebarSection $ pure section

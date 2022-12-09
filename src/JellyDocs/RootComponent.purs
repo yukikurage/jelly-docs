@@ -139,7 +139,7 @@ bodyComponent = hooks do
         sidebar
       JE.div [ "class" := "flex-1 overflow-auto h-full flex justify-center", onMount (Just >>> writeChannel scrollElChannel) ]
         do
-          JE.main [ "class" := "w-full xl:w-[60rem] pt-14 min-h-0 lg:pt-0" ] $ switch do
+          JE.div [ "class" := "w-full xl:w-[60rem] pt-14 min-h-0 lg:pt-0" ] $ switch do
             cp <- currentPage
             pure case cp of
               PageTop -> topPage
