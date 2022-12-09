@@ -39,7 +39,7 @@ Let's connect the created Hook to the component. You can create an event listene
 on :: forall m. EventType -> (Event -> m Unit) -> Prop m
 ```
 
-`EventType` is a type defined in the [purescript-web-events](https://pursuit.purescript.org/packages/purescript-web-events) package and represents the type of event, such as `click`, `change` or etc. This time, we will use the `click` event defined in [`Web.HTML.Event`](https://pursuit.purescript.org/packages/purescript-web-html/docs/Web.HTML.Event.EventTypes).
+`EventType` is a type defined in the <a href="https://pursuit.purescript.org/packages/purescript-web-events" target="_blank">purescript-web-events</a> package and represents the type of event, such as `click`, `change` or etc. This time, we will use the `click` event defined in <a href=https://pursuit.purescript.org/packages/purescript-web-html/docs/Web.HTML.Event.EventTypes target="_blank">Web.HTML.Event</a>
 
 ```purescript
 prop :: forall m. MonadHooks m => Prop m

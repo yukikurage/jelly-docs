@@ -25,6 +25,5 @@ For documentation of previous versions, see the [docs](https://github.com/yukiku
 
 ## Links
 
-- [🐙 GitHub Repository](https://github.com/yukikurage/purescript-jelly)
-- [📄 Pursuit Documentation](https://pursuit.purescript.org/packages/purescript-jelly)
-- [✏️ Docs Repository](https://github.com/yukikurage/jelly-docs)
+- <a href="https://github.com/yukikurage/purescript-jelly" target="_blank">🐙 GitHub Repository</a>
+- <a href="https://pursuit.purescript.org/packages/purescript-jelly" target="_blank">📄 APIs</a>

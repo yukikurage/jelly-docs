@@ -97,6 +97,7 @@
   @apply transition-colors;
   @apply font-bold;
   @apply text-white;
+  @apply shadow;
 }
 
 .markdown pre.preview div {
