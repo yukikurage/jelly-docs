@@ -12,7 +12,7 @@
 text :: forall m. String -> Component m
 ```
 
-`Component m` represents a component with base monad `m`. This monad is usually `Hooks`. See [→ Custom Monad](./custom-monad.md) for more information.
+`Component m` represents a component with base monad `m`. This monad is usually `Hooks`. See [→ Custom Monad](./custom-monad) for more information. For now, just assume that `Component m` represents Component, and you can ignore the `m`.
 
 `Jelly.Element` provides function for each HTML tag: `div`, `p`, `button`...
 It takes an array of properties and child components as arguments and generates components.

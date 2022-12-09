@@ -30,3 +30,13 @@ hooksExampleWrapper = hooks do
     switch $ ifSignal isMountedSig
       do JE.div' hooksExample
       do JE.div' $ text "Unmounted"
+
+hook :: forall m. MonadHooks m => m Unit
+hook = do
+  log "Running"
+
+  useCleaner do
+    log "Cleaning"
+
+hookWrapper :: forall m. MonadHooks m => Component m
+hookWrapper = JE.button [ on click \_ -> hook ] $ text "Run"

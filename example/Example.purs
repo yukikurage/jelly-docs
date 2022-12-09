@@ -10,8 +10,8 @@ import Data.Tuple.Nested ((/\))
 import Effect.Class (liftEffect)
 import Example.Context (mountWithContext)
 import Example.Counter (counterExample)
-import Example.HelloWorld (helloComponent, hello3Component)
-import Example.Hooks (hooksExampleWrapper)
+import Example.HelloWorld (hello3Component, helloComponent)
+import Example.Hooks (hookWrapper, hooksExampleWrapper)
 import Example.Switching (switchingExample)
 import Jelly.Hooks (class MonadHooks, Hooks, liftHooks)
 import Jelly.Hydrate (mount)
@@ -25,6 +25,7 @@ examples :: HashMap String (Node -> Hooks Unit)
 examples = fromFoldable
   [ "counter" /\ mount counterExample
   , "hooks" /\ mount hooksExampleWrapper
+  , "hook" /\ mount hookWrapper
   , "context" /\ mountWithContext
   , "switching" /\ mount switchingExample
   , "hello" /\ mount helloComponent
