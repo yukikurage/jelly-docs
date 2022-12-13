@@ -77,12 +77,12 @@ runAppMNode (AppM m) affjaxDriver page = do
   notFoundFibMaybeRef <- liftEffect $ new Nothing
   topFibMaybeRef <- liftEffect $ new Nothing
 
-  case page of
-    PageDoc id -> do
-      docFib <- liftEffect $ launchAff $ getDoc affjaxDriver id
-      liftEffect $ write (insert id docFib empty) docFibMapRef
-      void $ liftAff $ joinFiber docFib
-    _ -> pure unit
+  -- case page of
+  --   PageDoc id -> do
+  --     docFib <- liftEffect $ launchAff $ getDoc affjaxDriver id
+  --     liftEffect $ write (insert id docFib empty) docFibMapRef
+  --     void $ liftAff $ joinFiber docFib
+  --   _ -> pure unit
 
   let
     apiFibers =
