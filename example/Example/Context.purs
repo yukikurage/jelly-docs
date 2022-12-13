@@ -1,4 +1,4 @@
-module Example.MangeInt where
+module Example.Context where
 
 import Prelude
 
