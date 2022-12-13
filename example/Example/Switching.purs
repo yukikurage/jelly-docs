@@ -27,10 +27,10 @@ switchingExample = hooks do
         _ -> text "No such component"
 
 component1 :: forall m. Component m
-component1 = text "This is component 1"
+component1 = text "This is the first component"
 
 component2 :: forall m. Component m
-component2 = text "This is component 2"
+component2 = text "This is the second component"
 
 component3 :: forall m. Component m
-component3 = text "This is component 3"
+component3 = text "This is the third component"

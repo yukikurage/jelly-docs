@@ -9,7 +9,7 @@ import Data.String (codePointFromChar, takeWhile)
 import Data.Tuple.Nested ((/\))
 import Effect.Class (liftEffect)
 import Example.Context (mountWithContext)
-import Example.Counter (counterExample)
+import Example.Counter (counter, counter2)
 import Example.HelloWorld (hello3Component, helloComponent)
 import Example.Hooks (hookWrapper, hooksExampleWrapper)
 import Example.Switching (switchingExample)
@@ -23,7 +23,8 @@ import Web.DOM.ParentNode (QuerySelector(..), querySelectorAll)
 
 examples :: HashMap String (Node -> Hooks Unit)
 examples = fromFoldable
-  [ "counter" /\ mount counterExample
+  [ "counter" /\ mount counter
+  , "counter2" /\ mount counter2
   , "hooks" /\ mount hooksExampleWrapper
   , "hook" /\ mount hookWrapper
   , "context" /\ mountWithContext

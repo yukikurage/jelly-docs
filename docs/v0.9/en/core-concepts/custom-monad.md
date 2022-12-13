@@ -1,20 +1,103 @@
 # Custom Monad
 
-Jelly can wrap the entire app in the ReaderT monad.
+In Jelly, you can introduce your own monads as Hooks. Of course, there are some restrictions.
 
-## Providing Context
+## Derive MonadHooks class
 
-By managing Signal in ReaderT, status can be shared throughout the app.
+As we have seen, Hooks are abstracted in the `MonadHooks` class.
 
-### Example
+```haskell
+class MonadEffect m <= MonadHooks m where
+  -- | Add a cleaner
+  useCleaner :: Effect Unit -> m Unit
+  -- | Unwrap a Signal
+  useHooks :: forall a. Signal (m a) -> m (Signal a)
+```
 
-Create a `ContextM` monad to share the Int type state.
+The `Hooks` monad is one of the monads that satisfies this, but newly defined monads can also be embedded in Jelly if they can implement it. In fact, `ReaderT r m` is `MonadHooks` if `m` is `MonadHooks`.
+
+```haskell
+instance MonadHooks m => MonadHooks (ReaderT r m) where
+  useCleaner = lift <<< useCleaner
+  useHooks sig = do
+    r <- ask
+    lift $ useHooks $ flip runReaderT r <$> sig
+```
+
+## Use custom Monad
+
+For example, suppose you want to use a `MangeInt` typeclass that can read and change the state of an `Int` type anywhere.
+
+```haskell
+class Monad m <= MangeInt m where
+  useCountSignal :: m (Signal Int)
+  useCountChannel :: m (Channel Int)
+```
+
+With this monad, you could implement the following components.
+
+```haskell
+parentComponent :: forall m. MonadHooks m => MangeInt m => Component m
+parentComponent = hooks do
+  countChannel <- useCountChannel
+
+  pure do
+    JE.button [ on click \_ -> modifyChannel_ countChannel (add 1) ] $ text "Increment"
+    childComponent
+
+childComponent :: forall m. MonadHooks m => MangeInt m => Component m
+childComponent = hooks do
+  countSig <- useCountSignal
+
+  pure do
+    textSig $ show <$> countSig
+```
+
+Even though the Signal is not passed between components, the value of the Signal changed in parentComponent can be referenced by child components. You must create a monad that will make this possible. Here it is.
+
+```haskell
+
+newtype CustomM a = CustomM (ReaderT (Signal Int /\ Channel Int) Hooks a)
+
+derive newtype instance Functor CustomM
+derive newtype instance Apply CustomM
+derive newtype instance Applicative CustomM
+derive newtype instance Bind CustomM
+derive newtype instance Monad CustomM
+derive newtype instance MonadEffect CustomM
+derive newtype instance MonadHooks CustomM
+derive newtype instance MonadAsk (Signal Int /\ Channel Int) CustomM
+derive newtype instance MonadRec CustomM
+derive newtype instance MonadReader (Signal Int /\ Channel Int) CustomM
+
+runCustomM :: forall a. CustomM a -> Signal Int /\ Channel Int -> Hooks a
+runCustomM (CustomM m) = runReaderT m
+
+instance MangeInt CustomM where
+  useCountSignal = asks fst
+  useCountChannel = asks snd
+```
+
+Use ReaderT to have `Signal Int` and `Channel Int` globally.
+
+In the main function, create the state and then use the `runCustomM` function to run the application.
+
+```haskell
+main :: Effect Unit
+main = launchAff_ do
+  mb <- awaitBody
+  runHooks_ do
+    state <- useStateEq 0
+    runCustomM (traverse_ (mount parentComponent) mb) state
+```
+
+The overall program is as follows.
+
+##### 🚩 Example
 
 <pre class="preview">context</pre>
 
-```purescript
-module Example.Context where
-
+```haskell
 import Prelude
 
 import Control.Monad.Reader (class MonadAsk, class MonadReader, ReaderT, asks, runReaderT)
@@ -40,38 +123,33 @@ main = launchAff_ do
   mb <- awaitBody
   runHooks_ do
     state <- useStateEq 0
-    runContextM (traverse_ (mount parentComponent) mb) state
+    runCustomM (traverse_ (mount parentComponent) mb) state
 
-newtype ContextM a = ContextM (ReaderT (Signal Int /\ Channel Int) Hooks a)
+newtype CustomM a = CustomM (ReaderT (Signal Int /\ Channel Int) Hooks a)
 
-derive newtype instance Functor ContextM
-derive newtype instance Apply ContextM
-derive newtype instance Applicative ContextM
-derive newtype instance Bind ContextM
-derive newtype instance Monad ContextM
-derive newtype instance MonadEffect ContextM
-derive newtype instance MonadHooks ContextM
-derive newtype instance MonadAsk (Signal Int /\ Channel Int) ContextM
-derive newtype instance MonadRec ContextM
-derive newtype instance MonadReader (Signal Int /\ Channel Int) ContextM
+derive newtype instance Functor CustomM
+derive newtype instance Apply CustomM
+derive newtype instance Applicative CustomM
+derive newtype instance Bind CustomM
+derive newtype instance Monad CustomM
+derive newtype instance MonadEffect CustomM
+derive newtype instance MonadHooks CustomM
+derive newtype instance MonadAsk (Signal Int /\ Channel Int) CustomM
+derive newtype instance MonadRec CustomM
+derive newtype instance MonadReader (Signal Int /\ Channel Int) CustomM
 
-runContextM :: forall a. ContextM a -> Signal Int /\ Channel Int -> Hooks a
-runContextM (ContextM m) = runReaderT m
+runCustomM :: forall a. CustomM a -> Signal Int /\ Channel Int -> Hooks a
+runCustomM (CustomM m) = runReaderT m
 
-class Monad m <= Context m where
+class Monad m <= MangeInt m where
   useCountSignal :: m (Signal Int)
   useCountChannel :: m (Channel Int)
 
-instance Context ContextM where
-  useCountSignal = ContextM $ asks fst
-  useCountChannel = ContextM $ asks snd
+instance MangeInt CustomM where
+  useCountSignal = asks fst
+  useCountChannel = asks snd
 
-mountWithContext :: Node -> Hooks Unit
-mountWithContext node = do
-  state <- useStateEq 0
-  runContextM (mount parentComponent node) state
-
-parentComponent :: forall m. MonadHooks m => Context m => Component m
+parentComponent :: forall m. MonadHooks m => MangeInt m => Component m
 parentComponent = hooks do
   countChannel <- useCountChannel
 
@@ -79,11 +157,10 @@ parentComponent = hooks do
     JE.button [ on click \_ -> modifyChannel_ countChannel (add 1) ] $ text "Increment"
     childComponent
 
-childComponent :: forall m. MonadHooks m => Context m => Component m
+childComponent :: forall m. MonadHooks m => MangeInt m => Component m
 childComponent = hooks do
   countSig <- useCountSignal
 
   pure do
     textSig $ show <$> countSig
-
 ```

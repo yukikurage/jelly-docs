@@ -82,14 +82,6 @@ sections =
           , title: "SPA Routing"
           , section: "advanced-topics"
           }
-        , { id: "generate-static-app"
-          , title: "Generate Static App"
-          , section: "advanced-topics"
-          }
-        , { id: "hydration"
-          , title: "Hydration"
-          , section: "advanced-topics"
-          }
         ]
     }
   ]
