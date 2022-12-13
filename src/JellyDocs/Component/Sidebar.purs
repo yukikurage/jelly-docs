@@ -41,12 +41,12 @@ renderSidebarSectionItem docSig = hooks do
           [ "class" @= do
               isActive <- isActiveSig
               pure $
-                [ "relative py-2 px-6 rounded transition-colors block before:absolute before:left-0 before:top-1/2 before:-translate-y-1/2 before:-translate-x-2/3 before:transition-all before:rounded bg-slate-300 bg-opacity-0 "
+                [ "relative py-2 px-6 rounded transition-colors block before:absolute before:left-0 before:top-1/2 before:-translate-y-1/2 before:-translate-x-3/4 before:transition-all before:rounded bg-slate-300 bg-opacity-0 "
                 ]
                   <> singleton
                     if isActive then
-                      "before:h-3/4 before:w-1 text-pink-600 font-bold before:bg-pink-600"
-                    else "before:h-1/2 before:w-0 text-slate-500 before:bg-pink-600 hover:text-slate-800"
+                      "before:h-1/2 before:w-1 text-pink-600 font-bold before:bg-pink-600"
+                    else "before:h-0 before:w-0 text-slate-500 before:bg-pink-600 hover:text-slate-800"
           ]
           do
             text title
