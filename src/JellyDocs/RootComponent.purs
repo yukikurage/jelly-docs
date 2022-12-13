@@ -113,14 +113,15 @@ bodyComponent = hooks do
   sectionsApi <- useSectionsApi
   sectionsSig <- useAff $ pure sectionsApi
 
+  let
+    sidebar = sidebarComponent do
+      sections <- sectionsSig
+      pure case sections of
+        Just (Right scts) -> scts
+        _ -> []
+
   pure do
     JE.body [ "class" := "fixed left-0 top-0 flex flex-row items-start h-window w-screen" ] do
-      let
-        sidebar = sidebarComponent do
-          sections <- sectionsSig
-          pure case sections of
-            Just (Right scts) -> scts
-            _ -> []
       JE.div
         [ "class" := "block lg:hidden absolute left-0 top-0 w-full backdrop-blur bg-white bg-opacity-60" ]
         do

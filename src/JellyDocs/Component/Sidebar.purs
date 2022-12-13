@@ -54,7 +54,7 @@ renderSidebarSectionItem docSig = hooks do
 sidebarComponent :: forall m. MonadHooks m => Nav m => Signal (Array Section) -> Component m
 sidebarComponent sectionsSig =
   JE.nav [ "class" := "w-[20rem]", emojiProp ] do
-    JE.div [ "class" := "w-full h-16 pt-16 px-10 hidden lg:block" ] logoComponent
+    JE.div [ "class" := "w-full h-16 pt-16 px-12 hidden lg:block" ] logoComponent
     switch $ sectionsSig <#> \sections -> do
-      JE.ul [ "class" := "w-full p-12" ] $
+      JE.ul [ "class" := "w-full px-12 py-8" ] $
         for_ sections \section -> renderSidebarSection $ pure section
