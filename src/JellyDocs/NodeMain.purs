@@ -11,6 +11,7 @@ import Data.String (Pattern(..), length, split, take)
 import Data.Tuple.Nested ((/\))
 import Effect (Effect)
 import Effect.Aff (launchAff_)
+import Effect.Aff.Class (liftAff)
 import Effect.Class (liftEffect)
 import Jelly.Render (render)
 import Jelly.Signal (readSignal)
@@ -30,7 +31,7 @@ main = launchAff_ do
   let
     pageToOutFile page = "public/" <> pageToRoute page <> ".html"
     genHTML page filename = do
-      rendered /\ stop <- liftEffect $ runAppMNode (render rootComponent) driver page
+      rendered /\ stop <- liftAff $ runAppMNode (render rootComponent) driver page
       let
         dirname = take (length filename - length (fromMaybe "" $ last $ split (Pattern "/") filename)) filename
       mkdir' dirname { mode: mkPerms all all all, recursive: true }
