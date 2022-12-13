@@ -2,7 +2,9 @@
 
 In Jelly, you can introduce your own monads as Hooks. Of course, there are some restrictions.
 
-## Derive MonadHooks class
+---
+
+## MonadHooks class
 
 As we have seen, Hooks are abstracted in the `MonadHooks` class.
 
@@ -23,6 +25,8 @@ instance MonadHooks m => MonadHooks (ReaderT r m) where
     r <- ask
     lift $ useHooks $ flip runReaderT r <$> sig
 ```
+
+---
 
 ## Use custom Monad
 

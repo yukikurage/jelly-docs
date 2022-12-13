@@ -2,6 +2,8 @@
 
 `Signal` is a reactive value that represents a state. Combined with `Hooks` and `Components`, Stateful components can be created.
 
+---
+
 ## Signal and Channel
 
 To create a `Signal`, use the `newState` function.
@@ -45,6 +47,8 @@ writeChannel channel2 2
 log =<< readSignal newSignal -- 3 (1 + 2)
 ```
 
+---
+
 ## Signal and Text
 
 The value of `Signal` can be converted to a Text Component by `textSig`.
@@ -54,6 +58,8 @@ textSig :: forall m. Component m => Signal String -> m Unit
 ```
 
 The component created by this function is updated each time the value of Signal is changed.
+
+---
 
 ## Stateful Component
 
@@ -85,6 +91,8 @@ counter = hooks do
       text "Count: "
       textSig $ show <$> countSig
 ```
+
+---
 
 ## Reactively perform hooks
 
@@ -120,7 +128,9 @@ counter2 = hooks do
       textSig $ show <$> countSig
 ```
 
-## Signal as props
+---
+
+## Signal as prop
 
 When separating Component, you may want to take arguments. What follows are mostly **bad** examples.
 
@@ -137,6 +147,8 @@ component :: forall m. MonadHooks m => Signal String -> Component m
 component strSig = do
   textSig strSig
 ```
+
+---
 
 ## Component Switching
 
