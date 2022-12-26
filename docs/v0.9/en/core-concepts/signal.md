@@ -1,4 +1,4 @@
-# Stateful Component
+# Signal
 
 `Signal` is a reactive value that represents a state. Combined with `Hooks` and `Components`, Stateful components can be created.
 
