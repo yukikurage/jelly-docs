@@ -24,7 +24,7 @@ Next, write the main script
 `src/Main.purs`
 
 ```purescript
-module Example.HelloWorld where
+module Main where
 
 import Prelude
 
