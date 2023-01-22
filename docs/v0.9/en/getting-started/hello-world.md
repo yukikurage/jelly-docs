@@ -19,7 +19,7 @@ First, create HTML to load JavaScript.
 </html>
 ```
 
-Next, write the main script
+Next, write the main script.
 
 `src/Main.purs`
 
